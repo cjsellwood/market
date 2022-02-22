@@ -1,0 +1,12 @@
+{
+  "files": {
+    "main.css": "/market/static/css/main.31d6cfe0.css",
+    "main.js": "/market/static/js/main.dfa62c0f.js",
+    "index.html": "/market/index.html",
+    "main.dfa62c0f.js.map": "/market/static/js/main.dfa62c0f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.31d6cfe0.css",
+    "static/js/main.dfa62c0f.js"
+  ]
+}
