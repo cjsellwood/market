@@ -1,23 +1,30 @@
-import React from "react";
-import "./App.css";
+import { Box, Text } from "@chakra-ui/react";
+import { Routes, Route, Link } from "react-router-dom";
 
 const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Box bg="gray.100" minW="100vw" minH="100vh">
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Text>
+              This is Home -&nbsp;
+              <Link to="/login">Go to Login</Link>
+            </Text>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <Text>
+              This is Login -&nbsp;
+              <Link to="/">Go to Home</Link>
+            </Text>
+          }
+        />
+      </Routes>
+    </Box>
   );
 };
 
