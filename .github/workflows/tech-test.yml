@@ -1,0 +1,29 @@
+name: market
+on: [pull_request]
+jobs:
+  app-testing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - run: npm install
+
+      - run: npm run build
+
+      - name: Jest tests
+        id: jest
+        run: npm test
+
+      - name: Cypress testing
+        id: cypress
+        uses: cypress-io/github-action@v2
+        with:
+          start: npm start
+          wait-on: "http://localhost:3000"
+
+      - name: Deployment
+        if: steps.jest.outcome == 'success' && steps.cypress.outcome == 'success'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
