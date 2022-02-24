@@ -1,10 +1,11 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import Register from "./Register";
+import Register from "../components/Register";
+import { renderer } from "./helpers";
 
 describe("Register component testing", () => {
   beforeEach(() => {
-    render(<Register />);
+    renderer(<Register />);
   });
 
   it("Should allow filling out form and submitting", () => {
@@ -25,6 +26,6 @@ describe("Register component testing", () => {
     expect(confirmPassword).toHaveValue("password");
 
     userEvent.click(screen.getByText("Submit"));
-    // expect(submitRegister).toHaveBeenCalled();
+
   });
 });
