@@ -8,10 +8,11 @@ import {
   Input,
   Text,
 } from "@chakra-ui/react";
-import { FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import useAppDispatch from "../hooks/useAppDispatch";
 import { registerUser } from "../store/authSlice";
 import CustomInput from "./CustomInput";
+import useInput from "../hooks/useInput";
 
 const Register = () => {
   const dispatch = useAppDispatch();
@@ -69,7 +70,9 @@ const Register = () => {
   const submitForm = (e: FormEvent) => {
     e.preventDefault();
     const isValid = validateInput();
-    if (!isValid) {
+    const testValid = test.isValid();
+    const test2Valid = test2.isValid();
+    if (!isValid || !testValid || !test2Valid) {
       return;
     }
     console.log("Submit");
@@ -123,7 +126,7 @@ const Register = () => {
     email: {
       isRequired: true,
       minLength: 5,
-      type: "email",
+      type: "equal",
     },
     username: {
       isRequired: true,
@@ -142,6 +145,21 @@ const Register = () => {
       type: "equal",
       ref: "password",
     },
+  });
+
+  const test = useInput("", "test", "Test", {
+    isRequired: true,
+    minLength: 4,
+    maxLength: 32,
+  });
+
+  const test2 = useInput("", "test2", "Test2", {
+    isRequired: true,
+    minLength: 4,
+    maxLength: 32,
+    type: "equal",
+    referenceName: test.label,
+    reference: test.value,
   });
 
   return (
@@ -163,6 +181,47 @@ const Register = () => {
             initialValue={input.initialValue}
           />
         ))} */}
+        <Flex direction="column">
+          <FormControl isInvalid={test.error !== ""}>
+            <FormLabel htmlFor={test.id} marginBottom="1">
+              {test.label}{" "}
+              {test.isRequired && (
+                <Text as="span" color="red">
+                  *
+                </Text>
+              )}
+            </FormLabel>
+            <Input
+              id={test.id}
+              value={test.value}
+              onChange={test.onChange}
+            />
+            <Text color="red.500" fontSize="14px" h="16px" marginTop="1">
+              {test.error}
+            </Text>
+          </FormControl>
+        </Flex>
+
+        <Flex direction="column">
+          <FormControl isInvalid={test2.error !== ""}>
+            <FormLabel htmlFor={test2.id} marginBottom="1">
+              {test2.label}{" "}
+              {test2.isRequired && (
+                <Text as="span" color="red">
+                  *
+                </Text>
+              )}
+            </FormLabel>
+            <Input
+              id={test2.id}
+              value={test2.value}
+              onChange={test2.onChange}
+            />
+            <Text color="red.500" fontSize="14px" h="16px" marginTop="1">
+              {test2.error}
+            </Text>
+          </FormControl>
+        </Flex>
 
         <Flex direction="column">
           <FormControl isInvalid={errors.email !== undefined}>
