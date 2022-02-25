@@ -76,6 +76,53 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+interface LoginInput {
+  email: string;
+  password: string;
+}
+
+export const loginUser = createAsyncThunk(
+  "auth/loginUser",
+  async (user: LoginInput, { rejectWithValue }) => {
+    try {
+      const res = await fetch("http://localhost:5000/auth/login", {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...user,
+        }),
+      });
+
+      // If an error return error message
+      if (res.status !== 200) {
+        try {
+          const data = await res.json();
+          throw new Error(data.error);
+        } catch (error) {
+          const newError = error as Error;
+
+          // Return error message from server
+          if (newError.message !== "res.json is not a function") {
+            throw new Error(newError.message);
+          }
+
+          // Return general error
+          throw new Error("Connection error");
+        }
+      }
+
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      const newError = error as Error;
+      return rejectWithValue(newError.message);
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -98,6 +145,25 @@ export const authSlice = createSlice({
         }
       )
       .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(loginUser.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        loginUser.fulfilled,
+        (state, action: PayloadAction<RegisterReturn>) => {
+          state.loading = false;
+          state.username = action.payload.username;
+          state.email = action.payload.email;
+          state.userId = action.payload.userId;
+          state.token = action.payload.token;
+          state.expires = action.payload.expires;
+        }
+      )
+      .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });
