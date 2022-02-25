@@ -27,7 +27,7 @@ module.exports = {
       { SwitchCase: 1, ignoredNodes: ["ConditionalExpression"] },
     ],
     "linebreak-style": ["error", "unix"],
-    quotes: ["error", "double"],
+    quotes: ["error", "double", { avoidEscape: true }],
     semi: ["error", "always"],
   },
 };
