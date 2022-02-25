@@ -13,7 +13,8 @@ const useInput = (
   initialValue: string,
   id: string,
   label: string,
-  validation: ValidationOptions
+  validation: ValidationOptions,
+  type?: string
 ) => {
   const [value, setValue] = useState<string>(initialValue);
   const [error, setError] = useState("");
@@ -68,11 +69,12 @@ const useInput = (
   return {
     value,
     id,
-    onChange,
     label,
     error,
-    isValid,
     isRequired: validation.isRequired,
+    type,
+    onChange,
+    isValid,
   };
 };
 
