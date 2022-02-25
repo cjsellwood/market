@@ -36,21 +36,21 @@ const useInput = (
 
     // Check for valid email
     if (validation.type === "email") {
-      if (!value.includes("@") || !value.includes(".")) {
+      if (!/^\S+@\w+.\w+$/.test(value)) {
         newError = "Invalid email";
       }
     }
 
     // Check if input has its minLength
     if (validation.minLength) {
-      if (value!.length < validation.minLength!) {
+      if (value.length < validation.minLength) {
         newError = `Minimum length is ${validation.minLength}`;
       }
     }
 
     // Check if input exceed its maxLength
     if (validation.maxLength) {
-      if (value.length > validation.maxLength!) {
+      if (value.length > validation.maxLength) {
         newError = `Maximum length is ${validation.maxLength}`;
       }
     }
@@ -75,6 +75,7 @@ const useInput = (
     type,
     onChange,
     isValid,
+    setError,
   };
 };
 

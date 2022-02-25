@@ -4,6 +4,7 @@ import { ReactElement } from "react";
 import { RootState } from "../store/store";
 import authReducer from "../store/authSlice";
 import { render } from "@testing-library/react";
+import { HashRouter } from "react-router-dom";
 
 export const renderer = (
   element: ReactElement,
@@ -15,5 +16,9 @@ export const renderer = (
     },
     preloadedState,
   });
-  return render(<Provider store={store}>{element}</Provider>);
+  return render(
+    <Provider store={store}>
+      <HashRouter> {element}</HashRouter>
+    </Provider>
+  );
 };

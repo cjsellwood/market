@@ -1,41 +1,13 @@
-import {
-  Button,
-  Flex,
-  Heading,
-} from "@chakra-ui/react";
-import { FormEvent } from "react";
+import { Button, Flex, Heading } from "@chakra-ui/react";
+import { FormEvent, useEffect } from "react";
 import useAppDispatch from "../hooks/useAppDispatch";
 import { registerUser } from "../store/authSlice";
 import CustomInput from "./CustomInput";
 import useInput from "../hooks/useInput";
+import useAppSelector from "../hooks/useAppSelector";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const dispatch = useAppDispatch();
-
-  const submitForm = (e: FormEvent) => {
-    e.preventDefault();
-    const emailValid = email.isValid();
-    const usernameValid = username.isValid();
-    const passwordValid = password.isValid();
-    const confirmPasswordValid = confirmPassword.isValid();
-    if (
-      !emailValid ||
-      !usernameValid ||
-      !passwordValid ||
-      !confirmPasswordValid
-    ) {
-      return;
-    }
-
-    dispatch(
-      registerUser({
-        email: email.value,
-        username: username.value,
-        password: password.value,
-      })
-    );
-  };
-
   const email = useInput("", "email", "Email", {
     isRequired: true,
     minLength: 5,
@@ -74,6 +46,56 @@ const Register = () => {
     },
     "password"
   );
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const submitForm = async (e: FormEvent) => {
+    e.preventDefault();
+    email.setError("");
+    username.setError("");
+
+    // Check if inputs are valid
+    const emailValid = email.isValid();
+    const usernameValid = username.isValid();
+    const passwordValid = password.isValid();
+    const confirmPasswordValid = confirmPassword.isValid();
+
+    if (
+      !emailValid ||
+      !usernameValid ||
+      !passwordValid ||
+      !confirmPasswordValid
+    ) {
+      return;
+    }
+
+    const d = await dispatch(
+      registerUser({
+        email: email.value,
+        username: username.value,
+        password: password.value,
+      })
+    );
+
+    if (d.type === "auth/registerUser/fulfilled") {
+      navigate("/");
+    }
+  };
+
+  const { loading, error } = useAppSelector((state) => state.auth);
+
+  // Set input errors to custom errors received from server
+  useEffect(() => {
+    if (error === "username already exists") {
+      username.setError("Username already exists");
+    } else if (error === "email already exists") {
+      email.setError("Email already exists");
+    } else if (error === '"email" must be a valid email') {
+      email.setError("Email is invalid");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error]);
 
   return (
     <Flex justify="center" align="center" direction="column">
@@ -122,7 +144,7 @@ const Register = () => {
           onChange={confirmPassword.onChange}
         />
         <Flex justify="center">
-          <Button colorScheme="green" type="submit">
+          <Button colorScheme="green" type="submit" isLoading={loading}>
             Submit
           </Button>
         </Flex>

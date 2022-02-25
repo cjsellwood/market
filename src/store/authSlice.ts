@@ -84,6 +84,7 @@ export const authSlice = createSlice({
     builder
       .addCase(registerUser.pending, (state, action) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(
         registerUser.fulfilled,
@@ -103,6 +104,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const {} = authSlice.actions;
+// export const {} = authSlice.actions;
 
 export default authSlice.reducer;
