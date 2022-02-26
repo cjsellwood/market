@@ -1,7 +1,15 @@
 describe("Testing auth pages", () => {
-  before(() => {
+  beforeEach(() => {
     cy.viewport(360, 640);
-    cy.intercept("http:/localhost:5000/auth/register", {
+    cy.intercept("http://localhost:5000/auth/register", {
+      email: "cypress@email.com",
+      username: "cypress",
+      userId: 99,
+      token: "2f4dfd",
+      expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    });
+
+    cy.intercept("http://localhost:5000/auth/login", {
       email: "cypress@email.com",
       username: "cypress",
       userId: 99,
@@ -16,8 +24,8 @@ describe("Testing auth pages", () => {
     cy.contains("Register");
     cy.contains("Email");
 
-    cy.get("#email").type("cypress@email.cod");
-    cy.get("#email").should("have.value", "cypress@email.cod");
+    cy.get("#email").type("cypress@email.com");
+    cy.get("#email").should("have.value", "cypress@email.com");
 
     cy.get("#username").type("cypress");
     cy.get("#username").should("have.value", "cypress");
@@ -31,5 +39,38 @@ describe("Testing auth pages", () => {
     cy.contains("Submit").click();
 
     cy.url().should("not.include", "register");
+  });
+
+  it("Can login an existing user", () => {
+    cy.visit("/");
+    cy.contains("Login").click();
+
+    cy.get("#email").type("cypress@email.com");
+    cy.get("#email").should("have.value", "cypress@email.com");
+
+    cy.get("#password").type("password");
+    cy.get("#password").should("have.value", "password");
+
+    cy.contains("Submit").click();
+
+    cy.url().should("not.include", "login");
+  });
+
+  it("Shows error if incorrect credentials", () => {
+    cy.intercept("http://localhost:5000/auth/login", {
+      statusCode: 400,
+      body: {
+        error: "Incorrect username or password",
+      },
+    });
+
+    cy.visit("/#/login");
+
+    cy.get("#email").type("cypress@email.com");
+    cy.get("#password").type("incorrect");
+
+    cy.contains("Submit").click();
+
+    cy.contains("Incorrect username or password");
   });
 });
