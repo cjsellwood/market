@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, waitForElementToBeRemoved } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Register from "../components/Register";
 import { renderer } from "./helpers";
@@ -40,6 +40,8 @@ describe("Register component testing", () => {
     expect(confirmPassword).toHaveValue("password");
 
     userEvent.click(screen.getByText("Submit"));
+
+    waitForElementToBeRemoved(() => screen.getByText("Submit"));
 
     expect(window.fetch).toHaveBeenCalled();
   });

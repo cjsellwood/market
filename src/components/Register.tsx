@@ -70,7 +70,7 @@ const Register = () => {
       return;
     }
 
-    const d = await dispatch(
+    const register = await dispatch(
       registerUser({
         email: email.value,
         username: username.value,
@@ -78,7 +78,7 @@ const Register = () => {
       })
     );
 
-    if (d.type === "auth/registerUser/fulfilled") {
+    if (register.meta.requestStatus === "fulfilled") {
       navigate("/");
     }
   };
