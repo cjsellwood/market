@@ -36,7 +36,7 @@ const useInput = (
 
     // Check for valid email
     if (validation.type === "email") {
-      if (!/^\S+@\w+.\w+$/.test(value)) {
+      if (!/^\S+@\w+\.\S+$/.test(value)) {
         newError = "Invalid email";
       }
     }

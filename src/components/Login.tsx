@@ -48,8 +48,6 @@ const Login = () => {
       loginUser({ email: email.value, password: password.value })
     );
 
-    console.log(login);
-
     if (login.meta.requestStatus === "fulfilled") {
       navigate("/");
     }
