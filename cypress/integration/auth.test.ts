@@ -20,6 +20,7 @@ describe("Testing auth pages", () => {
 
   it("Can navigate to register and create new user", () => {
     cy.visit("/");
+    cy.get("[aria-label='open menu']").click();
     cy.contains("Register").click();
     cy.contains("Register");
     cy.contains("Email");
@@ -43,6 +44,7 @@ describe("Testing auth pages", () => {
 
   it("Can login an existing user", () => {
     cy.visit("/");
+    cy.get("[aria-label='open menu']").click();
     cy.contains("Login").click();
 
     cy.get("#email").type("cypress@email.com");
