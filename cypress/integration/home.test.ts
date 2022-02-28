@@ -1,15 +1,32 @@
 describe("Visit home", () => {
-  it("Navigates to home screen", () => {
-    cy.visit("/");
-
-    cy.contains("Home");
+  beforeEach(() => {
+    cy.viewport(360, 640);
   });
-
-  it("Navigates to login screen", () => {
+  it("Navigates to home screen and uses navigation menu", () => {
     cy.visit("/");
 
-    cy.contains("Login").click();
+    cy.contains("Market");
+
+    cy.get("[aria-label='open menu']").click();
 
     cy.contains("Login");
+    cy.contains("Register");
+
+    cy.contains("All Products").click();
+    cy.url().should("include", "all");
+    cy.contains("All Products").should("not.exist");
+
+    cy.get("[aria-label='open menu']").click();
+    cy.contains("Sports").click();
+    cy.url().should("include", "sports");
+    cy.contains("All Products").should("not.exist");
+
+    cy.get("[aria-label='open menu']").click();
+    cy.contains("Register").click();
+    cy.url().should("include", "register");
+    cy.contains("All Products").should("not.exist");
+
+    cy.contains("Market").click();
+    cy.url().should("eq", "http://localhost:3000/#/");
   });
 });
