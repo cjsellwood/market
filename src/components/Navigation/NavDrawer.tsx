@@ -32,7 +32,7 @@ const NavDrawer = ({
     <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
       <DrawerOverlay />
       <DrawerContent>
-        <DrawerCloseButton size="lg" />
+        <DrawerCloseButton size="lg" aria-label="close menu" />
         <DrawerBody paddingTop="16">
           <Flex justifyContent="space-evenly">
             <Link to="/login" as={RouterLink} w="100%" onClick={onClose}>
