@@ -17,7 +17,7 @@ const Home = () => {
   return (
     <Grid templateColumns="1fr" pt="2">
       {products.map((product) => {
-        return <ProductCard product={product} />;
+        return <ProductCard product={product} key={product.product_id} />;
       })}
       <Flex justifyContent="center" m="2">
         <Link to="/products" as={RouterLink}>

@@ -2,12 +2,11 @@ import { Grid, Flex, Heading, Text, Image } from "@chakra-ui/react";
 import { Product } from "../../store/productSlice";
 
 const ProductCard = (props: { product: Product }) => {
-  const { product_id, images, title, description, price, location, listed } =
+  const { images, title, description, price, location, listed } =
     props.product;
   return (
     <Grid
       m="1"
-      key={product_id}
       templateColumns="120px 1fr"
       borderRadius="4"
       bg="white"
