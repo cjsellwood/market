@@ -1,31 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { Provider } from "react-redux";
-import { ReactElement } from "react";
-import { RootState } from "../store/store";
-import { render } from "@testing-library/react";
-import { HashRouter } from "react-router-dom";
-import authReducer from "../store/authSlice";
-import productReducer from "../store/productSlice";
-
-export const renderer = (
-  element: ReactElement,
-  preloadedState: RootState | {} = {}
-) => {
-  const store = configureStore({
-    reducer: {
-      auth: authReducer,
-      product: productReducer,
-    },
-    preloadedState,
-  });
-  return render(
-    <Provider store={store}>
-      <HashRouter> {element}</HashRouter>
-    </Provider>
-  );
-};
-
-export const randomProducts = [
+const randomProducts = [
   {
     product_id: 29,
     user_id: 5,
@@ -345,3 +318,5 @@ export const randomProducts = [
     location: "East Khalilton",
   },
 ];
+
+export default randomProducts;
