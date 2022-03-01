@@ -23,7 +23,7 @@ describe("Home component", () => {
     expect(screen.queryByText(/Andy shoes are designed/)).toBeInTheDocument();
 
     expect(screen.queryByText("$946")).toBeInTheDocument();
-    expect(screen.queryAllByText(/01\/03\/2022/).length).not.toEqual(0);
+    expect(screen.queryAllByText(/2022/).length).not.toEqual(0);
     expect(screen.queryAllByText(/Funkville/).length).not.toEqual(0);
 
     expect(screen.queryByText("Fantastic Frozen Bike")).toBeInTheDocument();
