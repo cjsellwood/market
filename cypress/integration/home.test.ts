@@ -33,11 +33,15 @@ describe("Visit home", () => {
     cy.url().should("eq", "http://localhost:3000/#/");
   });
 
-  it("Displays the 20 random listings", () => {
+  it("Displays the 20 random listings and navigates to more listings", () => {
     cy.visit("/");
 
     cy.contains("Ergonomic Frozen Towels");
 
     cy.contains("Fantastic Frozen Bike");
+
+    cy.contains("See more").click();
+
+    cy.url().should("eq", "http://localhost:3000/#/products");
   });
 });
