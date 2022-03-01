@@ -43,5 +43,11 @@ describe("Visit home", () => {
     cy.contains("See more").click();
 
     cy.url().should("eq", "http://localhost:3000/#/products");
+
+    cy.visit("/");
+
+    cy.contains("Ergonomic Frozen Towels").click();
+
+    cy.url().should("eq", "http://localhost:3000/#/products/29");
   });
 });
