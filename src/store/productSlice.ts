@@ -9,6 +9,7 @@ export interface Product {
   images: string[];
   listed: Date;
   location: string;
+  category?: string;
 }
 
 interface ProductState {

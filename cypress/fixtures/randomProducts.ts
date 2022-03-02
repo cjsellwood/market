@@ -2,7 +2,6 @@ const randomProducts = [
   {
     product_id: 29,
     user_id: 5,
-    category_id: 6,
     title: "Ergonomic Frozen Towels",
     description:
       "Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals",
@@ -14,6 +13,7 @@ const randomProducts = [
     ],
     listed: "2022-02-28T13:00:00.000Z",
     location: "Funkville",
+    category: "Cars",
   },
   {
     product_id: 12,
