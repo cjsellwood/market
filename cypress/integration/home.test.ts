@@ -1,9 +1,10 @@
-import randomProducts from "../fixtures/randomProducts";
+import {randomProducts} from "../../src/tests/helpers";
 
 describe("Visit home", () => {
   beforeEach(() => {
     cy.viewport(360, 640);
     cy.intercept("http://localhost:5000/products/random", randomProducts);
+    cy.intercept("http://localhost:5000/products/29", randomProducts[0]);
   });
   it("Navigates to home screen and uses navigation menu", () => {
     cy.visit("/");
@@ -38,10 +39,31 @@ describe("Visit home", () => {
 
     cy.contains("Ergonomic Frozen Towels");
 
+    cy.get("img").should("exist");
+
     cy.contains("Fantastic Frozen Bike");
 
     cy.contains("See more").click();
 
     cy.url().should("eq", "http://localhost:3000/#/products");
+
+    cy.visit("/");
+
+    cy.contains("Ergonomic Frozen Towels").click();
+
+    cy.url().should("eq", "http://localhost:3000/#/products/29");
+  });
+
+  it("Displays a single product", () => {
+    cy.visit("/#/products/29");
+
+    cy.contains("Ergonomic Frozen Towels");
+    cy.contains("Cars");
+    cy.contains("Funkville");
+
+    cy.get("img").should("have.length", 3);
+
+    cy.get("img").first().should("be.visible");
+    cy.get("img").last().should("not.be.visible");
   });
 });
