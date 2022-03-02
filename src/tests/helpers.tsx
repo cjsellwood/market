@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { ReactElement } from "react";
 import { RootState } from "../store/store";
 import { render } from "@testing-library/react";
-import { HashRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import authReducer from "../store/authSlice";
 import productReducer from "../store/productSlice";
 
@@ -20,7 +20,7 @@ export const renderer = (
   });
   return render(
     <Provider store={store}>
-      <HashRouter> {element}</HashRouter>
+      <MemoryRouter> {element}</MemoryRouter>
     </Provider>
   );
 };
