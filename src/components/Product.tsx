@@ -48,15 +48,17 @@ const Product = () => {
         );
       })}
       <ButtonGroup justifyContent="center" colorScheme="blue" p="1" size="sm">
-        <Button onClick={() => setImageShown(0)} aria-label="Image 1">
-          1
-        </Button>
-        <Button onClick={() => setImageShown(1)} aria-label="Image 2">
-          2
-        </Button>
-        <Button onClick={() => setImageShown(2)} aria-label="Image 3">
-          3
-        </Button>
+        {product.images.map((image, i) => {
+          return (
+            <Button
+              onClick={() => setImageShown(i)}
+              aria-label={`Image ${i + 1}`}
+              key={`Image ${i + 1}`}
+            >
+              {i + 1}
+            </Button>
+          );
+        })}
       </ButtonGroup>
       <Heading>{product.title}</Heading>
       <Link
