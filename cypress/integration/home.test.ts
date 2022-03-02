@@ -1,4 +1,4 @@
-import randomProducts from "../fixtures/randomProducts";
+import {randomProducts} from "../../src/tests/helpers";
 
 describe("Visit home", () => {
   beforeEach(() => {
@@ -58,7 +58,12 @@ describe("Visit home", () => {
     cy.visit("/#/products/29");
 
     cy.contains("Ergonomic Frozen Towels");
+    cy.contains("Cars");
+    cy.contains("Funkville");
 
-    cy.get("img").should("exist");
+    cy.get("img").should("have.length", 3);
+
+    cy.get("img").first().should("be.visible");
+    cy.get("img").last().should("not.be.visible");
   });
 });

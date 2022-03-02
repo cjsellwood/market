@@ -34,9 +34,9 @@ export const randomProducts = [
       "Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals",
     price: 946,
     images: [
-      "https://placeimg.com/500/500",
-      "https://placeimg.com/500/500",
-      "https://placeimg.com/500/500",
+      "https://placeimg.com/500/500/tech",
+      "https://placeimg.com/500/500/arch",
+      "https://placeimg.com/500/500/animals",
     ],
     listed: "2022-02-28T13:00:00.000Z",
     location: "Funkville",
