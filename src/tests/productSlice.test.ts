@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import productReducer, { getRandom } from "../store/productSlice";
+import productReducer, { getRandom, getProduct } from "../store/productSlice";
 import { randomProducts } from "./helpers";
 
 const originalFetch = window.fetch;
@@ -22,6 +22,7 @@ describe("Product Slice redux testing", () => {
   test("State has initial state", () => {
     expect(store.getState().product).toEqual({
       products: [],
+      product: null,
       loading: false,
       error: null,
     });
@@ -41,12 +42,82 @@ describe("Product Slice redux testing", () => {
     expect(state.products[0].title).toBe("Ergonomic Frozen Towels");
   });
 
+  test("Should return error if sent from server", async () => {
+    window.fetch = jest.fn().mockReturnValue({
+      status: 404,
+      json: () => Promise.resolve({ error: "Bad Request" }),
+    });
+
+    await store.dispatch(getRandom());
+
+    const state = store.getState().product;
+    expect(state.products.length).toBe(0);
+    expect(state.error).toBe("Bad Request");
+  });
+
   test("Should return general error if can't connect", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 400,
     });
 
     await store.dispatch(getRandom());
+
+    const state = store.getState().product;
+    expect(state.error).toBe("Connection error");
+    expect(state.loading).toBe(false);
+  });
+
+  test("Fetches a single products information", async () => {
+    window.fetch = jest.fn().mockReturnValue({
+      status: 200,
+      json: () => Promise.resolve(randomProducts[0]),
+    });
+
+    await store.dispatch(getProduct(29));
+
+    expect(window.fetch).toHaveBeenCalledWith(
+      "http://localhost:5000/products/29",
+      {
+        method: "GET",
+        mode: "cors",
+      }
+    );
+
+    const state = store.getState().product;
+    expect(state.product).not.toBeNull();
+    if (state.product) {
+      expect(state.product.product_id).toBe(29);
+      expect(state.product.title).toBe("Ergonomic Frozen Towels");
+    }
+  });
+
+  test("Should return error if not a product", async () => {
+    window.fetch = jest.fn().mockReturnValue({
+      status: 404,
+      json: () => Promise.resolve({ error: "Product not found" }),
+    });
+
+    await store.dispatch(getProduct(99));
+
+    expect(window.fetch).toHaveBeenCalledWith(
+      "http://localhost:5000/products/99",
+      {
+        method: "GET",
+        mode: "cors",
+      }
+    );
+
+    const state = store.getState().product;
+    expect(state.product).toBeNull();
+    expect(state.error).toBe("Product not found");
+  });
+
+  test("Return general error if can't fetch product", async () => {
+    window.fetch = jest.fn().mockReturnValue({
+      status: 400,
+    });
+
+    await store.dispatch(getProduct(29));
 
     const state = store.getState().product;
     expect(state.error).toBe("Connection error");
