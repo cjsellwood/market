@@ -6,6 +6,7 @@ import Register from "./components/Register";
 import Navbar from "./components/Navigation/NavBar";
 import Product from "./components/Product";
 import ScrollToTop from "./components/ScrollToTop";
+import Products from "./components/Products";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/products" element={<Products />} />
           <Route path="/products/:id" element={<Product />} />
         </Routes>
       </Box>

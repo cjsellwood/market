@@ -1,10 +1,12 @@
-import {randomProducts} from "../../src/tests/helpers";
+import { allProducts, randomProducts } from "../../src/tests/helpers";
 
-describe("Visit home", () => {
+describe("Visit product pages", () => {
   beforeEach(() => {
     cy.viewport(360, 640);
     cy.intercept("http://localhost:5000/products/random", randomProducts);
     cy.intercept("http://localhost:5000/products/29", randomProducts[0]);
+    cy.intercept("http://localhost:5000/products/23", randomProducts[0]);
+    cy.intercept("http://localhost:5000/products?page=1", allProducts);
   });
   it("Navigates to home screen and uses navigation menu", () => {
     cy.visit("/");
@@ -65,5 +67,18 @@ describe("Visit home", () => {
 
     cy.get("img").first().should("be.visible");
     cy.get("img").last().should("not.be.visible");
+  });
+
+  it("Shows all products page", () => {
+    cy.visit("/#/products");
+
+    cy.contains("Refined Cotton Ball");
+    cy.get("img").should("have.length", 20);
+
+    cy.contains("Refined Cotton Ball").click();
+
+    cy.url().should("eq", "http://localhost:3000/#/products/23");
+
+    cy.go("back");
   });
 });
