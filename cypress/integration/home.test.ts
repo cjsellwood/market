@@ -1,4 +1,8 @@
-import { allProducts, randomProducts } from "../../src/tests/helpers";
+import {
+  allProducts,
+  randomProducts,
+  searchCategory,
+} from "../../src/tests/helpers";
 
 describe("Visit product pages", () => {
   beforeEach(() => {
@@ -7,6 +11,10 @@ describe("Visit product pages", () => {
     cy.intercept("http://localhost:5000/products/29", randomProducts[0]);
     cy.intercept("http://localhost:5000/products/23", randomProducts[0]);
     cy.intercept("http://localhost:5000/products?page=1", allProducts);
+    cy.intercept("http://localhost:5000/products?page=2", {
+      products: searchCategory.products,
+      count: "50",
+    });
   });
   it("Navigates to home screen and uses navigation menu", () => {
     cy.visit("/");
@@ -19,7 +27,7 @@ describe("Visit product pages", () => {
     cy.contains("Register");
 
     cy.contains("All Products").click();
-    cy.url().should("include", "all");
+    cy.url().should("include", "products");
     cy.contains("All Products").should("not.exist");
 
     cy.get("[aria-label='open menu']").click();
@@ -69,7 +77,7 @@ describe("Visit product pages", () => {
     cy.get("img").last().should("not.be.visible");
   });
 
-  it("Shows all products page", () => {
+  it("Shows all products page and navigate to next page", () => {
     cy.visit("/#/products");
 
     cy.contains("Refined Cotton Ball");
@@ -80,5 +88,17 @@ describe("Visit product pages", () => {
     cy.url().should("eq", "http://localhost:3000/#/products/23");
 
     cy.go("back");
+
+    cy.get("button[aria-label='Page 2']").click();
+
+    // Not in all products page 1
+    cy.contains("Licensed Concrete Fish");
+    cy.window().its("scrollY").should("eq", 0);
+    cy.url().should("eq", "http://localhost:3000/#/products?page=2");
+
+    cy.go("back");
+
+    cy.url().should("eq", "http://localhost:3000/#/products");
+    cy.contains("Refined Cotton Ball");
   });
 });

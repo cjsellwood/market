@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react";
-import { allProducts, renderer } from "./helpers";
+import { allProducts, renderer, searchCategory } from "./helpers";
 import Products from "../components/Products";
 import userEvent from "@testing-library/user-event";
 
@@ -46,5 +46,37 @@ describe("Products component", () => {
     renderer(<Products />);
 
     expect(await screen.findByText("Connection error")).toBeInTheDocument();
+  });
+
+  test("Switching to 2nd page", async () => {
+    window.fetch = jest.fn().mockReturnValue({
+      status: 200,
+      json: () => Promise.resolve(allProducts),
+    });
+    window.scrollTo = jest.fn();
+
+    renderer(<Products />);
+
+    expect(await screen.findByText("Refined Cotton Ball")).toBeInTheDocument();
+
+    window.fetch = jest.fn().mockReturnValue({
+      status: 200,
+      json: () =>
+        Promise.resolve({ products: searchCategory.products, count: "50" }),
+    });
+
+    userEvent.click(screen.getByLabelText("Page 2"));
+
+    expect(window.fetch).toHaveBeenCalledWith(
+      "http://localhost:5000/products?page=2",
+      {
+        method: "GET",
+        mode: "cors",
+      }
+    );
+
+    expect(
+      await screen.findByText("Licensed Concrete Fish")
+    ).toBeInTheDocument();
   });
 });
