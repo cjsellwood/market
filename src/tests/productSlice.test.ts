@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-import productReducer, { getRandom, getProduct } from "../store/productSlice";
-import { randomProducts } from "./helpers";
+import productReducer from "../store/productSlice";
+import { getRandom, getProduct, getAll } from "../store/productThunks";
+import { allProducts, allProductsPage3, randomProducts } from "./helpers";
 
 const originalFetch = window.fetch;
 let store = configureStore({
@@ -22,6 +23,7 @@ describe("Product Slice redux testing", () => {
   test("State has initial state", () => {
     expect(store.getState().product).toEqual({
       products: [],
+      count: "0",
       product: null,
       loading: false,
       error: null,
@@ -122,5 +124,46 @@ describe("Product Slice redux testing", () => {
     const state = store.getState().product;
     expect(state.error).toBe("Connection error");
     expect(state.loading).toBe(false);
+  });
+
+  test("Gets all products", async () => {
+    window.fetch = jest.fn().mockReturnValue({
+      status: 200,
+      json: () => Promise.resolve(allProducts),
+    });
+    await store.dispatch(getAll({ page: 1 }));
+
+    const state = store.getState().product;
+    expect(state.products).toEqual(allProducts.products);
+    expect(state.error).toBe(null);
+    expect(state.loading).toBe(false);
+    expect(state.count).toBe("50");
+  });
+
+  test("Gets all products from another page", async () => {
+    window.fetch = jest.fn().mockReturnValue({
+      status: 200,
+      json: () => Promise.resolve(allProductsPage3),
+    });
+
+    await store.dispatch(getAll({ page: 3, count: "50" }));
+    const state = store.getState().product;
+    expect(state.products).toEqual(allProductsPage3.products);
+    expect(state.error).toBe(null);
+    expect(state.loading).toBe(false);
+    expect(state.count).toBe("50");
+  });
+
+  test("Return general error if can't fetch all product", async () => {
+    window.fetch = jest.fn().mockReturnValue({
+      status: 400,
+    });
+
+    await store.dispatch(getAll({ page: 1 }));
+
+    const state = store.getState().product;
+    expect(state.error).toBe("Connection error");
+    expect(state.loading).toBe(false);
+    expect(state.products).toEqual([]);
   });
 });

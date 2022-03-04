@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { generateError } from "./productThunks";
 
 interface AuthState {
   loading: boolean;
@@ -51,20 +52,7 @@ export const registerUser = createAsyncThunk(
 
       // If an error return error message
       if (res.status !== 200) {
-        try {
-          const data = await res.json();
-          throw new Error(data.error);
-        } catch (error) {
-          const newError = error as Error;
-
-          // Return error message from server
-          if (newError.message !== "res.json is not a function") {
-            throw new Error(newError.message);
-          }
-
-          // Return general error
-          throw new Error("Connection error");
-        }
+        throw new Error(await generateError(res));
       }
 
       const data = await res.json();
@@ -98,20 +86,7 @@ export const loginUser = createAsyncThunk(
 
       // If an error return error message
       if (res.status !== 200) {
-        try {
-          const data = await res.json();
-          throw new Error(data.error);
-        } catch (error) {
-          const newError = error as Error;
-
-          // Return error message from server
-          if (newError.message !== "res.json is not a function") {
-            throw new Error(newError.message);
-          }
-
-          // Return general error
-          throw new Error("Connection error");
-        }
+        throw new Error(await generateError(res));
       }
 
       const data = await res.json();

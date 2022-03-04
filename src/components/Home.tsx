@@ -2,7 +2,7 @@ import { Grid, Link, Flex, Button } from "@chakra-ui/react";
 import { useEffect } from "react";
 import useAppDispatch from "../hooks/useAppDispatch";
 import useAppSelector from "../hooks/useAppSelector";
-import { getRandom } from "../store/productSlice";
+import { getRandom } from "../store/productThunks";
 import ProductCard from "./ProductCard/ProductCard";
 import { Link as RouterLink } from "react-router-dom";
 
