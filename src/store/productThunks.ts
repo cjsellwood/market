@@ -90,3 +90,34 @@ export const getAll = createAsyncThunk(
     }
   }
 );
+
+export const getCategory = createAsyncThunk(
+  "products/category",
+  async (
+    query: { category_id: number; page: number; count?: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const res = await fetch(
+        `http://localhost:5000/products/category/${query.category_id}?page=${query.page}${
+          query.count ? `&count=${query.count}` : ""
+        }`,
+        {
+          method: "GET",
+          mode: "cors",
+        }
+      );
+
+      // If an error return error message
+      if (res.status !== 200) {
+        throw new Error(await generateError(res));
+      }
+
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      const newError = error as Error;
+      return rejectWithValue(newError.message);
+    }
+  }
+);

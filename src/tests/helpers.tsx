@@ -657,3 +657,89 @@ export const allProductsPage3 = {
   ],
   count: "50",
 };
+
+export const category1Products = {
+  products: [
+    {
+      product_id: 19,
+      title: "Handcrafted Wooden Fish",
+      description:
+        "The slim & simple Maple Gaming Keyboard from Dev Byte comes with a sleek body and 7- Color RGB LED Back-lighting for smart functionality",
+      price: 496,
+      image: "https://placeimg.com/500/500/people",
+      location: "South Ahmedfort",
+      listed: "2022-02-25T13:00:00.000Z",
+    },
+    {
+      product_id: 47,
+      title: "Fantastic Plastic Salad",
+      description:
+        "Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals",
+      price: 945,
+      image: "https://placeimg.com/500/500/animals",
+      location: "Langborough",
+      listed: "2022-02-24T13:00:00.000Z",
+    },
+    {
+      product_id: 12,
+      title: "Small Rubber Shoes",
+      description:
+        "The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design",
+      price: 510,
+      image: "https://placeimg.com/500/500/tech",
+      location: "Connfurt",
+      listed: "2022-02-23T13:00:00.000Z",
+    },
+    {
+      product_id: 49,
+      title: "Intelligent Plastic Gloves",
+      description:
+        "The Football Is Good For Training And Recreational Purposes",
+      price: 20,
+      image: "https://placeimg.com/500/500/animals",
+      location: "White Plains",
+      listed: "2022-02-20T13:00:00.000Z",
+    },
+    {
+      product_id: 34,
+      title: "Awesome Cotton Pizza",
+      description:
+        "Ergonomic executive chair upholstered in bonded black leather and PVC padded seat and back for all-day comfort and support",
+      price: 904,
+      image: "https://placeimg.com/500/500/nature",
+      location: "New Garlandfort",
+      listed: "2022-02-17T13:00:00.000Z",
+    },
+    {
+      product_id: 48,
+      title: "Rustic Cotton Ball",
+      description:
+        "The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design",
+      price: 913,
+      image: "https://placeimg.com/500/500/people",
+      location: "East Filibertofurt",
+      listed: "2022-01-21T13:00:00.000Z",
+    },
+    {
+      product_id: 40,
+      title: "Rustic Concrete Bike",
+      description:
+        "Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals",
+      price: 712,
+      image: "https://placeimg.com/500/500/animals",
+      location: "Tallahassee",
+      listed: "2022-01-20T13:00:00.000Z",
+    },
+    {
+      product_id: 15,
+      title: "Fantastic Wooden Sausages",
+      description:
+        "New range of formal shirts are designed keeping you in mind. With fits and styling that will make you stand apart",
+      price: 367,
+      image: "https://placeimg.com/500/500/animals",
+      location: "North Celia",
+      listed: "2022-01-10T13:00:00.000Z",
+    },
+  ],
+  count: "8",
+};
