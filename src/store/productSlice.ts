@@ -13,9 +13,10 @@ export interface Product {
   title: string;
   description: string;
   price: number;
-  images: string[] | string;
   listed: Date;
   location: string;
+  images?: string[];
+  image?: string;
   category?: string;
 }
 

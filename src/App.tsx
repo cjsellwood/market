@@ -5,10 +5,12 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Navbar from "./components/Navigation/NavBar";
 import Product from "./components/Product";
+import ScrollToTop from "./components/ScrollToTop";
 
 const App = () => {
   return (
     <Box bg="gray.100" minW="100%" minH="200vh">
+      <ScrollToTop />
       <Navbar />
       <Box paddingTop="56px">
         <Routes>
