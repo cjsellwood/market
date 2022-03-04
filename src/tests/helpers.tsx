@@ -743,3 +743,441 @@ export const category1Products = {
   ],
   count: "8",
 };
+
+export const searchProducts = {
+  products: [
+    {
+      product_id: 32,
+      title: "Sleek Plastic Chips",
+      description:
+        "The beautiful range of Apple Naturalé that has an exciting mix of natural ingredients. With the Goodness of 100% Natural Ingredients",
+      price: 695,
+      image: "https://placeimg.com/500/500/arch",
+      location: "Rettaland",
+      listed: "2022-02-27T13:00:00.000Z",
+    },
+    {
+      product_id: 33,
+      title: "Unbranded Plastic Towels",
+      description:
+        "The beautiful range of Apple Naturalé that has an exciting mix of natural ingredients. With the Goodness of 100% Natural Ingredients",
+      price: 392,
+      image: "https://placeimg.com/500/500/arch",
+      location: "Farmington",
+      listed: "2022-02-27T13:00:00.000Z",
+    },
+    {
+      product_id: 13,
+      title: "Licensed Concrete Fish",
+      description:
+        "Ergonomic executive chair upholstered in bonded black leather and PVC padded seat and back for all-day comfort and support",
+      price: 822,
+      image: "https://placeimg.com/500/500/nature",
+      location: "Padbergmouth",
+      listed: "2022-02-25T13:00:00.000Z",
+    },
+    {
+      product_id: 30,
+      title: "Practical Rubber Fish",
+      description:
+        "The Nagasaki Lander is the trademarked name of several series of Nagasaki sport bikes, that started with the 1984 ABC800J",
+      price: 719,
+      image: "https://placeimg.com/500/500/arch",
+      location: "New Kyle",
+      listed: "2022-02-25T13:00:00.000Z",
+    },
+    {
+      product_id: 49,
+      title: "Incredible Fresh Bike",
+      description:
+        "The Nagasaki Lander is the trademarked name of several series of Nagasaki sport bikes, that started with the 1984 ABC800J",
+      price: 655,
+      image: "https://placeimg.com/500/500/tech",
+      location: "Marionton",
+      listed: "2022-02-23T13:00:00.000Z",
+    },
+    {
+      product_id: 42,
+      title: "Rustic Granite Fish",
+      description:
+        "Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals",
+      price: 408,
+      image: "https://placeimg.com/500/500/tech",
+      location: "Cruzshire",
+      listed: "2022-02-22T13:00:00.000Z",
+    },
+    {
+      product_id: 34,
+      title: "Rustic Concrete Bike",
+      description:
+        "The beautiful range of Apple Naturalé that has an exciting mix of natural ingredients. With the Goodness of 100% Natural Ingredients",
+      price: 292,
+      image: "https://placeimg.com/500/500/tech",
+      location: "South Darienbury",
+      listed: "2022-02-19T13:00:00.000Z",
+    },
+    {
+      product_id: 15,
+      title: "Gorgeous Fresh Shoes",
+      description:
+        "The slim & simple Maple Gaming Keyboard from Dev Byte comes with a sleek body and 7- Color RGB LED Back-lighting for smart functionality",
+      price: 331,
+      image: "https://placeimg.com/500/500/nature",
+      location: "Tryciastad",
+      listed: "2022-02-18T13:00:00.000Z",
+    },
+    {
+      product_id: 21,
+      title: "Gorgeous Metal Pants",
+      description:
+        "The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design",
+      price: 470,
+      image: "https://placeimg.com/500/500/people",
+      location: "State College",
+      listed: "2022-02-18T13:00:00.000Z",
+    },
+    {
+      product_id: 1,
+      title: "Intelligent Metal Computer",
+      description:
+        "The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design",
+      price: 989,
+      image: "https://placeimg.com/500/500/arch",
+      location: "South Verdieton",
+      listed: "2022-02-15T13:00:00.000Z",
+    },
+    {
+      product_id: 6,
+      title: "Generic Wooden Ball",
+      description:
+        "The slim & simple Maple Gaming Keyboard from Dev Byte comes with a sleek body and 7- Color RGB LED Back-lighting for smart functionality",
+      price: 265,
+      image: "https://placeimg.com/500/500/animals",
+      location: "North Sigmund",
+      listed: "2022-02-15T13:00:00.000Z",
+    },
+    {
+      product_id: 50,
+      title: "Gorgeous Metal Pants",
+      description:
+        "Ergonomic executive chair upholstered in bonded black leather and PVC padded seat and back for all-day comfort and support",
+      price: 650,
+      image: "https://placeimg.com/500/500/animals",
+      location: "Jaquelinview",
+      listed: "2022-02-15T13:00:00.000Z",
+    },
+    {
+      product_id: 20,
+      title: "Rustic Concrete Chips",
+      description:
+        "The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design",
+      price: 873,
+      image: "https://placeimg.com/500/500/arch",
+      location: "Glen Burnie",
+      listed: "2022-02-13T13:00:00.000Z",
+    },
+    {
+      product_id: 17,
+      title: "Small Rubber Shoes",
+      description:
+        "The Football Is Good For Training And Recreational Purposes",
+      price: 348,
+      image: "https://placeimg.com/500/500/people",
+      location: "Maxwellport",
+      listed: "2022-02-10T13:00:00.000Z",
+    },
+    {
+      product_id: 26,
+      title: "Awesome Cotton Pizza",
+      description:
+        "The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design",
+      price: 714,
+      image: "https://placeimg.com/500/500/arch",
+      location: "Rogers",
+      listed: "2022-02-09T13:00:00.000Z",
+    },
+    {
+      product_id: 45,
+      title: "Small Concrete Shoes",
+      description:
+        "The automobile layout consists of a front-engine design, with transaxle-type transmissions mounted at the rear of the engine and four wheel drive",
+      price: 553,
+      image: "https://placeimg.com/500/500/arch",
+      location: "Elisabethland",
+      listed: "2022-02-07T13:00:00.000Z",
+    },
+    {
+      product_id: 3,
+      title: "Sleek Wooden Bacon",
+      description:
+        "The Nagasaki Lander is the trademarked name of several series of Nagasaki sport bikes, that started with the 1984 ABC800J",
+      price: 60,
+      image: "https://placeimg.com/500/500/animals",
+      location: "Connfurt",
+      listed: "2022-02-06T13:00:00.000Z",
+    },
+    {
+      product_id: 19,
+      title: "Awesome Metal Pants",
+      description:
+        "The automobile layout consists of a front-engine design, with transaxle-type transmissions mounted at the rear of the engine and four wheel drive",
+      price: 479,
+      image: "https://placeimg.com/500/500/nature",
+      location: "East Khalilton",
+      listed: "2022-02-05T13:00:00.000Z",
+    },
+    {
+      product_id: 38,
+      title: "Practical Granite Keyboard",
+      description:
+        "The automobile layout consists of a front-engine design, with transaxle-type transmissions mounted at the rear of the engine and four wheel drive",
+      price: 736,
+      image: "https://placeimg.com/500/500/people",
+      location: "Tryciastad",
+      listed: "2022-02-04T13:00:00.000Z",
+    },
+    {
+      product_id: 8,
+      title: "Generic Rubber Sausages",
+      description:
+        "The Football Is Good For Training And Recreational Purposes",
+      price: 494,
+      image: "https://placeimg.com/500/500/tech",
+      location: "East Vicentaborough",
+      listed: "2022-02-03T13:00:00.000Z",
+    },
+  ],
+  count: "38",
+};
+
+export const searchProducts2 = {
+  products: [
+    {
+      product_id: 39,
+      title: "Licensed Granite Cheese",
+      description:
+        "The beautiful range of Apple Naturalé that has an exciting mix of natural ingredients. With the Goodness of 100% Natural Ingredients",
+      price: 811,
+      image: "https://placeimg.com/500/500/people",
+      location: "East Filibertofurt",
+      listed: "2022-02-03T13:00:00.000Z",
+    },
+    {
+      product_id: 43,
+      title: "Fantastic Frozen Soap",
+      description:
+        "Ergonomic executive chair upholstered in bonded black leather and PVC padded seat and back for all-day comfort and support",
+      price: 694,
+      image: "https://placeimg.com/500/500/arch",
+      location: "Kissimmee",
+      listed: "2022-01-31T13:00:00.000Z",
+    },
+    {
+      product_id: 10,
+      title: "Rustic Concrete Bike",
+      description:
+        "The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design",
+      price: 458,
+      image: "https://placeimg.com/500/500/nature",
+      location: "Funkville",
+      listed: "2022-01-29T13:00:00.000Z",
+    },
+    {
+      product_id: 31,
+      title: "Intelligent Concrete Chips",
+      description:
+        "The automobile layout consists of a front-engine design, with transaxle-type transmissions mounted at the rear of the engine and four wheel drive",
+      price: 183,
+      image: "https://placeimg.com/500/500/nature",
+      location: "Lake Ludie",
+      listed: "2022-01-23T13:00:00.000Z",
+    },
+    {
+      product_id: 28,
+      title: "Unbranded Cotton Hat",
+      description:
+        "The slim & simple Maple Gaming Keyboard from Dev Byte comes with a sleek body and 7- Color RGB LED Back-lighting for smart functionality",
+      price: 76,
+      image: "https://placeimg.com/500/500/tech",
+      location: "Port Ricky",
+      listed: "2022-01-18T13:00:00.000Z",
+    },
+    {
+      product_id: 35,
+      title: "Refined Cotton Ball",
+      description:
+        "Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals",
+      price: 448,
+      image: "https://placeimg.com/500/500/nature",
+      location: "Marionton",
+      listed: "2022-01-18T13:00:00.000Z",
+    },
+    {
+      product_id: 44,
+      title: "Rustic Cotton Ball",
+      description:
+        "The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design",
+      price: 87,
+      image: "https://placeimg.com/500/500/arch",
+      location: "Lake Zackton",
+      listed: "2022-01-16T13:00:00.000Z",
+    },
+    {
+      product_id: 22,
+      title: "Awesome Wooden Shirt",
+      description:
+        "Ergonomic executive chair upholstered in bonded black leather and PVC padded seat and back for all-day comfort and support",
+      price: 701,
+      image: "https://placeimg.com/500/500/nature",
+      location: "North Frankie",
+      listed: "2022-01-14T13:00:00.000Z",
+    },
+    {
+      product_id: 7,
+      title: "Handmade Granite Cheese",
+      description:
+        "The slim & simple Maple Gaming Keyboard from Dev Byte comes with a sleek body and 7- Color RGB LED Back-lighting for smart functionality",
+      price: 836,
+      image: "https://placeimg.com/500/500/animals",
+      location: "West Estaton",
+      listed: "2022-01-13T13:00:00.000Z",
+    },
+    {
+      product_id: 5,
+      title: "Refined Cotton Ball",
+      description:
+        "The Nagasaki Lander is the trademarked name of several series of Nagasaki sport bikes, that started with the 1984 ABC800J",
+      price: 363,
+      image: "https://placeimg.com/500/500/arch",
+      location: "Durwardton",
+      listed: "2022-01-12T13:00:00.000Z",
+    },
+    {
+      product_id: 23,
+      title: "Awesome Concrete Hat",
+      description:
+        "The beautiful range of Apple Naturalé that has an exciting mix of natural ingredients. With the Goodness of 100% Natural Ingredients",
+      price: 45,
+      image: "https://placeimg.com/500/500/tech",
+      location: "West Estaton",
+      listed: "2022-01-08T13:00:00.000Z",
+    },
+    {
+      product_id: 2,
+      title: "Refined Cotton Ball",
+      description:
+        "The beautiful range of Apple Naturalé that has an exciting mix of natural ingredients. With the Goodness of 100% Natural Ingredients",
+      price: 477,
+      image: "https://placeimg.com/500/500/nature",
+      location: "Denesikburgh",
+      listed: "2022-01-06T13:00:00.000Z",
+    },
+    {
+      product_id: 36,
+      title: "Unbranded Steel Sausages",
+      description:
+        "Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals",
+      price: 228,
+      image: "https://placeimg.com/500/500/tech",
+      location: "New Kyle",
+      listed: "2022-01-05T13:00:00.000Z",
+    },
+    {
+      product_id: 24,
+      title: "Intelligent Wooden Bacon",
+      description:
+        "The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design",
+      price: 901,
+      image: "https://placeimg.com/500/500/animals",
+      location: "South Verdieton",
+      listed: "2022-01-04T13:00:00.000Z",
+    },
+    {
+      product_id: 25,
+      title: "Refined Fresh Shirt",
+      description:
+        "Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals",
+      price: 560,
+      image: "https://placeimg.com/500/500/arch",
+      location: "Denesikburgh",
+      listed: "2022-01-03T13:00:00.000Z",
+    },
+    {
+      product_id: 47,
+      title: "Intelligent Plastic Gloves",
+      description:
+        "Ergonomic executive chair upholstered in bonded black leather and PVC padded seat and back for all-day comfort and support",
+      price: 202,
+      image: "https://placeimg.com/500/500/people",
+      location: "Port Amie",
+      listed: "2022-01-02T13:00:00.000Z",
+    },
+    {
+      product_id: 48,
+      title: "Unbranded Plastic Towels",
+      description:
+        "Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals",
+      price: 517,
+      image: "https://placeimg.com/500/500/people",
+      location: "New Davonteside",
+      listed: "2021-12-31T13:00:00.000Z",
+    },
+    {
+      product_id: 11,
+      title: "Gorgeous Metal Pants",
+      description:
+        "The slim & simple Maple Gaming Keyboard from Dev Byte comes with a sleek body and 7- Color RGB LED Back-lighting for smart functionality",
+      price: 910,
+      image: "https://placeimg.com/500/500/arch",
+      location: "North Celia",
+      listed: "2021-12-31T13:00:00.000Z",
+    },
+  ],
+  count: "38",
+};
+
+export const searchCategory = {
+  products: [
+    {
+      product_id: 13,
+      title: "Licensed Concrete Fish",
+      description:
+        "Ergonomic executive chair upholstered in bonded black leather and PVC padded seat and back for all-day comfort and support",
+      price: 822,
+      image: "https://placeimg.com/500/500/nature",
+      location: "Padbergmouth",
+      listed: "2022-02-25T13:00:00.000Z",
+    },
+    {
+      product_id: 34,
+      title: "Rustic Concrete Bike",
+      description:
+        "The beautiful range of Apple Naturalé that has an exciting mix of natural ingredients. With the Goodness of 100% Natural Ingredients",
+      price: 292,
+      image: "https://placeimg.com/500/500/tech",
+      location: "South Darienbury",
+      listed: "2022-02-19T13:00:00.000Z",
+    },
+    {
+      product_id: 23,
+      title: "Awesome Concrete Hat",
+      description:
+        "The beautiful range of Apple Naturalé that has an exciting mix of natural ingredients. With the Goodness of 100% Natural Ingredients",
+      price: 45,
+      image: "https://placeimg.com/500/500/tech",
+      location: "West Estaton",
+      listed: "2022-01-08T13:00:00.000Z",
+    },
+    {
+      product_id: 48,
+      title: "Unbranded Plastic Towels",
+      description:
+        "Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals",
+      price: 517,
+      image: "https://placeimg.com/500/500/people",
+      location: "New Davonteside",
+      listed: "2021-12-31T13:00:00.000Z",
+    },
+  ],
+  count: "4",
+};

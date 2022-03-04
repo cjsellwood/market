@@ -1,5 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getRandom, getProduct, getAll, getCategory } from "./productThunks";
+import {
+  getRandom,
+  getProduct,
+  getAll,
+  getCategory,
+  getSearch,
+} from "./productThunks";
 
 export interface Product {
   product_id: number;
@@ -104,6 +110,26 @@ export const productSlice = createSlice({
         }
       )
       .addCase(getCategory.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(getSearch.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        getSearch.fulfilled,
+        (
+          state,
+          action: PayloadAction<{ count: string; products: Product[] }>
+        ) => {
+          state.loading = false;
+          state.error = null;
+          state.products = action.payload.products;
+          state.count = action.payload.count;
+        }
+      )
+      .addCase(getSearch.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

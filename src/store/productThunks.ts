@@ -99,9 +99,40 @@ export const getCategory = createAsyncThunk(
   ) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/products/category/${query.category_id}?page=${query.page}${
+        `http://localhost:5000/products/category/${query.category_id}?page=${
+          query.page
+        }${query.count ? `&count=${query.count}` : ""}`,
+        {
+          method: "GET",
+          mode: "cors",
+        }
+      );
+
+      // If an error return error message
+      if (res.status !== 200) {
+        throw new Error(await generateError(res));
+      }
+
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      const newError = error as Error;
+      return rejectWithValue(newError.message);
+    }
+  }
+);
+
+export const getSearch = createAsyncThunk(
+  "products/search",
+  async (
+    query: { q: string; page: number; count?: string; category_id?: number },
+    { rejectWithValue }
+  ) => {
+    try {
+      const res = await fetch(
+        `http://localhost:5000/products/search?q=${query.q}&page=${query.page}${
           query.count ? `&count=${query.count}` : ""
-        }`,
+        }${query.category_id ? `&category=${query.category_id}` : ""}`,
         {
           method: "GET",
           mode: "cors",
