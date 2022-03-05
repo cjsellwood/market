@@ -1,23 +1,14 @@
 import {
-  Button,
-  ButtonGroup,
   Flex,
   Grid,
   Spinner,
-  useQuery,
   useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import {
-  createSearchParams,
-  Link,
-  useLocation,
-  useNavigate,
-  useParams,
   useSearchParams,
 } from "react-router-dom";
 import useAppDispatch from "../hooks/useAppDispatch";
-import { Link as RouterLink } from "react-router-dom";
 import { getAll } from "../store/productThunks";
 import useAppSelector from "../hooks/useAppSelector";
 import ProductCard from "./ProductCard/ProductCard";
@@ -25,7 +16,7 @@ import PageButtons from "./Navigation/PageButtons";
 
 const Products = () => {
   // Get page from url if included
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   // Set page whenever page in url changes
   useEffect(() => {

@@ -30,7 +30,11 @@ const PageButtons = ({
         <Button
           onClick={() => {
             window.scrollTo(0, 0);
-            navigate(`/${urlPrefix}?page=${page - 1}`);
+            if (page - 1 === 1) {
+              navigate(`/${urlPrefix}`);
+            } else {
+              navigate(`/${urlPrefix}?page=${page - 1}`);
+            }
           }}
           aria-label="Previous Page"
         >
@@ -45,7 +49,12 @@ const PageButtons = ({
                 return;
               }
               window.scrollTo(0, 0);
-              navigate(`/${urlPrefix}?page=${pageNumber}`);
+
+              if (pageNumber === 1) {
+                navigate(`/${urlPrefix}`);
+              } else {
+                navigate(`/${urlPrefix}?page=${pageNumber}`);
+              }
             }}
             aria-label={`Page ${pageNumber}`}
             outline={page === pageNumber ? "2px solid red" : "none"}
@@ -58,13 +67,10 @@ const PageButtons = ({
       {page !== Math.ceil(Number(count) / 20) && (
         <Button
           onClick={() => {
-            if (page === 3) {
-              return;
-            }
             window.scrollTo(0, 0);
             navigate(`/${urlPrefix}?page=${page + 1}`);
           }}
-          aria-label="Previous Page"
+          aria-label="Next Page"
         >
           &gt;
         </Button>

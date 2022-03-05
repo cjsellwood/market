@@ -100,5 +100,11 @@ describe("Visit product pages", () => {
 
     cy.url().should("eq", "http://localhost:3000/#/products");
     cy.contains("Refined Cotton Ball");
+
+    cy.go("forward");
+
+    // Displays without page in url
+    cy.contains("<").click();
+    cy.url().should("eq", "http://localhost:3000/#/products");
   });
 });

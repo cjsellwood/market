@@ -115,4 +115,36 @@ describe("Products component", () => {
     expect(screen.queryByText(">")).not.toBeInTheDocument();
     expect(screen.queryByText("8")).toHaveStyle("outline: 2px solid red");
   });
+
+  test("On click, navigates to a different page", () => {
+    renderer(<PageButtons count="150" page={4} urlPrefix={"products"} />);
+
+    // Clicking on page 5 button
+    window.scrollTo = jest.fn();
+    userEvent.click(screen.getByText("5"));
+    expect(window.scrollTo).toHaveBeenCalled();
+
+    // Clicking on current page button
+    window.scrollTo = jest.fn();
+    userEvent.click(screen.getByText("4"));
+    expect(window.scrollTo).not.toHaveBeenCalled();
+
+    // Clicking on previous page button
+    window.scrollTo = jest.fn();
+    userEvent.click(screen.getByText("<"));
+    expect(window.scrollTo).toHaveBeenCalled();
+
+    // Clicking on next page button
+    window.scrollTo = jest.fn();
+    userEvent.click(screen.getByText(">"));
+    expect(window.scrollTo).toHaveBeenCalled();
+  });
+
+  test("Clicking previous button on page 2", () => {
+    renderer(<PageButtons count="150" page={2} urlPrefix={"products"} />);
+
+    window.scrollTo = jest.fn();
+    userEvent.click(screen.getByText("<"));
+    expect(window.scrollTo).toHaveBeenCalled();
+  });
 });
