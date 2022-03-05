@@ -47,7 +47,7 @@ const NavDrawer = ({
             </Link>
           </Flex>
           <VStack paddingTop="4">
-            <Link to="/all" as={RouterLink} onClick={onClose}>
+            <Link to="/products" as={RouterLink} onClick={onClose}>
               All Products
             </Link>
             {categories.map((category) => {

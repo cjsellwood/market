@@ -11,7 +11,7 @@ import { Product } from "../../store/productSlice";
 import { Link as RouterLink } from "react-router-dom";
 
 const ProductCard = (props: { product: Product }) => {
-  const { images, title, description, price, location, listed, product_id } =
+  const { image, title, description, price, location, listed, product_id } =
     props.product;
 
   return (
@@ -25,7 +25,7 @@ const ProductCard = (props: { product: Product }) => {
         overflow="hidden"
       >
         <Flex alignItems="center">
-          <Image src={images[0]} alt={title} objectFit="cover" />
+          <Image src={image} alt={title} objectFit="cover" />
         </Flex>
         <Flex direction="column" p="1">
           <LinkOverlay to={`/products/${product_id}`} as={RouterLink}>

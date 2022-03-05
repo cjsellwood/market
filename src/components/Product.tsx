@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useAppDispatch from "../hooks/useAppDispatch";
 import useAppSelector from "../hooks/useAppSelector";
-import { getProduct } from "../store/productSlice";
+import { getProduct } from "../store/productThunks";
 import { Link as RouterLink } from "react-router-dom";
 
 const Product = () => {
@@ -37,18 +37,22 @@ const Product = () => {
 
   return (
     <Flex direction="column">
-      {product.images.map((image, i) => {
-        return (
-          <Image
-            src={image}
-            display={imageShown === i ? "block" : "none"}
-            alt={`${product.title} ${i + 1}`}
-            key={`${product.title} ${i}`}
-          />
-        );
-      })}
+      <Flex h="66vh" justifyContent="center" bg="gray.300">
+        {(product.images as string[]).map((image, i) => {
+          return (
+            <Image
+              src={image}
+              display={imageShown === i ? "block" : "none"}
+              objectFit="contain"
+              boxSize="66vh"
+              alt={`${product.title} ${i + 1}`}
+              key={`${product.title} ${i}`}
+            />
+          );
+        })}
+      </Flex>
       <ButtonGroup justifyContent="center" colorScheme="blue" p="1" size="sm">
-        {product.images.map((image, i) => {
+        {product.images!.map((image, i) => {
           return (
             <Button
               onClick={() => setImageShown(i)}

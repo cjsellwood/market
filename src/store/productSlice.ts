@@ -1,4 +1,11 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  getRandom,
+  getProduct,
+  getAll,
+  getCategory,
+  getSearch,
+} from "./productThunks";
 
 export interface Product {
   product_id: number;
@@ -6,14 +13,16 @@ export interface Product {
   title: string;
   description: string;
   price: number;
-  images: string[];
   listed: Date;
   location: string;
+  images?: string[];
+  image?: string;
   category?: string;
 }
 
 interface ProductState {
   products: Product[];
+  count: string;
   product: Product | null;
   loading: boolean;
   error: string | null;
@@ -21,82 +30,11 @@ interface ProductState {
 
 const initialState: ProductState = {
   products: [],
+  count: "0",
   product: null,
   loading: false,
   error: null,
 };
-
-export const getRandom = createAsyncThunk(
-  "products/random",
-  async (product, { rejectWithValue }) => {
-    try {
-      const res = await fetch("http://localhost:5000/products/random", {
-        method: "GET",
-        mode: "cors",
-      });
-
-      // If an error return error message
-      if (res.status !== 200) {
-        try {
-          const data = await res.json();
-          throw new Error(data.error);
-        } catch (error) {
-          const newError = error as Error;
-
-          // Return error message from server
-          if (newError.message !== "res.json is not a function") {
-            throw new Error(newError.message);
-          }
-
-          // Return general error
-          throw new Error("Connection error");
-        }
-      }
-
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      const newError = error as Error;
-      return rejectWithValue(newError.message);
-    }
-  }
-);
-
-export const getProduct = createAsyncThunk(
-  "products/product",
-  async (id: number, { rejectWithValue }) => {
-    try {
-      const res = await fetch(`http://localhost:5000/products/${id}`, {
-        method: "GET",
-        mode: "cors",
-      });
-
-      // If an error return error message
-      if (res.status !== 200) {
-        try {
-          const data = await res.json();
-          throw new Error(data.error);
-        } catch (error) {
-          const newError = error as Error;
-
-          // Return error message from server
-          if (newError.message !== "res.json is not a function") {
-            throw new Error(newError.message);
-          }
-
-          // Return general error
-          throw new Error("Connection error");
-        }
-      }
-
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      const newError = error as Error;
-      return rejectWithValue(newError.message);
-    }
-  }
-);
 
 export const productSlice = createSlice({
   name: "product",
@@ -133,6 +71,66 @@ export const productSlice = createSlice({
         }
       )
       .addCase(getProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(getAll.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        getAll.fulfilled,
+        (
+          state,
+          action: PayloadAction<{ count: string; products: Product[] }>
+        ) => {
+          state.loading = false;
+          state.error = null;
+          state.products = action.payload.products;
+          state.count = action.payload.count;
+        }
+      )
+      .addCase(getAll.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(getCategory.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        getCategory.fulfilled,
+        (
+          state,
+          action: PayloadAction<{ count: string; products: Product[] }>
+        ) => {
+          state.loading = false;
+          state.error = null;
+          state.products = action.payload.products;
+          state.count = action.payload.count;
+        }
+      )
+      .addCase(getCategory.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(getSearch.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        getSearch.fulfilled,
+        (
+          state,
+          action: PayloadAction<{ count: string; products: Product[] }>
+        ) => {
+          state.loading = false;
+          state.error = null;
+          state.products = action.payload.products;
+          state.count = action.payload.count;
+        }
+      )
+      .addCase(getSearch.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });
