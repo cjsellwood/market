@@ -104,6 +104,7 @@ describe("Visit product pages", () => {
     cy.go("forward");
 
     // Displays without page in url
+    cy.contains("Licensed Concrete Fish");
     cy.contains("<").click();
     cy.url().should("eq", "http://localhost:3000/#/products");
   });
