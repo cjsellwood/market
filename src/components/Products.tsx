@@ -75,7 +75,7 @@ const Products = () => {
         return <ProductCard product={product} key={product.product_id} />;
       })}
       <Flex justifyContent="center" m="2">
-        <PageButtons page={page} count={count} />
+        <PageButtons page={page} count={count} urlPrefix={"products"} />
       </Flex>
     </Grid>
   );
