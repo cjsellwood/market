@@ -21,6 +21,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { getAll } from "../store/productThunks";
 import useAppSelector from "../hooks/useAppSelector";
 import ProductCard from "./ProductCard/ProductCard";
+import PageButtons from "./Navigation/PageButtons";
 
 const Products = () => {
   // Get page from url if included
@@ -37,13 +38,11 @@ const Products = () => {
   // Fetch products for a page
   useEffect(() => {
     dispatch(getAll({ page: Number(page) }));
-  }, [dispatch, page, searchParams]);
+  }, [dispatch, page]);
 
   const { products, loading, error, count } = useAppSelector(
     (state) => state.product
   );
-
-  console.log(count);
 
   // Show any errors
   const toast = useToast();
@@ -61,8 +60,6 @@ const Products = () => {
     }
   }, [error, toast]);
 
-  const navigate = useNavigate();
-
   // Show loading spinner
   if (loading) {
     return (
@@ -78,62 +75,7 @@ const Products = () => {
         return <ProductCard product={product} key={product.product_id} />;
       })}
       <Flex justifyContent="center" m="2">
-        <ButtonGroup colorScheme="blue" size="sm">
-          <Button
-            onClick={() => {
-              if (page === 1) {
-                return;
-              }
-              window.scrollTo(0, 0);
-              navigate(`/products?page=${page - 1}`);
-            }}
-            aria-label="Previous Page"
-          >
-            &lt;
-          </Button>
-          <Button
-            onClick={() => {
-              window.scrollTo(0, 0);
-              navigate("/products");
-            }}
-            aria-label="Page 1"
-            outline={page === 1 ? "2px solid red" : "none"}
-          >
-            1
-          </Button>
-          <Button
-            onClick={() => {
-              window.scrollTo(0, 0);
-              navigate("/products?page=2");
-            }}
-            aria-label="Page 2"
-            outline={page === 2 ? "2px solid red" : "none"}
-          >
-            2
-          </Button>
-          <Button
-            onClick={() => {
-              window.scrollTo(0, 0);
-              navigate("/products?page=3");
-            }}
-            aria-label="Page 3"
-            outline={page === 3 ? "2px solid red" : "none"}
-          >
-            3
-          </Button>
-          <Button
-            onClick={() => {
-              if (page === 3) {
-                return;
-              }
-              window.scrollTo(0, 0);
-              navigate(`/products?page=${page + 1}`);
-            }}
-            aria-label="Previous Page"
-          >
-            &gt;
-          </Button>
-        </ButtonGroup>
+        <PageButtons page={page} count={count} />
       </Flex>
     </Grid>
   );
