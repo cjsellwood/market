@@ -10,6 +10,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
+import { categories } from "../../categories";
 
 const NavDrawer = ({
   isOpen,
@@ -18,16 +19,6 @@ const NavDrawer = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
-  const categories = [
-    "Cars",
-    "Clothing",
-    "Computers",
-    "Electronics",
-    "Food and Drink",
-    "Home and Garden",
-    "Sports",
-  ];
-
   return (
     <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
       <DrawerOverlay />
