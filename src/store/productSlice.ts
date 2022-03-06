@@ -45,6 +45,7 @@ export const productSlice = createSlice({
       .addCase(getRandom.pending, (state, action) => {
         state.loading = true;
         state.error = null;
+        state.products = [];
       })
       .addCase(
         getRandom.fulfilled,
@@ -77,6 +78,7 @@ export const productSlice = createSlice({
       .addCase(getAll.pending, (state, action) => {
         state.loading = true;
         state.error = null;
+        state.products = [];
       })
       .addCase(
         getAll.fulfilled,
@@ -97,6 +99,7 @@ export const productSlice = createSlice({
       .addCase(getCategory.pending, (state, action) => {
         state.loading = true;
         state.error = null;
+        state.products = [];
       })
       .addCase(
         getCategory.fulfilled,
@@ -117,6 +120,7 @@ export const productSlice = createSlice({
       .addCase(getSearch.pending, (state, action) => {
         state.loading = true;
         state.error = null;
+        state.products = [];
       })
       .addCase(
         getSearch.fulfilled,

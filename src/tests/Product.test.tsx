@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
 import { randomProducts, renderer } from "./helpers";
-import Product from "../components/Product";
+import Product from "../components/Pages/Product";
 import userEvent from "@testing-library/user-event";
 
 jest.mock("react-router-dom", () => {

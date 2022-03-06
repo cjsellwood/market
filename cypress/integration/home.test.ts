@@ -1,5 +1,6 @@
 import {
   allProducts,
+  category1Products,
   randomProducts,
   searchCategory,
 } from "../../src/tests/helpers";
@@ -15,6 +16,14 @@ describe("Visit product pages", () => {
       products: searchCategory.products,
       count: "50",
     });
+    cy.intercept(
+      "http://localhost:5000/products/category/1?page=1",
+      category1Products
+    );
+    cy.intercept(
+      "http://localhost:5000/products/category/7?page=1",
+      category1Products
+    );
   });
   it("Navigates to home screen and uses navigation menu", () => {
     cy.visit("/");
@@ -107,5 +116,17 @@ describe("Visit product pages", () => {
     cy.contains("Licensed Concrete Fish");
     cy.contains("<").click();
     cy.url().should("eq", "http://localhost:3000/#/products");
+  });
+
+  it("Navigates to a categories page and displays products", () => {
+    cy.visit("/");
+
+    cy.get("[aria-label='open menu']").click();
+
+    cy.contains("Cars").click();
+
+    cy.url().should("eq", "http://localhost:3000/#/cars");
+
+    cy.contains("Handcrafted Wooden Fish");
   });
 });

@@ -10,9 +10,9 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import useAppDispatch from "../hooks/useAppDispatch";
-import useAppSelector from "../hooks/useAppSelector";
-import { getProduct } from "../store/productThunks";
+import useAppDispatch from "../../hooks/useAppDispatch";
+import useAppSelector from "../../hooks/useAppSelector";
+import { getProduct } from "../../store/productThunks";
 import { Link as RouterLink } from "react-router-dom";
 
 const Product = () => {

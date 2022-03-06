@@ -8,11 +8,11 @@ import { useEffect, useState } from "react";
 import {
   useSearchParams,
 } from "react-router-dom";
-import useAppDispatch from "../hooks/useAppDispatch";
-import { getAll } from "../store/productThunks";
-import useAppSelector from "../hooks/useAppSelector";
-import ProductCard from "./ProductCard/ProductCard";
-import PageButtons from "./Navigation/PageButtons";
+import useAppDispatch from "../../hooks/useAppDispatch";
+import { getAll } from "../../store/productThunks";
+import useAppSelector from "../../hooks/useAppSelector";
+import ProductCard from "../Parts/ProductCard";
+import PageButtons from "../Navigation/PageButtons";
 
 const Products = () => {
   // Get page from url if included

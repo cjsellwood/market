@@ -1,10 +1,10 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import { FormEvent, useEffect } from "react";
-import useAppDispatch from "../hooks/useAppDispatch";
-import { registerUser } from "../store/authSlice";
-import CustomInput from "./CustomInput";
-import useInput from "../hooks/useInput";
-import useAppSelector from "../hooks/useAppSelector";
+import useAppDispatch from "../../hooks/useAppDispatch";
+import { registerUser } from "../../store/authSlice";
+import CustomInput from "../Parts/CustomInput";
+import useInput from "../../hooks/useInput";
+import useAppSelector from "../../hooks/useAppSelector";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {

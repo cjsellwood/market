@@ -1,6 +1,6 @@
 import { screen, waitForElementToBeRemoved } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import Login from "../components/Login";
+import Login from "../components/Pages/Login";
 import { renderer } from "./helpers";
 
 const originalFetch = window.fetch;
