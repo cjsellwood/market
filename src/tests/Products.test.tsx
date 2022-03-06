@@ -68,7 +68,7 @@ describe("Products component", () => {
     userEvent.click(screen.getByLabelText("Page 2"));
 
     expect(window.fetch).toHaveBeenCalledWith(
-      "http://localhost:5000/products?page=2",
+      "http://localhost:5000/products?page=2&count=50",
       {
         method: "GET",
         mode: "cors",
@@ -102,7 +102,7 @@ describe("Products component", () => {
     userEvent.click(screen.getByLabelText("Page 2"));
 
     expect(window.fetch).toHaveBeenCalledWith(
-      "http://localhost:5000/products?page=2",
+      "http://localhost:5000/products?page=2&count=50",
       {
         method: "GET",
         mode: "cors",

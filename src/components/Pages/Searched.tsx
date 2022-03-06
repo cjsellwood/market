@@ -12,25 +12,34 @@ const Searched = () => {
   const [searchParams] = useSearchParams();
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState<string | null>("");
+  const [category_id, setCategory_id] = useState<string | null>("");
 
   // Set page whenever page in url changes
   useEffect(() => {
     setPage(Number(searchParams.get("page")) || 1);
     setQuery(searchParams.get("q"));
+    setCategory_id(searchParams.get("category"));
   }, [searchParams]);
 
   const dispatch = useAppDispatch();
+  const { products, loading, error, count } = useAppSelector(
+    (state) => state.product
+  );
 
   // Fetch products for a page
   useEffect(() => {
     if (query) {
-      dispatch(getSearch({ q: query, page: Number(page) }));
+      dispatch(
+        getSearch({
+          q: query,
+          page: Number(page),
+          count: count === "0" ? undefined : count,
+          category_id: Number(category_id),
+        })
+      );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, page, query]);
-
-  const { products, loading, error, count } = useAppSelector(
-    (state) => state.product
-  );
 
   // Show any errors
   const toast = useToast();

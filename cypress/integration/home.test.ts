@@ -31,8 +31,12 @@ describe("Visit product pages", () => {
       searchProducts
     );
     cy.intercept(
-      "http://localhost:5000/products/search?q=the&page=2",
+      "http://localhost:5000/products/search?q=the&page=2&count=38",
       searchProducts2
+    );
+    cy.intercept(
+      "http://localhost:5000/products/search?q=the&page=1&category=1",
+      searchCategory
     );
   });
   it("Navigates to home screen and uses navigation menu", () => {
@@ -140,7 +144,7 @@ describe("Visit product pages", () => {
     cy.contains("Handcrafted Wooden Fish");
   });
 
-  it("Navigates to search results and displays them", () => {
+  it.only("Navigates to search results and displays them", () => {
     cy.visit("/#/search?q=the");
 
     cy.url().should("eq", "http://localhost:3000/#/search?q=the");
@@ -155,5 +159,11 @@ describe("Visit product pages", () => {
 
     cy.visit("/#/search");
     cy.contains("Search for a product");
+
+    cy.visit("/#/search?q=the&category=1");
+    cy.url().should("eq", "http://localhost:3000/#/search?q=the&category=1");
+
+    // Text not in previous search page
+    cy.contains("Awesome Concrete Hat");
   });
 });

@@ -5,10 +5,16 @@ import { category1Products, renderer, searchCategory } from "./helpers";
 const originalFetch = window.fetch;
 
 let mockResponse = { category: "cars" };
+let mockParams = {
+  get: (term: string): null | number => null,
+};
 jest.mock("react-router-dom", () => {
   return {
     ...jest.requireActual("react-router-dom"),
     useParams: () => mockResponse,
+    useSearchParams: () => {
+      return [mockParams];
+    },
   };
 });
 
@@ -58,6 +64,25 @@ describe("Category page tests", () => {
 
     expect(
       await screen.findByText("Licensed Concrete Fish")
+    ).toBeInTheDocument();
+  });
+
+  test("Shows a 2nd page of a categories products", async () => {
+    window.fetch = jest.fn().mockReturnValue({
+      status: 200,
+      json: () => Promise.resolve(category1Products),
+    });
+
+    mockParams = {
+      get: () => {
+        return 2;
+      },
+    };
+
+    renderer(<Category />, { product: { products: [], count: "28" } });
+
+    expect(
+      await screen.findByText("Handcrafted Wooden Fish")
     ).toBeInTheDocument();
   });
 

@@ -30,7 +30,14 @@ const Category = () => {
 
   // Fetch products for a page
   useEffect(() => {
-    dispatch(getCategory({ category_id, page: Number(page) }));
+    dispatch(
+      getCategory({
+        category_id,
+        page: Number(page),
+        count: count === "0" ? undefined : count,
+      })
+    );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, page, category_id]);
 
   const { products, loading, error, count } = useAppSelector(
