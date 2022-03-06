@@ -117,7 +117,9 @@ describe("Products component", () => {
   });
 
   test("On click, navigates to a different page", () => {
-    renderer(<PageButtons count="150" page={4} urlPrefix={"products"} />);
+    renderer(
+      <PageButtons count="150" page={4} urlPrefix={"products"} />
+    );
 
     // Clicking on page 5 button
     window.scrollTo = jest.fn();
@@ -141,7 +143,9 @@ describe("Products component", () => {
   });
 
   test("Clicking previous button on page 2", () => {
-    renderer(<PageButtons count="150" page={2} urlPrefix={"products"} />);
+    renderer(
+      <PageButtons count="150" page={2} urlPrefix={"products"} />
+    );
 
     window.scrollTo = jest.fn();
     userEvent.click(screen.getByText("<"));

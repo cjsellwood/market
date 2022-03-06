@@ -6,10 +6,12 @@ const PageButtons = ({
   page,
   count,
   urlPrefix,
+  query,
 }: {
   page: number;
   count: string;
   urlPrefix: string;
+  query?: string;
 }) => {
   const navigate = useNavigate();
 
@@ -31,9 +33,11 @@ const PageButtons = ({
           onClick={() => {
             window.scrollTo(0, 0);
             if (page - 1 === 1) {
-              navigate(`/${urlPrefix}`);
+              navigate(`/${urlPrefix}${query ? `?q=${query}` : ""}`);
             } else {
-              navigate(`/${urlPrefix}?page=${page - 1}`);
+              navigate(
+                `/${urlPrefix}?page=${page - 1}${query ? `&q=${query}` : ""}`
+              );
             }
           }}
           aria-label="Previous Page"
@@ -51,9 +55,9 @@ const PageButtons = ({
               window.scrollTo(0, 0);
 
               if (pageNumber === 1) {
-                navigate(`/${urlPrefix}`);
+                navigate(`/${urlPrefix}${query ? `?q=${query}` : ""}`);
               } else {
-                navigate(`/${urlPrefix}?page=${pageNumber}`);
+                navigate(`/${urlPrefix}?page=${pageNumber}${query ? `&q=${query}` : ""}`);
               }
             }}
             aria-label={`Page ${pageNumber}`}
@@ -68,7 +72,7 @@ const PageButtons = ({
         <Button
           onClick={() => {
             window.scrollTo(0, 0);
-            navigate(`/${urlPrefix}?page=${page + 1}`);
+            navigate(`/${urlPrefix}?page=${page + 1}${query ? `&q=${query}` : ""}`);
           }}
           aria-label="Next Page"
         >

@@ -3,6 +3,8 @@ import {
   category1Products,
   randomProducts,
   searchCategory,
+  searchProducts,
+  searchProducts2,
 } from "../../src/tests/helpers";
 
 describe("Visit product pages", () => {
@@ -23,6 +25,14 @@ describe("Visit product pages", () => {
     cy.intercept(
       "http://localhost:5000/products/category/7?page=1",
       category1Products
+    );
+    cy.intercept(
+      "http://localhost:5000/products/search?q=the&page=1",
+      searchProducts
+    );
+    cy.intercept(
+      "http://localhost:5000/products/search?q=the&page=2",
+      searchProducts2
     );
   });
   it("Navigates to home screen and uses navigation menu", () => {
@@ -128,5 +138,22 @@ describe("Visit product pages", () => {
     cy.url().should("eq", "http://localhost:3000/#/cars");
 
     cy.contains("Handcrafted Wooden Fish");
+  });
+
+  it("Navigates to search results and displays them", () => {
+    cy.visit("/#/search?q=the");
+
+    cy.url().should("eq", "http://localhost:3000/#/search?q=the");
+
+    cy.contains("Sleek Plastic Chips");
+
+    // Go to second page
+    cy.contains(">").click();
+
+    cy.contains("Licensed Granite Cheese");
+    cy.url().should("eq", "http://localhost:3000/#/search?page=2&q=the");
+
+    cy.visit("/#/search");
+    cy.contains("Search for a product");
   });
 });
