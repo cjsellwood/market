@@ -1,16 +1,11 @@
-import {
-  Heading,
-  Flex,
-  Button,
-  useToast,
-} from "@chakra-ui/react";
+import { Heading, Flex, Button, useToast } from "@chakra-ui/react";
 import { FormEvent, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import useAppDispatch from "../hooks/useAppDispatch";
-import useAppSelector from "../hooks/useAppSelector";
-import useInput from "../hooks/useInput";
-import { loginUser } from "../store/authSlice";
-import CustomInput from "./CustomInput";
+import useAppDispatch from "../../hooks/useAppDispatch";
+import useAppSelector from "../../hooks/useAppSelector";
+import useInput from "../../hooks/useInput";
+import { loginUser } from "../../store/authSlice";
+import CustomInput from "../Parts/CustomInput";
 
 const Login = () => {
   const email = useInput("", "email", "Email", {

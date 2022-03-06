@@ -1,12 +1,12 @@
 import { Box } from "@chakra-ui/react";
 import { Routes, Route } from "react-router-dom";
-import Home from "./components/Home";
-import Login from "./components/Login";
-import Register from "./components/Register";
+import Home from "./components/Pages/Home";
+import Login from "./components/Pages/Login";
+import Register from "./components/Pages/Register";
 import Navbar from "./components/Navigation/NavBar";
-import Product from "./components/Product";
-import ScrollToTop from "./components/ScrollToTop";
-import Products from "./components/Products";
+import Product from "./components/Pages/Product";
+import ScrollToTop from "./components/Navigation/ScrollToTop";
+import Products from "./components/Pages/Products";
 
 const App = () => {
   return (

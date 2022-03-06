@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
 import { allProducts, renderer, searchCategory } from "./helpers";
-import Products from "../components/Products";
+import Products from "../components/Pages/Products";
 import userEvent from "@testing-library/user-event";
 
 const originalFetch = window.fetch;

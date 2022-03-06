@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react";
-import Home from "../components/Home";
+import Home from "../components/Pages/Home";
 import { randomProducts, renderer } from "./helpers";
 
 const originalFetch = window.fetch;
