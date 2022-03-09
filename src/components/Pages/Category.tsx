@@ -37,7 +37,7 @@ const Category = () => {
         count: count === "0" ? undefined : count,
       })
     );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, page, category_id]);
 
   const { products, loading, error, count } = useAppSelector(
@@ -75,13 +75,11 @@ const Category = () => {
         return <ProductCard product={product} key={product.product_id} />;
       })}
       <Flex justifyContent="center" m="2">
-        {products.length ? (
-          <PageButtons
-            page={page}
-            count={count}
-            urlPrefix={`products/category/${category_id}`}
-          />
-        ) : null}
+        <PageButtons
+          page={page}
+          count={count}
+          urlPrefix={`products/category/${category_id}`}
+        />
       </Flex>
     </Grid>
   );

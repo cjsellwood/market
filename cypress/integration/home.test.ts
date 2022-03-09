@@ -14,7 +14,7 @@ describe("Visit product pages", () => {
     cy.intercept("http://localhost:5000/products/29", randomProducts[0]);
     cy.intercept("http://localhost:5000/products/23", randomProducts[0]);
     cy.intercept("http://localhost:5000/products?page=1", allProducts);
-    cy.intercept("http://localhost:5000/products?page=2", {
+    cy.intercept("http://localhost:5000/products?page=2&count=50", {
       products: searchCategory.products,
       count: "50",
     });
@@ -144,7 +144,7 @@ describe("Visit product pages", () => {
     cy.contains("Handcrafted Wooden Fish");
   });
 
-  it.only("Navigates to search results and displays them", () => {
+  it("Navigates to search results and displays them", () => {
     cy.visit("/#/search?q=the");
 
     cy.url().should("eq", "http://localhost:3000/#/search?q=the");

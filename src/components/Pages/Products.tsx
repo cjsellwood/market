@@ -24,6 +24,7 @@ const Products = () => {
     dispatch(
       getAll({ page: Number(page), count: count === "0" ? undefined : count })
     );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, page]);
 
   const { products, loading, error, count } = useAppSelector(

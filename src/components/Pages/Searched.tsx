@@ -75,7 +75,7 @@ const Searched = () => {
           return <ProductCard product={product} key={product.product_id} />;
         })}
       <Flex justifyContent="center" m="2">
-        {query && products.length ? (
+        {query ? (
           <PageButtons
             page={page}
             count={count}

@@ -3,14 +3,28 @@ import PageButtons from "../components/Navigation/PageButtons";
 import { renderer } from "./helpers";
 import userEvent from "@testing-library/user-event";
 
+let mockNavigate = jest.fn();
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useNavigate: () => mockNavigate,
+}));
+
 const originalFetch = window.fetch;
 describe("Products component", () => {
   beforeEach(async () => {
     window.fetch = originalFetch;
   });
 
+  test("When count is 0 show no buttons", () => {
+    renderer(<PageButtons count="0" page={1} urlPrefix={"products"} />);
+
+    expect(screen.queryByText("<")).not.toBeInTheDocument();
+    expect(screen.queryByText("1")).not.toBeInTheDocument();
+    expect(screen.queryByText(">")).not.toBeInTheDocument();
+  });
+
   test("On page 1 with count 10 should be (1)", () => {
-    renderer(<PageButtons count="1" page={1} urlPrefix={"products"} />);
+    renderer(<PageButtons count="10" page={1} urlPrefix={"products"} />);
 
     expect(screen.queryByText("<")).not.toBeInTheDocument();
     expect(screen.queryByText("1")).toBeInTheDocument();
@@ -116,39 +130,47 @@ describe("Products component", () => {
     expect(screen.queryByText("8")).toHaveStyle("outline: 2px solid red");
   });
 
-  test("On click, navigates to a different page", () => {
-    renderer(
-      <PageButtons count="150" page={4} urlPrefix={"products"} />
-    );
+  test("Clicking on previous page button", () => {
+    renderer(<PageButtons count="150" page={4} urlPrefix={"products"} />);
 
-    // Clicking on page 5 button
-    window.scrollTo = jest.fn();
-    userEvent.click(screen.getByText("5"));
-    expect(window.scrollTo).toHaveBeenCalled();
-
-    // Clicking on current page button
-    window.scrollTo = jest.fn();
-    userEvent.click(screen.getByText("4"));
-    expect(window.scrollTo).not.toHaveBeenCalled();
-
-    // Clicking on previous page button
     window.scrollTo = jest.fn();
     userEvent.click(screen.getByText("<"));
     expect(window.scrollTo).toHaveBeenCalled();
+    expect(mockNavigate).toHaveBeenCalledWith("/products?page=3");
+  });
 
-    // Clicking on next page button
+  test("Clicking on next page button", () => {
+    renderer(<PageButtons count="150" page={4} urlPrefix={"products"} />);
+
     window.scrollTo = jest.fn();
     userEvent.click(screen.getByText(">"));
     expect(window.scrollTo).toHaveBeenCalled();
+    expect(mockNavigate).toHaveBeenCalledWith("/products?page=5");
+  });
+
+  test("Clicking on a page button", () => {
+    renderer(<PageButtons count="150" page={4} urlPrefix={"products"} />);
+
+    window.scrollTo = jest.fn();
+    userEvent.click(screen.getByText("5"));
+    expect(window.scrollTo).toHaveBeenCalled();
+    expect(mockNavigate).toHaveBeenCalledWith("/products?page=5");
+  });
+
+  test("Clicking on current page button", () => {
+    renderer(<PageButtons count="150" page={4} urlPrefix={"products"} />);
+
+    window.scrollTo = jest.fn();
+    userEvent.click(screen.getByText("4"));
+    expect(window.scrollTo).not.toHaveBeenCalled();
+    expect(mockNavigate).toHaveBeenCalledTimes(0);
   });
 
   test("Clicking previous button on page 2", () => {
-    renderer(
-      <PageButtons count="150" page={2} urlPrefix={"products"} />
-    );
+    renderer(<PageButtons count="150" page={2} urlPrefix={"products"} />);
 
     window.scrollTo = jest.fn();
     userEvent.click(screen.getByText("<"));
-    expect(window.scrollTo).toHaveBeenCalled();
+    expect(mockNavigate).toHaveBeenCalledWith("/products");
   });
 });

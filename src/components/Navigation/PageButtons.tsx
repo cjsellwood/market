@@ -26,6 +26,10 @@ const PageButtons = ({
     setPageNumbers(pages);
   }, [count]);
 
+  if (count === "0") {
+    return null;
+  }
+
   return (
     <ButtonGroup colorScheme="blue" size="sm">
       {page !== 1 && (
@@ -57,7 +61,11 @@ const PageButtons = ({
               if (pageNumber === 1) {
                 navigate(`/${urlPrefix}${query ? `?q=${query}` : ""}`);
               } else {
-                navigate(`/${urlPrefix}?page=${pageNumber}${query ? `&q=${query}` : ""}`);
+                navigate(
+                  `/${urlPrefix}?page=${pageNumber}${
+                    query ? `&q=${query}` : ""
+                  }`
+                );
               }
             }}
             aria-label={`Page ${pageNumber}`}
@@ -72,7 +80,9 @@ const PageButtons = ({
         <Button
           onClick={() => {
             window.scrollTo(0, 0);
-            navigate(`/${urlPrefix}?page=${page + 1}${query ? `&q=${query}` : ""}`);
+            navigate(
+              `/${urlPrefix}?page=${page + 1}${query ? `&q=${query}` : ""}`
+            );
           }}
           aria-label="Next Page"
         >
