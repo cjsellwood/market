@@ -173,4 +173,130 @@ describe("Products component", () => {
     userEvent.click(screen.getByText("<"));
     expect(mockNavigate).toHaveBeenCalledWith("/products");
   });
+
+  test("Clicking on a page button with a query", () => {
+    renderer(
+      <PageButtons count="150" page={2} urlPrefix={"search"} query={"the"} />
+    );
+
+    window.scrollTo = jest.fn();
+    userEvent.click(screen.getByText("3"));
+    expect(mockNavigate).toHaveBeenCalledWith("/search?page=3&q=the");
+  });
+
+  test("Clicking on page 1 button with a query", () => {
+    renderer(
+      <PageButtons count="150" page={2} urlPrefix={"search"} query={"the"} />
+    );
+
+    window.scrollTo = jest.fn();
+    userEvent.click(screen.getByText("1"));
+    expect(mockNavigate).toHaveBeenCalledWith("/search?q=the");
+  });
+
+  test("Clicking on previous page button with a query", () => {
+    renderer(
+      <PageButtons count="150" page={2} urlPrefix={"search"} query={"the"} />
+    );
+
+    window.scrollTo = jest.fn();
+    userEvent.click(screen.getByText("<"));
+    expect(mockNavigate).toHaveBeenCalledWith("/search?q=the");
+  });
+
+  test("Clicking on previous page button with a query and category", () => {
+    renderer(
+      <PageButtons
+        count="150"
+        page={2}
+        urlPrefix={"search"}
+        query={"the"}
+        category={1}
+      />
+    );
+
+    window.scrollTo = jest.fn();
+    userEvent.click(screen.getByText("<"));
+    expect(mockNavigate).toHaveBeenCalledWith("/search?q=the&category=1");
+  });
+
+  test("Clicking on previous page button on page 4 with query", () => {
+    renderer(
+      <PageButtons count="150" page={4} urlPrefix={"search"} query={"the"} />
+    );
+
+    window.scrollTo = jest.fn();
+    userEvent.click(screen.getByText("<"));
+    expect(mockNavigate).toHaveBeenCalledWith("/search?page=3&q=the");
+  });
+
+  test("Clicking on previous page button on page 4 with query and category", () => {
+    renderer(
+      <PageButtons
+        count="150"
+        page={4}
+        urlPrefix={"search"}
+        query={"the"}
+        category={1}
+      />
+    );
+
+    window.scrollTo = jest.fn();
+    userEvent.click(screen.getByText("<"));
+    expect(mockNavigate).toHaveBeenCalledWith(
+      "/search?page=3&q=the&category=1"
+    );
+  });
+
+  test("Clicking on a page button with a query and category", () => {
+    renderer(
+      <PageButtons
+        count="150"
+        page={2}
+        urlPrefix={"search"}
+        query={"the"}
+        category={1}
+      />
+    );
+
+    window.scrollTo = jest.fn();
+    userEvent.click(screen.getByText("3"));
+    expect(mockNavigate).toHaveBeenCalledWith(
+      "/search?page=3&q=the&category=1"
+    );
+  });
+
+  test("Clicking on page 1 button with a query and category", () => {
+    renderer(
+      <PageButtons
+        count="150"
+        page={2}
+        urlPrefix={"search"}
+        query={"the"}
+        category={1}
+      />
+    );
+
+    window.scrollTo = jest.fn();
+    userEvent.click(screen.getByText("1"));
+    expect(mockNavigate).toHaveBeenCalledWith("/search?q=the&category=1");
+  });
+
+  test("Clicking on next page button with a query and category", () => {
+    renderer(
+      <PageButtons
+        count="150"
+        page={2}
+        urlPrefix={"search"}
+        query={"the"}
+        category={1}
+      />
+    );
+
+    window.scrollTo = jest.fn();
+    userEvent.click(screen.getByText(">"));
+    expect(mockNavigate).toHaveBeenCalledWith(
+      "/search?page=3&q=the&category=1"
+    );
+  });
 });

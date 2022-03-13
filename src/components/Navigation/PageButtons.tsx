@@ -7,11 +7,13 @@ const PageButtons = ({
   count,
   urlPrefix,
   query,
+  category,
 }: {
   page: number;
   count: string;
   urlPrefix: string;
   query?: string;
+  category?: number;
 }) => {
   const navigate = useNavigate();
 
@@ -37,10 +39,16 @@ const PageButtons = ({
           onClick={() => {
             window.scrollTo(0, 0);
             if (page - 1 === 1) {
-              navigate(`/${urlPrefix}${query ? `?q=${query}` : ""}`);
+              navigate(
+                `/${urlPrefix}${query ? `?q=${query}` : ""}${
+                  category ? `&category=${category}` : ""
+                }`
+              );
             } else {
               navigate(
-                `/${urlPrefix}?page=${page - 1}${query ? `&q=${query}` : ""}`
+                `/${urlPrefix}?page=${page - 1}${query ? `&q=${query}` : ""}${
+                  category ? `&category=${category}` : ""
+                }`
               );
             }
           }}
@@ -59,12 +67,16 @@ const PageButtons = ({
               window.scrollTo(0, 0);
 
               if (pageNumber === 1) {
-                navigate(`/${urlPrefix}${query ? `?q=${query}` : ""}`);
+                navigate(
+                  `/${urlPrefix}${query ? `?q=${query}` : ""}${
+                    category ? `&category=${category}` : ""
+                  }`
+                );
               } else {
                 navigate(
                   `/${urlPrefix}?page=${pageNumber}${
                     query ? `&q=${query}` : ""
-                  }`
+                  }${category ? `&category=${category}` : ""}`
                 );
               }
             }}
@@ -81,7 +93,9 @@ const PageButtons = ({
           onClick={() => {
             window.scrollTo(0, 0);
             navigate(
-              `/${urlPrefix}?page=${page + 1}${query ? `&q=${query}` : ""}`
+              `/${urlPrefix}?page=${page + 1}${query ? `&q=${query}` : ""}${
+                category ? `&category=${category}` : ""
+              }`
             );
           }}
           aria-label="Next Page"
