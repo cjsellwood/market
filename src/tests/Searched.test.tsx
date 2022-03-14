@@ -41,14 +41,22 @@ describe("Searched Component tests", () => {
     expect(screen.queryByText("No results")).not.toBeInTheDocument();
   });
 
-  test("It shows results", async () => {
+  test("It shows results from a query and no category", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 200,
       json: () => Promise.resolve(searchProducts),
     });
 
     mockResponse = {
-      get: () => "the",
+      get: (term) => {
+        if (term === "q") {
+          return "the";
+        } else if (term === "category") {
+          return null;
+        } else {
+          return null;
+        }
+      },
     };
 
     renderer(<Searched />);

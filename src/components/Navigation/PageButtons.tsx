@@ -13,7 +13,7 @@ const PageButtons = ({
   count: string;
   urlPrefix: string;
   query?: string;
-  category?: number;
+  category?: string;
 }) => {
   const navigate = useNavigate();
 
@@ -28,7 +28,8 @@ const PageButtons = ({
     setPageNumbers(pages);
   }, [count]);
 
-  if (count === "0") {
+  // Don't show if no results to be shown on page
+  if (count === "0" || Number(count) + 20 < page * 20) {
     return null;
   }
 

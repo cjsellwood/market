@@ -81,6 +81,7 @@ const Searched = () => {
             count={count}
             urlPrefix={"search"}
             query={query}
+            category={category_id ? category_id : undefined}
           />
         ) : null}
       </Flex>

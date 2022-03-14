@@ -23,6 +23,14 @@ describe("Products component", () => {
     expect(screen.queryByText(">")).not.toBeInTheDocument();
   });
 
+  test("When count is less than what would make products appear", () => {
+    renderer(<PageButtons count="4" page={2} urlPrefix={"products"} />);
+
+    expect(screen.queryByText("<")).not.toBeInTheDocument();
+    expect(screen.queryByText("1")).not.toBeInTheDocument();
+    expect(screen.queryByText(">")).not.toBeInTheDocument();
+  });
+
   test("On page 1 with count 10 should be (1)", () => {
     renderer(<PageButtons count="10" page={1} urlPrefix={"products"} />);
 
@@ -211,7 +219,7 @@ describe("Products component", () => {
         page={2}
         urlPrefix={"search"}
         query={"the"}
-        category={1}
+        category={"1"}
       />
     );
 
@@ -237,7 +245,7 @@ describe("Products component", () => {
         page={4}
         urlPrefix={"search"}
         query={"the"}
-        category={1}
+        category={"1"}
       />
     );
 
@@ -255,7 +263,7 @@ describe("Products component", () => {
         page={2}
         urlPrefix={"search"}
         query={"the"}
-        category={1}
+        category={"1"}
       />
     );
 
@@ -273,7 +281,7 @@ describe("Products component", () => {
         page={2}
         urlPrefix={"search"}
         query={"the"}
-        category={1}
+        category={"1"}
       />
     );
 
@@ -289,7 +297,7 @@ describe("Products component", () => {
         page={2}
         urlPrefix={"search"}
         query={"the"}
-        category={1}
+        category={"1"}
       />
     );
 
