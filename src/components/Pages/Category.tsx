@@ -7,6 +7,7 @@ import useAppSelector from "../../hooks/useAppSelector";
 import { getCategory } from "../../store/productThunks";
 import PageButtons from "../Navigation/PageButtons";
 import ProductCard from "../Parts/ProductCard";
+import SearchBox from "../Parts/SearchBox";
 
 const Category = () => {
   // Get page from url if included
@@ -71,6 +72,7 @@ const Category = () => {
 
   return (
     <Grid templateColumns="1fr" pt="2">
+      <SearchBox initialCategory={category_id.toString()} />
       {products.map((product) => {
         return <ProductCard product={product} key={product.product_id} />;
       })}

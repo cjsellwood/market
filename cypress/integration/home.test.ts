@@ -54,14 +54,14 @@ describe("Visit product pages", () => {
     cy.contains("All Products").should("not.exist");
 
     cy.get("[aria-label='open menu']").click();
-    cy.contains("Sports").click();
+    cy.contains("a", "Sports").click();
     cy.url().should("include", "sports");
-    cy.contains("All Products").should("not.exist");
+    cy.contains("a", "All Products").should("not.exist");
 
     cy.get("[aria-label='open menu']").click();
     cy.contains("Register").click();
     cy.url().should("include", "register");
-    cy.contains("All Products").should("not.exist");
+    cy.contains("a", "All Products").should("not.exist");
 
     cy.contains("Market").click();
     cy.url().should("eq", "http://localhost:3000/#/");
@@ -137,7 +137,7 @@ describe("Visit product pages", () => {
 
     cy.get("[aria-label='open menu']").click();
 
-    cy.contains("Cars").click();
+    cy.contains("a", "Cars").click();
 
     cy.url().should("eq", "http://localhost:3000/#/cars");
 
@@ -145,7 +145,10 @@ describe("Visit product pages", () => {
   });
 
   it("Navigates to search results and displays them", () => {
-    cy.visit("/#/search?q=the");
+    // cy.visit("/#/search?q=the");
+    cy.visit("/");
+    cy.get("input").type("the");
+    cy.get("[aria-label='submit search']").click();
 
     cy.url().should("eq", "http://localhost:3000/#/search?q=the");
 
@@ -160,7 +163,9 @@ describe("Visit product pages", () => {
     cy.visit("/#/search");
     cy.contains("Search for a product");
 
-    cy.visit("/#/search?q=the&category=1");
+    cy.get("input").clear().type("the");
+    cy.get("select").select("Cars");
+    cy.get("[aria-label='submit search']").click();
     cy.url().should("eq", "http://localhost:3000/#/search?q=the&category=1");
 
     // Text not in previous search page

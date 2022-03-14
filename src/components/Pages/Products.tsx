@@ -6,6 +6,7 @@ import { getAll } from "../../store/productThunks";
 import useAppSelector from "../../hooks/useAppSelector";
 import ProductCard from "../Parts/ProductCard";
 import PageButtons from "../Navigation/PageButtons";
+import SearchBox from "../Parts/SearchBox";
 
 const Products = () => {
   // Get page from url if included
@@ -24,7 +25,7 @@ const Products = () => {
     dispatch(
       getAll({ page: Number(page), count: count === "0" ? undefined : count })
     );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, page]);
 
   const { products, loading, error, count } = useAppSelector(
@@ -58,6 +59,7 @@ const Products = () => {
 
   return (
     <Grid templateColumns="1fr" pt="2">
+      <SearchBox />
       {products.map((product) => {
         return <ProductCard product={product} key={product.product_id} />;
       })}
