@@ -40,7 +40,7 @@ const Searched = () => {
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, page, query]);
+  }, [dispatch, page, query, category_id]);
 
   // Show any errors
   const toast = useToast();
@@ -69,7 +69,10 @@ const Searched = () => {
 
   return (
     <Grid templateColumns="1fr" pt="2">
-      <SearchBox />
+      <SearchBox
+        initialCategory={category_id || undefined}
+        initialSearch={query || undefined}
+      />
       {!query && <Text>Search for a product</Text>}
       {query && !products.length && !error && <Text>No results</Text>}
       {query &&

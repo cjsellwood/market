@@ -14,6 +14,7 @@ import useAppDispatch from "../../hooks/useAppDispatch";
 import useAppSelector from "../../hooks/useAppSelector";
 import { getProduct } from "../../store/productThunks";
 import { Link as RouterLink } from "react-router-dom";
+import SearchBox from "../Parts/SearchBox";
 
 const Product = () => {
   const { product } = useAppSelector((state) => state.product);
@@ -37,6 +38,7 @@ const Product = () => {
 
   return (
     <Flex direction="column">
+      <SearchBox />
       <Flex h="66vh" justifyContent="center" bg="gray.300">
         {(product.images as string[]).map((image, i) => {
           return (
@@ -66,7 +68,7 @@ const Product = () => {
       </ButtonGroup>
       <Heading>{product.title}</Heading>
       <Link
-        to={`/products/${product.category!.toLowerCase().split(" ").join("")}`}
+        to={`/${product.category!.toLowerCase().split(" ").join("")}`}
         as={RouterLink}
       >
         {product.category}

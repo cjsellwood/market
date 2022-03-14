@@ -1,5 +1,5 @@
 import { SearchIcon } from "@chakra-ui/icons";
-import { Flex, FormControl, Input, IconButton, Select } from "@chakra-ui/react";
+import { Flex, Box, Input, IconButton, Select } from "@chakra-ui/react";
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { categories } from "../../categories";
@@ -30,8 +30,8 @@ const SearchBox = ({
   };
 
   return (
-    <Flex as="form" onSubmit={submitForm}>
-      <FormControl>
+    <Flex as="form" onSubmit={submitForm} m="1" bg="white" borderRadius="4">
+      <Box w="100%">
         <Flex>
           <Input
             id="search"
@@ -63,7 +63,7 @@ const SearchBox = ({
             );
           })}
         </Select>
-      </FormControl>
+      </Box>
     </Flex>
   );
 };
