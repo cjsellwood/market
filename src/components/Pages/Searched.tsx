@@ -6,6 +6,7 @@ import useAppSelector from "../../hooks/useAppSelector";
 import { getSearch } from "../../store/productThunks";
 import PageButtons from "../Navigation/PageButtons";
 import ProductCard from "../Parts/ProductCard";
+import SearchBox from "../Parts/SearchBox";
 
 const Searched = () => {
   // Get page from url if included
@@ -68,6 +69,7 @@ const Searched = () => {
 
   return (
     <Grid templateColumns="1fr" pt="2">
+      <SearchBox />
       {!query && <Text>Search for a product</Text>}
       {query && !products.length && !error && <Text>No results</Text>}
       {query &&
