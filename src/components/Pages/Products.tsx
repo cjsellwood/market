@@ -1,13 +1,6 @@
-import {
-  Flex,
-  Grid,
-  Spinner,
-  useToast,
-} from "@chakra-ui/react";
+import { Flex, Grid, Spinner, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import {
-  useSearchParams,
-} from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import { getAll } from "../../store/productThunks";
 import useAppSelector from "../../hooks/useAppSelector";
@@ -28,7 +21,10 @@ const Products = () => {
 
   // Fetch products for a page
   useEffect(() => {
-    dispatch(getAll({ page: Number(page) }));
+    dispatch(
+      getAll({ page: Number(page), count: count === "0" ? undefined : count })
+    );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, page]);
 
   const { products, loading, error, count } = useAppSelector(

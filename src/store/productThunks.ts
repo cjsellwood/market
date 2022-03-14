@@ -69,7 +69,7 @@ export const getAll = createAsyncThunk(
     try {
       const res = await fetch(
         `http://localhost:5000/products?page=${query.page}${
-          query.count ? `&count=${query.count}` : ""
+          query.count && query.page !== 1 ? `&count=${query.count}` : ""
         }`,
         {
           method: "GET",
@@ -101,7 +101,7 @@ export const getCategory = createAsyncThunk(
       const res = await fetch(
         `http://localhost:5000/products/category/${query.category_id}?page=${
           query.page
-        }${query.count ? `&count=${query.count}` : ""}`,
+        }${query.count && query.page !== 1 ? `&count=${query.count}` : ""}`,
         {
           method: "GET",
           mode: "cors",
@@ -131,7 +131,7 @@ export const getSearch = createAsyncThunk(
     try {
       const res = await fetch(
         `http://localhost:5000/products/search?q=${query.q}&page=${query.page}${
-          query.count ? `&count=${query.count}` : ""
+          query.count && query.page !== 1 ? `&count=${query.count}` : ""
         }${query.category_id ? `&category=${query.category_id}` : ""}`,
         {
           method: "GET",

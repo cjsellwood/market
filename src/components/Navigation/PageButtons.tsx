@@ -6,10 +6,14 @@ const PageButtons = ({
   page,
   count,
   urlPrefix,
+  query,
+  category,
 }: {
   page: number;
   count: string;
   urlPrefix: string;
+  query?: string;
+  category?: string;
 }) => {
   const navigate = useNavigate();
 
@@ -24,6 +28,11 @@ const PageButtons = ({
     setPageNumbers(pages);
   }, [count]);
 
+  // Don't show if no results to be shown on page
+  if (count === "0" || Number(count) + 20 < page * 20) {
+    return null;
+  }
+
   return (
     <ButtonGroup colorScheme="blue" size="sm">
       {page !== 1 && (
@@ -31,9 +40,17 @@ const PageButtons = ({
           onClick={() => {
             window.scrollTo(0, 0);
             if (page - 1 === 1) {
-              navigate(`/${urlPrefix}`);
+              navigate(
+                `/${urlPrefix}${query ? `?q=${query}` : ""}${
+                  category ? `&category=${category}` : ""
+                }`
+              );
             } else {
-              navigate(`/${urlPrefix}?page=${page - 1}`);
+              navigate(
+                `/${urlPrefix}?page=${page - 1}${query ? `&q=${query}` : ""}${
+                  category ? `&category=${category}` : ""
+                }`
+              );
             }
           }}
           aria-label="Previous Page"
@@ -51,9 +68,17 @@ const PageButtons = ({
               window.scrollTo(0, 0);
 
               if (pageNumber === 1) {
-                navigate(`/${urlPrefix}`);
+                navigate(
+                  `/${urlPrefix}${query ? `?q=${query}` : ""}${
+                    category ? `&category=${category}` : ""
+                  }`
+                );
               } else {
-                navigate(`/${urlPrefix}?page=${pageNumber}`);
+                navigate(
+                  `/${urlPrefix}?page=${pageNumber}${
+                    query ? `&q=${query}` : ""
+                  }${category ? `&category=${category}` : ""}`
+                );
               }
             }}
             aria-label={`Page ${pageNumber}`}
@@ -68,7 +93,11 @@ const PageButtons = ({
         <Button
           onClick={() => {
             window.scrollTo(0, 0);
-            navigate(`/${urlPrefix}?page=${page + 1}`);
+            navigate(
+              `/${urlPrefix}?page=${page + 1}${query ? `&q=${query}` : ""}${
+                category ? `&category=${category}` : ""
+              }`
+            );
           }}
           aria-label="Next Page"
         >
