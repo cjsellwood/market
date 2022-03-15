@@ -40,7 +40,11 @@ const initialState: ProductState = {
 export const productSlice = createSlice({
   name: "product",
   initialState,
-  reducers: {},
+  reducers: {
+    setError: (state, action: PayloadAction<string | null>) => {
+      state.error = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getRandom.pending, (state, action) => {
@@ -153,5 +157,7 @@ export const productSlice = createSlice({
       });
   },
 });
+
+export const { setError } = productSlice.actions;
 
 export default productSlice.reducer;

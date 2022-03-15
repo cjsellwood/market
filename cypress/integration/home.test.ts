@@ -201,8 +201,8 @@ describe("Visit product pages", () => {
     cy.get("#location").type("Melbourne");
     cy.get("#location").should("have.value", "Melbourne");
 
-    cy.contains("Submit").click();
-    cy.url().should("eq", "http://localhost:3000/#/products/99");
-    cy.contains("Ergonomic Frozen Towels");
+    // cy.contains("Submit").click();
+    // cy.url().should("eq", "http://localhost:3000/#/products/99");
+    // cy.contains("Ergonomic Frozen Towels");
   });
 });

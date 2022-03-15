@@ -7,8 +7,11 @@ import {
   Box,
   Text,
   useToast,
+  Input,
+  ButtonGroup,
+  Image,
 } from "@chakra-ui/react";
-import { FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import useAppSelector from "../../hooks/useAppSelector";
 import useInput from "../../hooks/useInput";
 import CustomInput from "../Parts/CustomInput";
@@ -16,6 +19,7 @@ import { categories } from "../../categories";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import { newProduct } from "../../store/productThunks";
 import { useNavigate } from "react-router-dom";
+import { setError } from "../../store/productSlice";
 
 const NewProduct = () => {
   const { loading, error } = useAppSelector((state) => state.product);
@@ -48,15 +52,25 @@ const NewProduct = () => {
       return;
     }
 
-    const res = await dispatch(
-      newProduct({
-        title: title.value,
-        category_id: category_id,
-        description: description.value,
-        price: price.value,
-        location: location.value,
-      })
-    );
+    // Get images that have been uploaded
+    const formData = new FormData();
+    const fileInputs = document.querySelectorAll("input[type='file']");
+    for (let i = 0; i < fileInputs.length; i++) {
+      if ((fileInputs[i] as HTMLInputElement).files![0]) {
+        formData.append(
+          "images",
+          (fileInputs[i] as HTMLInputElement).files![0]
+        );
+      }
+    }
+    formData.append("title", title.value);
+    formData.append("category_id", category_id);
+    formData.append("description", description.value);
+    formData.append("price", price.value);
+    formData.append("location", location.value);
+    console.log(formData);
+
+    const res = await dispatch(newProduct(formData));
 
     // Navigate to the new products page
     const product_id = res.payload.product_id;
@@ -103,9 +117,126 @@ const NewProduct = () => {
     }
   }, [error, toast]);
 
+  const [images, setImages] = useState<(string | null)[]>([null, null, null]);
+  const [imageShown, setImageShown] = useState(0);
+
+  // Set image for previews on page
+  const setFile = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.files);
+    const index = Number(e.target.name.split(" ")[1]) - 1;
+
+    const fileTypes = [
+      "image/apng",
+      "image/bmp",
+      "image/gif",
+      "image/jpeg",
+      "image/pjpeg",
+      "image/png",
+      "image/svg+xml",
+      "image/tiff",
+      "image/webp",
+      "image/x-icon",
+    ];
+
+    const newImages = [...images];
+    if (e.target.files) {
+      // Exit if not an image
+      if (!fileTypes.includes(e.target.files[0].type)) {
+        dispatch(setError("Not an image"));
+        return;
+      }
+      newImages[index] = URL.createObjectURL(e.target.files[0]);
+      console.log(newImages);
+      setImages(newImages);
+    }
+
+    console.log(
+      (document.querySelector('input[type="file"]') as HTMLInputElement)
+        .files![0]
+    );
+  };
+
   return (
     <Flex justify="center" align="center" direction="column">
       <Heading>New Product</Heading>
+      <Flex direction="column" width="100%">
+        <Flex justifyContent="center" bg="gray.300" width="100%">
+          {images.map((image, i) => {
+            if (image !== null) {
+              return (
+                <Image
+                  src={image || undefined}
+                  display={imageShown === i ? "block" : "none"}
+                  objectFit="contain"
+                  width="100%"
+                  height="100vw"
+                  alt={`Image ${i + 1}`}
+                  key={`Image ${i + 1}`}
+                />
+              );
+            } else {
+              return (
+                <Flex
+                  justifyContent="center"
+                  alignItems="center"
+                  width="100%"
+                  height="100vw"
+                  display={imageShown === i ? "flex" : "none"}
+                  key={`Image ${i + 1}`}
+                >
+                  <Text>No Image</Text>
+                </Flex>
+              );
+            }
+          })}
+        </Flex>
+        {images.map((image, i) => {
+          return (
+            <Flex
+              justifyContent="center"
+              display={imageShown === i ? "flex" : "none"}
+              key={`File ${i + 1}`}
+            >
+              <FormLabel htmlFor={`File ${i + 1}`}>
+                <Button colorScheme="blue" pointerEvents={"none"}>
+                  {image ? "Change" : "Add"}
+                </Button>
+              </FormLabel>
+              <Input
+                type="file"
+                id={`File ${i + 1}`}
+                name={`File ${i + 1}`}
+                hidden
+                onChange={setFile}
+              />
+              <Button
+                colorScheme="red"
+                onClick={() => {
+                  const newImages = [...images];
+                  newImages[i] = null;
+                  setImages(newImages);
+                }}
+              >
+                Remove
+              </Button>
+            </Flex>
+          );
+        })}
+        <ButtonGroup justifyContent="center" colorScheme="blue" p="1" size="sm">
+          {images.map((image, i) => {
+            return (
+              <Button
+                onClick={() => setImageShown(i)}
+                aria-label={`Image ${i + 1}`}
+                key={`Image ${i + 1}`}
+                outline={imageShown === i ? "2px solid red" : "none"}
+              >
+                {i + 1}
+              </Button>
+            );
+          })}
+        </ButtonGroup>
+      </Flex>
       <Flex
         as="form"
         gap="3"

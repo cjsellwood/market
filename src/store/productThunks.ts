@@ -153,24 +153,22 @@ export const getSearch = createAsyncThunk(
   }
 );
 
-interface NewProductInput {
-  title: string;
-  category_id: string;
-  description: string;
-  price: string;
-  location: string;
-}
+// interface NewProductInput {
+//   title: string;
+//   category_id: string;
+//   description: string;
+//   price: string;
+//   location: string;
+// }
 
 export const newProduct = createAsyncThunk(
   "products/new",
-  async (product: NewProductInput, { rejectWithValue }) => {
+  async (product: FormData, { rejectWithValue }) => {
     try {
       const res = await fetch("http://localhost:5000/products/new", {
         method: "POST",
         mode: "cors",
-        body: JSON.stringify({
-          ...product,
-        }),
+        body: product,
       });
       // If an error return error message
       if (res.status !== 200) {
