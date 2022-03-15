@@ -6,20 +6,29 @@ import {
   FormLabel,
   Box,
   Text,
+  useToast,
 } from "@chakra-ui/react";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import useAppSelector from "../../hooks/useAppSelector";
 import useInput from "../../hooks/useInput";
 import CustomInput from "../Parts/CustomInput";
 import { categories } from "../../categories";
+import useAppDispatch from "../../hooks/useAppDispatch";
+import { newProduct } from "../../store/productThunks";
+import { useNavigate } from "react-router-dom";
 
 const NewProduct = () => {
-  const { loading } = useAppSelector((state) => state.product);
+  const { loading, error } = useAppSelector((state) => state.product);
+  const dispatch = useAppDispatch();
   const [category_id, setCategory_id] = useState("0");
+  const [categoryError, setCategoryError] = useState("");
 
-  const submitForm = (e: FormEvent) => {
+  const navigate = useNavigate();
+
+  const submitForm = async (e: FormEvent) => {
     e.preventDefault();
 
+    // Check input validity
     const titleValid = title.isValid();
     const descriptionValid = description.isValid();
     const categoryValid = category_id !== "0";
@@ -33,7 +42,26 @@ const NewProduct = () => {
       !locationValid ||
       !categoryValid
     ) {
+      if (!categoryValid) {
+        setCategoryError("A category must be selected");
+      }
       return;
+    }
+
+    const res = await dispatch(
+      newProduct({
+        title: title.value,
+        category_id: category_id,
+        description: description.value,
+        price: price.value,
+        location: location.value,
+      })
+    );
+
+    // Navigate to the new products page
+    const product_id = res.payload.product_id;
+    if (product_id) {
+      navigate(`/products/${product_id}`);
     }
   };
 
@@ -59,6 +87,22 @@ const NewProduct = () => {
     minLength: 3,
   });
 
+  // Show any errors
+  const toast = useToast();
+  const toastId = "error-toast";
+  useEffect(() => {
+    if (error && !toast.isActive(toastId)) {
+      toast({
+        id: toastId,
+        title: error,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+      });
+    }
+  }, [error, toast]);
+
   return (
     <Flex justify="center" align="center" direction="column">
       <Heading>New Product</Heading>
@@ -80,18 +124,22 @@ const NewProduct = () => {
           onChange={title.onChange}
         />
         <Box>
-          <FormLabel>
+          <FormLabel htmlFor="category">
             Category{" "}
             <Text as="span" color="red">
               *
             </Text>
           </FormLabel>
-
           <Select
             name="category"
+            id="category"
             aria-label="select category"
             value={category_id}
-            onChange={(e) => setCategory_id(e.target.value)}
+            onChange={(e) => {
+              setCategory_id(e.target.value);
+              setCategoryError("");
+            }}
+            isInvalid={categoryError !== ""}
           >
             <option value="0" hidden>
               Select a category
@@ -104,7 +152,9 @@ const NewProduct = () => {
               );
             })}
           </Select>
-          <Text color="red.500" fontSize="14px" h="16px" marginTop="1"></Text>
+          <Text color="red.500" fontSize="14px" h="16px" marginTop="1">
+            {categoryError}
+          </Text>
         </Box>
         <CustomInput
           value={description.value}

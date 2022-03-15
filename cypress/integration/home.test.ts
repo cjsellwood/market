@@ -173,7 +173,10 @@ describe("Visit product pages", () => {
   });
 
   it.only("Can create a new product", () => {
-    cy.intercept("POST", "http://localhost:5000/products/new", { id: 99 });
+    cy.intercept("POST", "http://localhost:5000/products/new", {
+      product_id: 99,
+    });
+    cy.intercept("http://localhost:5000/products/99", randomProducts[0]);
 
     cy.visit("/#/new");
     cy.contains("New Product");
@@ -200,5 +203,6 @@ describe("Visit product pages", () => {
 
     cy.contains("Submit").click();
     cy.url().should("eq", "http://localhost:3000/#/products/99");
+    cy.contains("Ergonomic Frozen Towels");
   });
 });

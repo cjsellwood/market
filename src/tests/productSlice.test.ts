@@ -6,6 +6,7 @@ import {
   getAll,
   getCategory,
   getSearch,
+  newProduct,
 } from "../store/productThunks";
 import {
   allProducts,
@@ -299,6 +300,54 @@ describe("Product Slice redux testing", () => {
       });
 
       await store.dispatch(getSearch({ q: "error", page: 1 }));
+
+      const state = store.getState().product;
+      expect(state.error).toBe("Connection error");
+      expect(state.loading).toBe(false);
+      expect(state.products).toEqual([]);
+    });
+  });
+
+  describe("New product tests", () => {
+    test("Submits a new product", async () => {
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            product_id: 99,
+          }),
+      });
+
+      const result = await store.dispatch(
+        newProduct({
+          title: "New Product",
+          category_id: "1",
+          description: "new product description",
+          price: "999",
+          location: "Melbourne",
+        })
+      );
+
+      expect(result.payload.product_id).toBe(99);
+      const state = store.getState().product;
+      expect(state.error).toBe(null);
+      expect(state.loading).toBe(false);
+    });
+
+    test("Return error if submission error", async () => {
+      window.fetch = jest.fn().mockReturnValue({
+        status: 400,
+      });
+
+      await store.dispatch(
+        newProduct({
+          title: "New Product",
+          category_id: "1",
+          description: "new product description",
+          price: "999",
+          location: "Melbourne",
+        })
+      );
 
       const state = store.getState().product;
       expect(state.error).toBe("Connection error");

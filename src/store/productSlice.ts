@@ -5,6 +5,7 @@ import {
   getAll,
   getCategory,
   getSearch,
+  newProduct,
 } from "./productThunks";
 
 export interface Product {
@@ -135,6 +136,18 @@ export const productSlice = createSlice({
         }
       )
       .addCase(getSearch.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(newProduct.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(newProduct.fulfilled, (state, action: PayloadAction) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(newProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });
