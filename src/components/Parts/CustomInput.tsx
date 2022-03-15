@@ -1,4 +1,11 @@
-import { Flex, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
+import {
+  Flex,
+  FormControl,
+  FormLabel,
+  Input,
+  Text,
+  Textarea,
+} from "@chakra-ui/react";
 import { ChangeEventHandler } from "react";
 
 interface CustomInputProps {
@@ -8,7 +15,8 @@ interface CustomInputProps {
   error: string;
   isRequired?: boolean;
   type?: string;
-  onChange: ChangeEventHandler<HTMLInputElement>;
+  onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  textArea?: boolean;
 }
 
 const CustomInput = ({
@@ -19,6 +27,7 @@ const CustomInput = ({
   isRequired,
   type,
   onChange,
+  textArea,
 }: CustomInputProps) => {
   return (
     <Flex direction="column">
@@ -31,7 +40,11 @@ const CustomInput = ({
             </Text>
           )}
         </FormLabel>
-        <Input id={id} value={value} onChange={onChange} type={type} />
+        {textArea ? (
+          <Textarea id={id} value={value} onChange={onChange} resize={"none"} />
+        ) : (
+          <Input id={id} value={value} onChange={onChange} type={type} />
+        )}
         <Text color="red.500" fontSize="14px" h="16px" marginTop="1">
           {error}
         </Text>

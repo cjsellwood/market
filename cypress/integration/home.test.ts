@@ -171,4 +171,34 @@ describe("Visit product pages", () => {
     // Text not in previous search page
     cy.contains("Awesome Concrete Hat");
   });
+
+  it.only("Can create a new product", () => {
+    cy.intercept("POST", "http://localhost:5000/products/new", { id: 99 });
+
+    cy.visit("/#/new");
+    cy.contains("New Product");
+
+    cy.get("#title").type("New Product");
+    cy.get("#title").should("have.value", "New Product");
+
+    cy.get("select").select("Cars");
+    cy.get("select").should("have.value", "1");
+
+    cy.get("#description").type(
+      "This is a new product. \nIt is a great product. \nIt is in great condition"
+    );
+    cy.get("#description").should(
+      "have.value",
+      "This is a new product. \nIt is a great product. \nIt is in great condition"
+    );
+
+    cy.get("#price").type("499");
+    cy.get("#price").should("have.value", "499");
+
+    cy.get("#location").type("Melbourne");
+    cy.get("#location").should("have.value", "Melbourne");
+
+    cy.contains("Submit").click();
+    cy.url().should("eq", "http://localhost:3000/#/products/99");
+  });
 });
