@@ -22,7 +22,9 @@ import { useNavigate } from "react-router-dom";
 import { setError } from "../../store/productSlice";
 
 const NewProduct = () => {
-  const { loading, error } = useAppSelector((state) => state.product);
+  const { loading, error, reloadError } = useAppSelector(
+    (state) => state.product
+  );
   const dispatch = useAppDispatch();
   const [category_id, setCategory_id] = useState("0");
   const [categoryError, setCategoryError] = useState("");
@@ -68,7 +70,6 @@ const NewProduct = () => {
     formData.append("description", description.value);
     formData.append("price", price.value);
     formData.append("location", location.value);
-    console.log(formData);
 
     const res = await dispatch(newProduct(formData));
 
@@ -103,11 +104,9 @@ const NewProduct = () => {
 
   // Show any errors
   const toast = useToast();
-  const toastId = "error-toast";
   useEffect(() => {
-    if (error && !toast.isActive(toastId)) {
+    if (error) {
       toast({
-        id: toastId,
         title: error,
         status: "error",
         duration: 5000,
@@ -115,7 +114,7 @@ const NewProduct = () => {
         position: "top",
       });
     }
-  }, [error, toast]);
+  }, [error, toast, reloadError]);
 
   const [images, setImages] = useState<(string | null)[]>([null, null, null]);
   const [imageShown, setImageShown] = useState(0);
@@ -123,6 +122,11 @@ const NewProduct = () => {
   // Set image for previews on page
   const setFile = (e: ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.files);
+    // Exit if not files
+    if (!e.target.files) {
+      dispatch(setError("Image not selected"));
+      return;
+    }
     const index = Number(e.target.name.split(" ")[1]) - 1;
 
     const fileTypes = [
@@ -138,22 +142,28 @@ const NewProduct = () => {
       "image/x-icon",
     ];
 
-    const newImages = [...images];
-    if (e.target.files) {
-      // Exit if not an image
-      if (!fileTypes.includes(e.target.files[0].type)) {
-        dispatch(setError("Not an image"));
-        return;
-      }
-      newImages[index] = URL.createObjectURL(e.target.files[0]);
-      console.log(newImages);
-      setImages(newImages);
+    // Exit if not an image
+    if (!fileTypes.includes(e.target.files[0].type)) {
+      const fileInputs = document.querySelectorAll("input[type='file']");
+      (fileInputs[index] as HTMLInputElement).files = null;
+      dispatch(setError("Not an image"));
+      return;
     }
 
-    console.log(
-      (document.querySelector('input[type="file"]') as HTMLInputElement)
-        .files![0]
-    );
+    const newImages = [...images];
+
+    // Save image url to preview image
+    newImages[index] = URL.createObjectURL(e.target.files[0]);
+    setImages(newImages);
+  };
+
+  const removeFile = (i: number) => {
+    const newImages = [...images];
+    newImages[i] = null;
+    setImages(newImages);
+    const fileInputs = document.querySelectorAll("input[type='file']");
+    (fileInputs[i] as HTMLInputElement).files = null;
+    (fileInputs[i] as HTMLInputElement).value = "";
   };
 
   return (
@@ -165,7 +175,7 @@ const NewProduct = () => {
             if (image !== null) {
               return (
                 <Image
-                  src={image || undefined}
+                  src={image}
                   display={imageShown === i ? "block" : "none"}
                   objectFit="contain"
                   width="100%"
@@ -197,25 +207,21 @@ const NewProduct = () => {
               display={imageShown === i ? "flex" : "none"}
               key={`File ${i + 1}`}
             >
-              <FormLabel htmlFor={`File ${i + 1}`}>
-                <Button colorScheme="blue" pointerEvents={"none"}>
-                  {image ? "Change" : "Add"}
-                </Button>
-              </FormLabel>
+              <Button colorScheme="blue" as="label" htmlFor={`File ${i + 1}`}>
+                {image ? "Change" : "Add"}
+              </Button>
               <Input
                 type="file"
                 id={`File ${i + 1}`}
                 name={`File ${i + 1}`}
+                aria-label="upload image"
                 hidden
                 onChange={setFile}
               />
               <Button
                 colorScheme="red"
-                onClick={() => {
-                  const newImages = [...images];
-                  newImages[i] = null;
-                  setImages(newImages);
-                }}
+                onClick={() => removeFile(i)}
+                aria-label="remove image"
               >
                 Remove
               </Button>

@@ -27,6 +27,7 @@ interface ProductState {
   product: Product | null;
   loading: boolean;
   error: string | null;
+  reloadError: boolean;
 }
 
 const initialState: ProductState = {
@@ -35,6 +36,7 @@ const initialState: ProductState = {
   product: null,
   loading: false,
   error: null,
+  reloadError: false,
 };
 
 export const productSlice = createSlice({
@@ -43,6 +45,7 @@ export const productSlice = createSlice({
   reducers: {
     setError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;
+      state.reloadError = !state.reloadError;
     },
   },
   extraReducers: (builder) => {

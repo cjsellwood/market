@@ -42,6 +42,7 @@ describe("Product Slice redux testing", () => {
       product: null,
       loading: false,
       error: null,
+      reloadError: false,
     });
   });
 
