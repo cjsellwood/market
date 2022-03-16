@@ -6,6 +6,7 @@ import {
   searchProducts,
   searchProducts2,
 } from "../../src/tests/helpers";
+import "cypress-file-upload";
 
 describe("Visit product pages", () => {
   beforeEach(() => {
@@ -201,8 +202,12 @@ describe("Visit product pages", () => {
     cy.get("#location").type("Melbourne");
     cy.get("#location").should("have.value", "Melbourne");
 
-    // cy.contains("Submit").click();
-    // cy.url().should("eq", "http://localhost:3000/#/products/99");
-    // cy.contains("Ergonomic Frozen Towels");
+    cy.get("img").should("not.exist");
+    cy.get("input[type='file']").attachFile("test.jpg");
+    cy.get("img");
+
+    cy.contains("Submit").click();
+    cy.url().should("eq", "http://localhost:3000/#/products/99");
+    cy.contains("Ergonomic Frozen Towels");
   });
 });
