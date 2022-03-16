@@ -121,7 +121,6 @@ const NewProduct = () => {
 
   // Set image for previews on page
   const setFile = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.files);
     // Exit if not files
     if (!e.target.files) {
       dispatch(setError("Image not selected"));

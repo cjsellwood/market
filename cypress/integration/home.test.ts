@@ -173,7 +173,7 @@ describe("Visit product pages", () => {
     cy.contains("Awesome Concrete Hat");
   });
 
-  it.only("Can create a new product", () => {
+  it("Can create a new product", () => {
     cy.intercept("POST", "http://localhost:5000/products/new", {
       product_id: 99,
     });
