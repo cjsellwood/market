@@ -1,6 +1,6 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import { Flex, Box, Input, IconButton, Select } from "@chakra-ui/react";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { categories } from "../../categories";
 
@@ -28,6 +28,12 @@ const SearchBox = ({
       }`
     );
   };
+
+  useEffect(() => {
+    if (!initialSearch) {
+      setSearchInput("");
+    }
+  }, [initialSearch]);
 
   return (
     <Flex as="form" onSubmit={submitForm} m="1" bg="white" borderRadius="4">

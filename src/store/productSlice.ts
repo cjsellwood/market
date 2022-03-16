@@ -5,6 +5,7 @@ import {
   getAll,
   getCategory,
   getSearch,
+  newProduct,
 } from "./productThunks";
 
 export interface Product {
@@ -26,6 +27,7 @@ interface ProductState {
   product: Product | null;
   loading: boolean;
   error: string | null;
+  reloadError: boolean;
 }
 
 const initialState: ProductState = {
@@ -34,12 +36,18 @@ const initialState: ProductState = {
   product: null,
   loading: false,
   error: null,
+  reloadError: false,
 };
 
 export const productSlice = createSlice({
   name: "product",
   initialState,
-  reducers: {},
+  reducers: {
+    setError: (state, action: PayloadAction<string | null>) => {
+      state.error = action.payload;
+      state.reloadError = !state.reloadError;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getRandom.pending, (state, action) => {
@@ -137,8 +145,22 @@ export const productSlice = createSlice({
       .addCase(getSearch.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(newProduct.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(newProduct.fulfilled, (state, action: PayloadAction) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(newProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });
+
+export const { setError } = productSlice.actions;
 
 export default productSlice.reducer;

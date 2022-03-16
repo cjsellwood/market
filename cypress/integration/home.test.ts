@@ -6,6 +6,7 @@ import {
   searchProducts,
   searchProducts2,
 } from "../../src/tests/helpers";
+import "cypress-file-upload";
 
 describe("Visit product pages", () => {
   beforeEach(() => {
@@ -170,5 +171,43 @@ describe("Visit product pages", () => {
 
     // Text not in previous search page
     cy.contains("Awesome Concrete Hat");
+  });
+
+  it("Can create a new product", () => {
+    cy.intercept("POST", "http://localhost:5000/products/new", {
+      product_id: 99,
+    });
+    cy.intercept("http://localhost:5000/products/99", randomProducts[0]);
+
+    cy.visit("/#/new");
+    cy.contains("New Product");
+
+    cy.get("#title").type("New Product");
+    cy.get("#title").should("have.value", "New Product");
+
+    cy.get("select").select("Cars");
+    cy.get("select").should("have.value", "1");
+
+    cy.get("#description").type(
+      "This is a new product. \nIt is a great product. \nIt is in great condition"
+    );
+    cy.get("#description").should(
+      "have.value",
+      "This is a new product. \nIt is a great product. \nIt is in great condition"
+    );
+
+    cy.get("#price").type("499");
+    cy.get("#price").should("have.value", "499");
+
+    cy.get("#location").type("Melbourne");
+    cy.get("#location").should("have.value", "Melbourne");
+
+    cy.get("img").should("not.exist");
+    cy.get("input[type='file']").attachFile("test.jpg");
+    cy.get("img");
+
+    cy.contains("Submit").click();
+    cy.url().should("eq", "http://localhost:3000/#/products/99");
+    cy.contains("Ergonomic Frozen Towels");
   });
 });

@@ -6,6 +6,7 @@ import {
   getAll,
   getCategory,
   getSearch,
+  newProduct,
 } from "../store/productThunks";
 import {
   allProducts,
@@ -41,6 +42,7 @@ describe("Product Slice redux testing", () => {
       product: null,
       loading: false,
       error: null,
+      reloadError: false,
     });
   });
 
@@ -299,6 +301,52 @@ describe("Product Slice redux testing", () => {
       });
 
       await store.dispatch(getSearch({ q: "error", page: 1 }));
+
+      const state = store.getState().product;
+      expect(state.error).toBe("Connection error");
+      expect(state.loading).toBe(false);
+      expect(state.products).toEqual([]);
+    });
+  });
+
+  describe("New product tests", () => {
+    test("Submits a new product", async () => {
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            product_id: 99,
+          }),
+      });
+
+      const formData = new FormData();
+      formData.append("title", "New Product");
+      formData.append("category_id", "1");
+      formData.append("description", "new product description");
+      formData.append("price", "999");
+      formData.append("location", "Melbourne");
+
+      const result = await store.dispatch(newProduct(formData));
+
+      expect(result.payload.product_id).toBe(99);
+      const state = store.getState().product;
+      expect(state.error).toBe(null);
+      expect(state.loading).toBe(false);
+    });
+
+    test("Return error if submission error", async () => {
+      window.fetch = jest.fn().mockReturnValue({
+        status: 400,
+      });
+
+      const formData = new FormData();
+      formData.append("title", "New Product");
+      formData.append("category_id", "1");
+      formData.append("description", "new product description");
+      formData.append("price", "999");
+      formData.append("location", "Melbourne");
+
+      await store.dispatch(newProduct(formData));
 
       const state = store.getState().product;
       expect(state.error).toBe("Connection error");
