@@ -7,6 +7,7 @@ import {
   getCategory,
   getSearch,
   newProduct,
+  deleteProduct,
 } from "../store/productThunks";
 import {
   allProducts,
@@ -354,4 +355,39 @@ describe("Product Slice redux testing", () => {
       expect(state.products).toEqual([]);
     });
   });
+
+  describe("Delete product", () => {
+    test("Sends a delete request to server", async () => {
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () => {},
+      });
+
+      await store.dispatch(deleteProduct("99"));
+
+      expect(window.fetch).toHaveBeenLastCalledWith(
+        "http://localhost:5000/products/99",
+        { method: "DELETE", mode: "cors" }
+      );
+
+      const state = store.getState().product;
+      expect(state.error).toBe(null);
+      expect(state.loading).toBe(false);
+    });
+
+    test("Return error if product does not exist", async () => {
+      window.fetch = jest.fn().mockReturnValue({
+        status: 404,
+        json: () => ({ error: "Product not found" }),
+      });
+
+      await store.dispatch(deleteProduct("9999999"));
+
+      const state = store.getState().product;
+      expect(state.error).toBe("Product not found");
+      expect(state.loading).toBe(false);
+    });
+  });
+
+  
 });

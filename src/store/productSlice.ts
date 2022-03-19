@@ -6,6 +6,7 @@ import {
   getCategory,
   getSearch,
   newProduct,
+  deleteProduct,
 } from "./productThunks";
 
 export interface Product {
@@ -155,6 +156,18 @@ export const productSlice = createSlice({
         state.error = null;
       })
       .addCase(newProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(deleteProduct.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });
