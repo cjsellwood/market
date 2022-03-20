@@ -10,6 +10,7 @@ import Products from "./components/Pages/Products";
 import Category from "./components/Pages/Category";
 import Searched from "./components/Pages/Searched";
 import NewProduct from "./components/Pages/NewProduct";
+import EditProduct from "./components/Pages/EditProduct";
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
           <Route path="/products" element={<Products />} />
           <Route path="/search" element={<Searched />} />
           <Route path="/new" element={<NewProduct />} />
+          <Route path="/products/:id/edit" element={<EditProduct />} />
           <Route path="/products/:id" element={<Product />} />
           <Route path="/:category" element={<Category />} />
         </Routes>

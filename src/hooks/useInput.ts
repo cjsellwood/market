@@ -76,6 +76,7 @@ const useInput = (
     onChange,
     isValid,
     setError,
+    setValue,
   };
 };
 

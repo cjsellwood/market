@@ -33,7 +33,6 @@ const Product = () => {
 
   const handleDelete = async () => {
     const result = await dispatch(deleteProduct(id!));
-    console.log(result);
     if (result.meta.requestStatus === "fulfilled") {
       navigate("/products");
     }
@@ -70,9 +69,7 @@ const Product = () => {
     return (
       <Flex direction="column">
         <SearchBox />
-        <Flex justifyContent="center">
-          
-        </Flex>
+        <Flex justifyContent="center"></Flex>
       </Flex>
     );
   }
@@ -120,6 +117,11 @@ const Product = () => {
         {product.location} - {new Date(product.listed).toLocaleDateString()}
       </Text>
       <Flex>
+        <Link to={`/products/${id}/edit`} as={RouterLink}>
+          <Flex justifyContent="center">
+            <Button colorScheme="green">Edit</Button>
+          </Flex>
+        </Link>
         <Button onClick={handleDelete} colorScheme="red" isLoading={loading}>
           Delete
         </Button>
