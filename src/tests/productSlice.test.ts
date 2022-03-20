@@ -8,6 +8,7 @@ import {
   getSearch,
   newProduct,
   deleteProduct,
+  updateProduct,
 } from "../store/productThunks";
 import {
   allProducts,
@@ -389,5 +390,64 @@ describe("Product Slice redux testing", () => {
     });
   });
 
-  
+  describe("Update product", () => {
+    test("Updates a product with new information", async () => {
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            product_id: 99,
+          }),
+      });
+
+      const formData = new FormData();
+      formData.append("product_id", "99");
+      formData.append("title", "Updated Product");
+      formData.append("category_id", "2");
+      formData.append("description", "updated product description");
+      formData.append("price", "1001");
+      formData.append("location", "Melbourne");
+      formData.append(
+        "updatedImages",
+        JSON.stringify(["!http://image.com", "image", ""])
+      );
+
+      const result = await store.dispatch(updateProduct(formData));
+
+      expect(window.fetch).toHaveBeenLastCalledWith(
+        "http://localhost:5000/products/99",
+        { method: "PUT", mode: "cors" }
+      );
+
+      expect(result.payload.product_id).toBe(99);
+      const state = store.getState().product;
+      expect(state.error).toBe(null);
+      expect(state.loading).toBe(false);
+    });
+
+    test("Return error if product does not exist", async () => {
+      window.fetch = jest.fn().mockReturnValue({
+        status: 404,
+        json: () => ({ error: "Product not found" }),
+      });
+
+      const formData = new FormData();
+      formData.append("product_id", "99");
+      formData.append("title", "Updated Product");
+      formData.append("category_id", "2");
+      formData.append("description", "updated product description");
+      formData.append("price", "1001");
+      formData.append("location", "Melbourne");
+      formData.append(
+        "updatedImages",
+        JSON.stringify(["!http://image.com", "image", ""])
+      );
+
+      await store.dispatch(updateProduct(formData));
+
+      const state = store.getState().product;
+      expect(state.error).toBe("Product not found");
+      expect(state.loading).toBe(false);
+    });
+  });
 });

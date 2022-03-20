@@ -197,3 +197,26 @@ export const deleteProduct = createAsyncThunk(
     }
   }
 );
+
+export const updateProduct = createAsyncThunk(
+  "products/update",
+  async (product: FormData, { rejectWithValue }) => {
+    const product_id = product.get("product_id");
+    try {
+      const res = await fetch(`http://localhost:5000/products/${product_id}`, {
+        method: "PUT",
+        mode: "cors",
+      });
+      // If an error return error message
+      if (res.status !== 200) {
+        throw new Error(await generateError(res));
+      }
+
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      const newError = error as Error;
+      return rejectWithValue(newError.message);
+    }
+  }
+);
