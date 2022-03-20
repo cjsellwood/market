@@ -210,4 +210,24 @@ describe("Visit product pages", () => {
     cy.url().should("eq", "http://localhost:3000/#/products/99");
     cy.contains("Ergonomic Frozen Towels");
   });
+
+  it("Can delete a product", () => {
+    cy.intercept("DELETE", "http://localhost:5000/products/29", {
+      message: "Deleted",
+    });
+    cy.visit("/#/products/29");
+    cy.contains("Ergonomic Frozen Towels");
+    cy.contains("Delete").click();
+
+    cy.url().should("eq", "http://localhost:3000/#/products");
+    cy.intercept("http://localhost:5000/products/29", {
+      statusCode: 404,
+      body: {
+        error: "Product not found",
+      },
+    });
+
+    cy.visit("/#/products/29");
+    cy.contains("Product not found");
+  });
 });

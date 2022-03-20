@@ -7,17 +7,18 @@ import {
   Spinner,
   ButtonGroup,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import useAppSelector from "../../hooks/useAppSelector";
-import { getProduct } from "../../store/productThunks";
+import { getProduct, deleteProduct } from "../../store/productThunks";
 import { Link as RouterLink } from "react-router-dom";
 import SearchBox from "../Parts/SearchBox";
 
 const Product = () => {
-  const { product } = useAppSelector((state) => state.product);
+  const { product, loading, error } = useAppSelector((state) => state.product);
   const dispatch = useAppDispatch();
 
   const { id } = useParams();
@@ -28,10 +29,50 @@ const Product = () => {
 
   const [imageShown, setImageShown] = useState(0);
 
+  const navigate = useNavigate();
+
+  const handleDelete = async () => {
+    const result = await dispatch(deleteProduct(id!));
+    console.log(result);
+    if (result.meta.requestStatus === "fulfilled") {
+      navigate("/products");
+    }
+  };
+
+  // Show any errors
+  const toast = useToast();
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: error,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+      });
+    }
+  }, [error, toast]);
+
+  // If product loading
+  if (loading && !product) {
+    return (
+      <Flex direction="column">
+        <SearchBox />
+        <Flex w="100%" h="50vh" justifyContent="center" alignItems="center">
+          <Spinner size="xl" thickness="4px" speed="0.5s" label="loading" />
+        </Flex>
+      </Flex>
+    );
+  }
+
+  // If product not found
   if (!product) {
     return (
-      <Flex w="100%" h="50vh" justifyContent="center" alignItems="center">
-        <Spinner size="xl" thickness="4px" speed="0.5s" label="loading" />
+      <Flex direction="column">
+        <SearchBox />
+        <Flex justifyContent="center">
+          
+        </Flex>
       </Flex>
     );
   }
@@ -78,6 +119,11 @@ const Product = () => {
       <Text fontSize="0.8rem">
         {product.location} - {new Date(product.listed).toLocaleDateString()}
       </Text>
+      <Flex>
+        <Button onClick={handleDelete} colorScheme="red" isLoading={loading}>
+          Delete
+        </Button>
+      </Flex>
     </Flex>
   );
 };

@@ -361,7 +361,9 @@ describe("Product Slice redux testing", () => {
     test("Sends a delete request to server", async () => {
       window.fetch = jest.fn().mockReturnValue({
         status: 200,
-        json: () => {},
+        json: () => ({
+          message: "Deleted",
+        }),
       });
 
       await store.dispatch(deleteProduct("99"));
@@ -374,6 +376,7 @@ describe("Product Slice redux testing", () => {
       const state = store.getState().product;
       expect(state.error).toBe(null);
       expect(state.loading).toBe(false);
+      expect(state.product).toBeNull();
     });
 
     test("Return error if product does not exist", async () => {

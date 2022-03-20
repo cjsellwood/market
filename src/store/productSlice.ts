@@ -84,6 +84,7 @@ export const productSlice = createSlice({
       .addCase(getProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+        state.product = null;
       })
       .addCase(getAll.pending, (state, action) => {
         state.loading = true;
@@ -167,6 +168,7 @@ export const productSlice = createSlice({
       .addCase(deleteProduct.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
+        state.product = null;
       })
       .addCase(deleteProduct.rejected, (state, action) => {
         state.loading = false;
