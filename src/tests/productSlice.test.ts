@@ -415,11 +415,13 @@ describe("Product Slice redux testing", () => {
         JSON.stringify(["!http://image.com", "image", ""])
       );
 
-      const result = await store.dispatch(updateProduct(formData));
+      const result = await store.dispatch(
+        updateProduct({ form: formData, product_id: "99" })
+      );
 
       expect(window.fetch).toHaveBeenLastCalledWith(
         "http://localhost:5000/products/99",
-        { method: "PUT", mode: "cors" }
+        { method: "PUT", mode: "cors", body: formData }
       );
 
       expect(result.payload.product_id).toBe(99);
@@ -446,7 +448,7 @@ describe("Product Slice redux testing", () => {
         JSON.stringify(["!http://image.com", "image", ""])
       );
 
-      await store.dispatch(updateProduct(formData));
+      await store.dispatch(updateProduct({ form: formData, product_id: "99" }));
 
       const state = store.getState().product;
       expect(state.error).toBe("Product not found");

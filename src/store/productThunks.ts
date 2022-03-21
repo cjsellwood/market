@@ -200,13 +200,19 @@ export const deleteProduct = createAsyncThunk(
 
 export const updateProduct = createAsyncThunk(
   "products/update",
-  async (product: FormData, { rejectWithValue }) => {
-    const product_id = product.get("product_id");
+  async (
+    product: { form: FormData; product_id: string },
+    { rejectWithValue }
+  ) => {
     try {
-      const res = await fetch(`http://localhost:5000/products/${product_id}`, {
-        method: "PUT",
-        mode: "cors",
-      });
+      const res = await fetch(
+        `http://localhost:5000/products/${product.product_id}`,
+        {
+          method: "PUT",
+          mode: "cors",
+          body: product.form,
+        }
+      );
       // If an error return error message
       if (res.status !== 200) {
         throw new Error(await generateError(res));

@@ -18,7 +18,7 @@ import useInput from "../../hooks/useInput";
 import CustomInput from "../Parts/CustomInput";
 import { categories } from "../../categories";
 import useAppDispatch from "../../hooks/useAppDispatch";
-import { getProduct, newProduct } from "../../store/productThunks";
+import { getProduct, updateProduct } from "../../store/productThunks";
 import { useNavigate, useParams } from "react-router-dom";
 import { setError } from "../../store/productSlice";
 
@@ -63,6 +63,11 @@ const EditProduct = () => {
   });
 
   const [images, setImages] = useState<(string | null)[]>([null, null, null]);
+  const [updatedImages, setUpdatedImages] = useState<(string | null)[]>([
+    null,
+    null,
+    null,
+  ]);
   const [imageShown, setImageShown] = useState(0);
 
   // Set inputs to products data
@@ -78,6 +83,7 @@ const EditProduct = () => {
       location.setValue(product.location);
 
       setImages(product.images!);
+      setUpdatedImages(product.images!);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product]);
@@ -93,7 +99,7 @@ const EditProduct = () => {
     const categoryValid = category_id !== "0";
     const priceValid = price.isValid();
     const locationValid = location.isValid();
-
+    
     if (
       !titleValid ||
       !descriptionValid ||
@@ -103,7 +109,7 @@ const EditProduct = () => {
     ) {
       if (!categoryValid) {
         setCategoryError("A category must be selected");
-      }
+      } 
       return;
     }
 
@@ -123,8 +129,11 @@ const EditProduct = () => {
     formData.append("description", description.value);
     formData.append("price", price.value);
     formData.append("location", location.value);
+    formData.append("updatedImages", JSON.stringify(updatedImages));
 
-    const res = await dispatch(newProduct(formData));
+    const res = await dispatch(
+      updateProduct({ form: formData, product_id: id! })
+    );
 
     // Navigate to the new products page
     const product_id = res.payload.product_id;
@@ -182,12 +191,24 @@ const EditProduct = () => {
     // Save image url to preview image
     newImages[index] = URL.createObjectURL(e.target.files[0]);
     setImages(newImages);
+
+    const newUpdatedImages = [...updatedImages];
+    if (!updatedImages[index]!.startsWith("!")) {
+      newUpdatedImages[index] = "!" + updatedImages[index];
+      setUpdatedImages(newUpdatedImages);
+    }
   };
 
   const removeFile = (i: number) => {
     const newImages = [...images];
     newImages[i] = null;
     setImages(newImages);
+    const newUpdatedImages = [...updatedImages];
+
+    if (updatedImages[i] && !updatedImages[i]!.startsWith("!")) {
+      newUpdatedImages[i] = "!" + updatedImages[i];
+      setUpdatedImages(newUpdatedImages);
+    }
     const fileInputs = document.querySelectorAll("input[type='file']");
     (fileInputs[i] as HTMLInputElement).files = null;
     (fileInputs[i] as HTMLInputElement).value = "";
