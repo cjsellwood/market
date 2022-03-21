@@ -204,7 +204,7 @@ describe("Visit product pages", () => {
 
     cy.get("img").should("not.exist");
     cy.get("input[type='file']").attachFile("test.jpg");
-    cy.get("img");
+    cy.get("img").should("exist");
 
     cy.contains("Submit").click();
     cy.url().should("eq", "http://localhost:3000/#/products/99");
@@ -229,5 +229,62 @@ describe("Visit product pages", () => {
 
     cy.visit("/#/products/29");
     cy.contains("Product not found");
+  });
+
+  it("Can update a product", () => {
+    cy.visit("/#/products/29");
+    cy.contains("Ergonomic Frozen Towels");
+    cy.contains("Edit").click();
+
+    cy.url().should("eq", "http://localhost:3000/#/products/29/edit");
+
+    cy.get("#title").clear();
+    cy.get("#title").type("Updated Product");
+    cy.get("#title").should("have.value", "Updated Product");
+
+    cy.get("select").select("Food and Drink");
+    cy.get("select").should("have.value", "5");
+
+    cy.get("#description").clear();
+    cy.get("#description").type("updated description");
+    cy.get("#description").should("have.value", "updated description");
+
+    cy.get("#price").clear();
+    cy.get("#price").type("999");
+    cy.get("#price").should("have.value", "999");
+
+    cy.get("#location").clear();
+    cy.get("#location").type("Sydney");
+    cy.get("#location").should("have.value", "Sydney");
+
+    cy.get("img")
+      .first()
+      .should("have.attr", "src")
+      .should("eq", "https://placeimg.com/500/500/tech");
+    cy.get("input[type='file']").attachFile("test.jpg");
+    cy.get("img").first().should("have.attr", "src").should("contain", "blob");
+
+    cy.intercept("PUT", "http://localhost:5000/products/29", {
+      product_id: 29,
+    });
+    cy.intercept("http://localhost:5000/products/29", {
+      product_id: 29,
+      user_id: 5,
+      title: "Updated Product",
+      description: "updated description",
+      price: 999,
+      images: [
+        "https://placeimg.com/500/500/tech",
+        "https://placeimg.com/500/500/arch",
+        "https://placeimg.com/500/500/animals",
+      ],
+      listed: "2022-02-28T13:00:00.000Z",
+      location: "Sydney",
+      category: "Food and Drink",
+    });
+
+    cy.contains("Submit").click();
+    cy.url().should("eq", "http://localhost:3000/#/products/29");
+    cy.contains("Updated Product");
   });
 });

@@ -99,7 +99,7 @@ const EditProduct = () => {
     const categoryValid = category_id !== "0";
     const priceValid = price.isValid();
     const locationValid = location.isValid();
-    
+
     if (
       !titleValid ||
       !descriptionValid ||
@@ -109,7 +109,7 @@ const EditProduct = () => {
     ) {
       if (!categoryValid) {
         setCategoryError("A category must be selected");
-      } 
+      }
       return;
     }
 
@@ -214,7 +214,7 @@ const EditProduct = () => {
     (fileInputs[i] as HTMLInputElement).value = "";
   };
 
-  if (loading) {
+  if (!product && loading) {
     return (
       <Flex w="100%" h="50vh" justifyContent="center" alignItems="center">
         <Spinner size="xl" thickness="4px" speed="0.5s" label="loading" />
