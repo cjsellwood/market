@@ -6,6 +6,8 @@ import {
   getCategory,
   getSearch,
   newProduct,
+  deleteProduct,
+  updateProduct,
 } from "./productThunks";
 
 export interface Product {
@@ -82,6 +84,7 @@ export const productSlice = createSlice({
       .addCase(getProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+        state.product = null;
       })
       .addCase(getAll.pending, (state, action) => {
         state.loading = true;
@@ -155,6 +158,31 @@ export const productSlice = createSlice({
         state.error = null;
       })
       .addCase(newProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(deleteProduct.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.product = null;
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(updateProduct.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(updateProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

@@ -153,14 +153,6 @@ export const getSearch = createAsyncThunk(
   }
 );
 
-// interface NewProductInput {
-//   title: string;
-//   category_id: string;
-//   description: string;
-//   price: string;
-//   location: string;
-// }
-
 export const newProduct = createAsyncThunk(
   "products/new",
   async (product: FormData, { rejectWithValue }) => {
@@ -170,6 +162,57 @@ export const newProduct = createAsyncThunk(
         mode: "cors",
         body: product,
       });
+      // If an error return error message
+      if (res.status !== 200) {
+        throw new Error(await generateError(res));
+      }
+
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      const newError = error as Error;
+      return rejectWithValue(newError.message);
+    }
+  }
+);
+
+export const deleteProduct = createAsyncThunk(
+  "products/delete",
+  async (product_id: string, { rejectWithValue }) => {
+    try {
+      const res = await fetch(`http://localhost:5000/products/${product_id}`, {
+        method: "DELETE",
+        mode: "cors",
+      });
+      // If an error return error message
+      if (res.status !== 200) {
+        throw new Error(await generateError(res));
+      }
+
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      const newError = error as Error;
+      return rejectWithValue(newError.message);
+    }
+  }
+);
+
+export const updateProduct = createAsyncThunk(
+  "products/update",
+  async (
+    product: { form: FormData; product_id: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const res = await fetch(
+        `http://localhost:5000/products/${product.product_id}`,
+        {
+          method: "PUT",
+          mode: "cors",
+          body: product.form,
+        }
+      );
       // If an error return error message
       if (res.status !== 200) {
         throw new Error(await generateError(res));
