@@ -101,7 +101,27 @@ export const loginUser = createAsyncThunk(
 export const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    loadStoredUser: (state) => {
+      const storedUserId = localStorage.getItem("userId");
+      const storedToken = localStorage.getItem("token");
+      const storedExpires = localStorage.getItem("expires");
+
+      if (!storedExpires || !storedToken || !storedUserId) {
+        return;
+      }
+
+      // Check if token is expired
+      const expires = Number(storedExpires);
+      if (expires < Date.now()) {
+        return;
+      }
+      
+      state.expires = expires;
+      state.token = storedToken;
+      state.userId = Number(storedUserId);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state, action) => {
@@ -153,6 +173,6 @@ export const authSlice = createSlice({
   },
 });
 
-// export const {} = authSlice.actions;
+export const { loadStoredUser } = authSlice.actions;
 
 export default authSlice.reducer;

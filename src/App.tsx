@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./components/Pages/Home";
 import Login from "./components/Pages/Login";
@@ -11,12 +11,24 @@ import Category from "./components/Pages/Category";
 import Searched from "./components/Pages/Searched";
 import NewProduct from "./components/Pages/NewProduct";
 import EditProduct from "./components/Pages/EditProduct";
+import useAppSelector from "./hooks/useAppSelector";
+import { useEffect } from "react";
+import useAppDispatch from "./hooks/useAppDispatch";
+import { loadStoredUser } from "./store/authSlice";
 
 const App = () => {
+  const { userId } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+
+  // Load a previously logged in user
+  useEffect(() => {
+    dispatch(loadStoredUser());
+  }, [dispatch]);
   return (
     <Box bg="gray.100" minW="100%" minH="200vh">
       <ScrollToTop />
       <Navbar />
+      <Text paddingTop="56px">{userId ? userId : "null"}</Text>
       <Box paddingTop="56px">
         <Routes>
           <Route path="/" element={<Home />} />

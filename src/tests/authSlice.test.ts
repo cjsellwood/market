@@ -1,5 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer, { registerUser, loginUser } from "../store/authSlice";
+import authReducer, {
+  registerUser,
+  loginUser,
+  loadStoredUser,
+} from "../store/authSlice";
 
 const originalFetch = window.fetch;
 let store = configureStore({
@@ -177,6 +181,53 @@ describe("Auth Slice redux testing", () => {
       expect(state.loading).toBe(false);
     });
   });
-});
 
-export {};
+  describe("loadStoredUser action", () => {
+    test("Gets a stored user and stores data in state", () => {
+      localStorage.setItem("userId", "99");
+      localStorage.setItem("token", "2f4dfd");
+      localStorage.setItem(
+        "expires",
+        (Date.now() + 1000 * 60 * 60 * 24 * 7).toString()
+      );
+
+      store.dispatch(loadStoredUser());
+
+      const state = store.getState().auth;
+      expect(state.userId).toBe(99);
+      expect(state.token).toBe("2f4dfd");
+      expect(state.expires).not.toBeNull();
+    });
+
+    test("Doesn't store user if token expired", () => {
+      localStorage.setItem("userId", "99");
+      localStorage.setItem("token", "2f4dfd");
+      localStorage.setItem(
+        "expires",
+        (Date.now() - 1000 * 60 * 60 * 24 * 2).toString()
+      );
+
+      store.dispatch(loadStoredUser());
+
+      const state = store.getState().auth;
+      expect(state.userId).toBeNull();
+      expect(state.token).toBeNull();
+      expect(state.expires).toBeNull();
+    });
+
+    test("Doesn't store user if no userId stored", () => {
+      localStorage.setItem("token", "2f4dfd");
+      localStorage.setItem(
+        "expires",
+        (Date.now() + 1000 * 60 * 60 * 24 * 7).toString()
+      );
+
+      store.dispatch(loadStoredUser());
+
+      const state = store.getState().auth;
+      expect(state.userId).toBeNull();
+      expect(state.token).toBeNull();
+      expect(state.expires).toBeNull();
+    });
+  });
+});
