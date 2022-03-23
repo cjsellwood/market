@@ -16,6 +16,7 @@ describe("Auth Slice redux testing", () => {
         auth: authReducer,
       },
     });
+    localStorage.clear();
   });
 
   test("State should start with initial state", () => {
@@ -58,6 +59,10 @@ describe("Auth Slice redux testing", () => {
       expect(state.username).toBe("jestUser");
       expect(state.userId).toBe(99);
       expect(state.token).toBe("2f4dfd");
+
+      expect(localStorage.getItem("userId")).toBe("99");
+      expect(localStorage.getItem("token")).toBe("2f4dfd");
+      expect(localStorage.getItem("expires")).not.toBeNull();
     });
 
     test("Should return general error if can't connect", async () => {
@@ -128,6 +133,10 @@ describe("Auth Slice redux testing", () => {
       expect(state.username).toBe("jestUser");
       expect(state.userId).toBe(99);
       expect(state.token).toBe("2f4dfd");
+
+      expect(localStorage.getItem("userId")).toBe("99");
+      expect(localStorage.getItem("token")).toBe("2f4dfd");
+      expect(localStorage.getItem("expires")).not.toBeNull();
     });
 
     test("Should return general error if can't connect", async () => {

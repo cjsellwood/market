@@ -117,6 +117,10 @@ export const authSlice = createSlice({
           state.userId = action.payload.userId;
           state.token = action.payload.token;
           state.expires = action.payload.expires;
+
+          localStorage.setItem("userId", action.payload.userId.toString());
+          localStorage.setItem("token", action.payload.token);
+          localStorage.setItem("expires", action.payload.expires.toString());
         }
       )
       .addCase(registerUser.rejected, (state, action) => {
@@ -136,6 +140,10 @@ export const authSlice = createSlice({
           state.userId = action.payload.userId;
           state.token = action.payload.token;
           state.expires = action.payload.expires;
+
+          localStorage.setItem("userId", action.payload.userId.toString());
+          localStorage.setItem("token", action.payload.token);
+          localStorage.setItem("expires", action.payload.expires.toString());
         }
       )
       .addCase(loginUser.rejected, (state, action) => {
