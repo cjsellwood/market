@@ -116,10 +116,19 @@ export const authSlice = createSlice({
       if (expires < Date.now()) {
         return;
       }
-      
+
       state.expires = expires;
       state.token = storedToken;
       state.userId = Number(storedUserId);
+    },
+    logOutUser: (state) => {
+      state.expires = null;
+      state.token = null;
+      state.userId = null;
+
+      localStorage.removeItem("userId");
+      localStorage.removeItem("token");
+      localStorage.removeItem("expires");
     },
   },
   extraReducers: (builder) => {
@@ -173,6 +182,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { loadStoredUser } = authSlice.actions;
+export const { loadStoredUser, logOutUser } = authSlice.actions;
 
 export default authSlice.reducer;

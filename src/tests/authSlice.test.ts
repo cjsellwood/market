@@ -3,6 +3,7 @@ import authReducer, {
   registerUser,
   loginUser,
   loadStoredUser,
+  logOutUser,
 } from "../store/authSlice";
 
 const originalFetch = window.fetch;
@@ -228,6 +229,34 @@ describe("Auth Slice redux testing", () => {
       expect(state.userId).toBeNull();
       expect(state.token).toBeNull();
       expect(state.expires).toBeNull();
+    });
+  });
+
+  describe("Log Out action", () => {
+    test("Log out a user", () => {
+      localStorage.setItem("userId", "99");
+      localStorage.setItem("token", "2f4dfd");
+      localStorage.setItem(
+        "expires",
+        (Date.now() + 1000 * 60 * 60 * 24 * 7).toString()
+      );
+
+      store.dispatch(loadStoredUser());
+
+      let state = store.getState().auth;
+      expect(state.userId).toBe(99);
+      expect(state.token).toBe("2f4dfd");
+      expect(state.expires).not.toBeNull();
+
+      store.dispatch(logOutUser());
+
+      state = store.getState().auth;
+      expect(state.userId).toBeNull();
+      expect(state.token).toBeNull();
+      expect(state.expires).toBeNull();
+      expect(localStorage.getItem("userId")).toBeNull();
+      expect(localStorage.getItem("token")).toBeNull();
+      expect(localStorage.getItem("expires")).toBeNull();
     });
   });
 });
