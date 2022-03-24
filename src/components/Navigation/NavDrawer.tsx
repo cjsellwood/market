@@ -44,11 +44,9 @@ const NavDrawer = ({
               </Link>
             </ShowToUnauthorized>
             <ShowToLoggedIn>
-              <Link to="" as={RouterLink} w="100%" onClick={onClose}>
+              <Link to="/new" as={RouterLink} w="100%" onClick={onClose}>
                 <Flex justifyContent="center">
-                  <Button w="80%" onClick={() => dispatch(logOutUser())}>
-                    Log Out
-                  </Button>
+                  <Button>New Product</Button>
                 </Flex>
               </Link>
             </ShowToLoggedIn>
@@ -70,6 +68,17 @@ const NavDrawer = ({
               );
             })}
           </VStack>
+          <ShowToLoggedIn>
+            <Flex justifyContent="space-evenly" paddingTop="8">
+              <Link to="" as={RouterLink} w="100%" onClick={onClose}>
+                <Flex justifyContent="center">
+                  <Button onClick={() => dispatch(logOutUser())}>
+                    Log Out
+                  </Button>
+                </Flex>
+              </Link>
+            </Flex>
+          </ShowToLoggedIn>
         </DrawerBody>
       </DrawerContent>
     </Drawer>
