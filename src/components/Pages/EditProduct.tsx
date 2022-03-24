@@ -24,6 +24,7 @@ import { setError } from "../../store/productSlice";
 
 const EditProduct = () => {
   const dispatch = useAppDispatch();
+  const { userId } = useAppSelector((state) => state.auth);
   const { loading, error, reloadError, product } = useAppSelector(
     (state) => state.product
   );
@@ -70,25 +71,31 @@ const EditProduct = () => {
   ]);
   const [imageShown, setImageShown] = useState(0);
 
+  const navigate = useNavigate();
+
   // Set inputs to products data
   useEffect(() => {
     if (product && product.product_id === Number(id)) {
-      const category_id =
-        1 + categories.findIndex((el) => el === product.category);
-      setCategory_id(category_id.toString());
+      // If not the author of product return to product page
+      if (product.user_id !== userId) {
+        dispatch(setError("That is not your product"));
+        navigate(`/products/${product.product_id}`, { replace: true });
+      } else {
+        const category_id =
+          1 + categories.findIndex((el) => el === product.category);
+        setCategory_id(category_id.toString());
 
-      title.setValue(product.title);
-      description.setValue(product.description);
-      price.setValue(product.price.toString());
-      location.setValue(product.location);
+        title.setValue(product.title);
+        description.setValue(product.description);
+        price.setValue(product.price.toString());
+        location.setValue(product.location);
 
-      setImages(product.images!);
-      setUpdatedImages(product.images!);
+        setImages(product.images!);
+        setUpdatedImages(product.images!);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product]);
-
-  const navigate = useNavigate();
 
   const submitForm = async (e: FormEvent) => {
     e.preventDefault();

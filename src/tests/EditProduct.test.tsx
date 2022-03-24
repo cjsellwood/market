@@ -20,13 +20,31 @@ describe("Edit Product Component", () => {
     window.fetch = originalFetch;
   });
 
-  test("Initial values for product are filled in", async () => {
+  test("Can't access edit page if not author of product", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 200,
       json: () => Promise.resolve(randomProducts[0]),
     });
 
     renderer(<EditProduct />);
+
+    expect(
+      await screen.findByText("That is not your product")
+    ).toBeInTheDocument();
+    expect(mockNavigate).toHaveBeenCalledWith("/products/29", {
+      replace: true,
+    });
+  });
+
+  test("Initial values for product are filled in", async () => {
+    window.fetch = jest.fn().mockReturnValue({
+      status: 200,
+      json: () => Promise.resolve(randomProducts[0]),
+    });
+
+    renderer(<EditProduct />, { auth: { userId: randomProducts[0].user_id } });
+
+    expect(mockNavigate).not.toHaveBeenCalled();
 
     await screen.findByDisplayValue("Ergonomic Frozen Towels");
 
@@ -52,7 +70,9 @@ describe("Edit Product Component", () => {
       json: () => Promise.resolve(randomProducts[0]),
     });
 
-    renderer(<EditProduct />);
+    renderer(<EditProduct />, { auth: { userId: randomProducts[0].user_id } });
+
+    expect(mockNavigate).not.toHaveBeenCalled();
 
     await screen.findByDisplayValue("Ergonomic Frozen Towels");
 
@@ -88,7 +108,9 @@ describe("Edit Product Component", () => {
     });
     window.URL.createObjectURL = jest.fn().mockReturnValue("blob");
 
-    renderer(<EditProduct />);
+    renderer(<EditProduct />, { auth: { userId: randomProducts[0].user_id } });
+
+    expect(mockNavigate).not.toHaveBeenCalled();
 
     await screen.findByDisplayValue("Ergonomic Frozen Towels");
 
@@ -136,7 +158,9 @@ describe("Edit Product Component", () => {
     });
     window.URL.createObjectURL = jest.fn().mockReturnValue("blob");
 
-    renderer(<EditProduct />);
+    renderer(<EditProduct />, { auth: { userId: randomProducts[0].user_id } });
+
+    expect(mockNavigate).not.toHaveBeenCalled();
 
     await screen.findByDisplayValue("Ergonomic Frozen Towels");
 
@@ -213,7 +237,9 @@ describe("Edit Product Component", () => {
       status: 200,
       json: () => Promise.resolve(randomProducts[0]),
     });
-    renderer(<EditProduct />);
+    renderer(<EditProduct />, { auth: { userId: randomProducts[0].user_id } });
+
+    expect(mockNavigate).not.toHaveBeenCalled();
 
     await screen.findByDisplayValue("Ergonomic Frozen Towels");
 
@@ -232,7 +258,9 @@ describe("Edit Product Component", () => {
       status: 200,
       json: () => Promise.resolve(randomProducts[0]),
     });
-    renderer(<EditProduct />);
+    renderer(<EditProduct />, { auth: { userId: randomProducts[0].user_id } });
+
+    expect(mockNavigate).not.toHaveBeenCalled();
 
     await screen.findByDisplayValue("Ergonomic Frozen Towels");
 
@@ -250,7 +278,9 @@ describe("Edit Product Component", () => {
       status: 200,
       json: () => Promise.resolve(randomProducts[0]),
     });
-    renderer(<EditProduct />);
+    renderer(<EditProduct />, { auth: { userId: randomProducts[0].user_id } });
+
+    expect(mockNavigate).not.toHaveBeenCalled();
 
     await screen.findByDisplayValue("Ergonomic Frozen Towels");
 
@@ -267,7 +297,9 @@ describe("Edit Product Component", () => {
       status: 200,
       json: () => Promise.resolve(randomProducts[0]),
     });
-    renderer(<EditProduct />);
+    renderer(<EditProduct />, { auth: { userId: randomProducts[0].user_id } });
+
+    expect(mockNavigate).not.toHaveBeenCalled();
 
     await screen.findByDisplayValue("Ergonomic Frozen Towels");
 
@@ -289,7 +321,9 @@ describe("Edit Product Component", () => {
       json: () => Promise.resolve(randomProducts[0]),
     });
 
-    renderer(<EditProduct />);
+    renderer(<EditProduct />, { auth: { userId: randomProducts[0].user_id } });
+
+    expect(mockNavigate).not.toHaveBeenCalled();
 
     await screen.findByDisplayValue("Ergonomic Frozen Towels");
 

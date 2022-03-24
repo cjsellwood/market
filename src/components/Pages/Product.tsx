@@ -16,6 +16,7 @@ import useAppSelector from "../../hooks/useAppSelector";
 import { getProduct, deleteProduct } from "../../store/productThunks";
 import { Link as RouterLink } from "react-router-dom";
 import SearchBox from "../Parts/SearchBox";
+import ShowToAuthor from "../Navigation/ShowToAuthor";
 
 const Product = () => {
   const { product, loading, error } = useAppSelector((state) => state.product);
@@ -116,16 +117,18 @@ const Product = () => {
       <Text fontSize="0.8rem">
         {product.location} - {new Date(product.listed).toLocaleDateString()}
       </Text>
-      <Flex>
-        <Link to={`/products/${id}/edit`} as={RouterLink}>
-          <Flex justifyContent="center">
-            <Button colorScheme="green">Edit</Button>
-          </Flex>
-        </Link>
-        <Button onClick={handleDelete} colorScheme="red" isLoading={loading}>
-          Delete
-        </Button>
-      </Flex>
+      <ShowToAuthor authorId={product.user_id}>
+        <Flex>
+          <Link to={`/products/${id}/edit`} as={RouterLink}>
+            <Flex justifyContent="center">
+              <Button colorScheme="green">Edit</Button>
+            </Flex>
+          </Link>
+          <Button onClick={handleDelete} colorScheme="red" isLoading={loading}>
+            Delete
+          </Button>
+        </Flex>
+      </ShowToAuthor>
     </Flex>
   );
 };

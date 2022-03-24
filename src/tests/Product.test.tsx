@@ -88,7 +88,7 @@ describe("Product component", () => {
       json: () => Promise.resolve(randomProducts[0]),
     });
 
-    renderer(<Product />);
+    renderer(<Product />, { auth: { userId: randomProducts[0].user_id } });
 
     expect(
       await screen.findByText("Ergonomic Frozen Towels")
@@ -118,7 +118,7 @@ describe("Product component", () => {
       json: () => Promise.resolve(randomProducts[0]),
     });
 
-    renderer(<Product />);
+    renderer(<Product />, { auth: { userId: randomProducts[0].user_id } });
 
     expect(
       await screen.findByText("Ergonomic Frozen Towels")
