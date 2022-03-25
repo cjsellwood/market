@@ -158,7 +158,9 @@ describe("Edit Product Component", () => {
     });
     window.URL.createObjectURL = jest.fn().mockReturnValue("blob");
 
-    renderer(<EditProduct />, { auth: { userId: randomProducts[0].user_id } });
+    renderer(<EditProduct />, {
+      auth: { userId: randomProducts[0].user_id, token: "2f4dfd" },
+    });
 
     expect(mockNavigate).not.toHaveBeenCalled();
 
@@ -224,7 +226,14 @@ describe("Edit Product Component", () => {
 
     expect(window.fetch).toHaveBeenLastCalledWith(
       "http://localhost:5000/products/29",
-      { method: "PUT", mode: "cors", body: formData }
+      {
+        method: "PUT",
+        mode: "cors",
+        body: formData,
+        headers: {
+          Authorization: "Bearer 2f4dfd",
+        },
+      }
     );
 
     await waitFor(() =>
