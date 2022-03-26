@@ -24,7 +24,7 @@ const App = () => {
     dispatch(loadStoredUser());
   }, [dispatch]);
   return (
-    <Box bg="gray.100" minW="100%" minH="200vh">
+    <Box bg="gray.100" minW="100%" minH="100vh">
       <ScrollToTop />
       <Navbar />
       <Box paddingTop="56px">

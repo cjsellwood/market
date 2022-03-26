@@ -39,6 +39,13 @@ describe("Visit product pages", () => {
       "http://localhost:5000/products/search?q=the&page=1&category=1",
       searchCategory
     );
+    cy.intercept("http://localhost:5000/auth/login", {
+      email: "cypress@email.com",
+      username: "cypress",
+      userId: randomProducts[0].user_id,
+      token: "2f4dfd",
+      expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    });
   });
   it("Navigates to home screen and uses navigation menu", () => {
     cy.visit("/");
@@ -180,6 +187,12 @@ describe("Visit product pages", () => {
     cy.intercept("http://localhost:5000/products/99", randomProducts[0]);
 
     cy.visit("/#/new");
+
+    // Login
+    cy.get("#email").type("test@email.com");
+    cy.get("#password").type("password");
+    cy.contains("Submit").click();
+
     cy.contains("New Product");
 
     cy.get("#title").type("New Product");
@@ -215,6 +228,11 @@ describe("Visit product pages", () => {
     cy.intercept("DELETE", "http://localhost:5000/products/29", {
       message: "Deleted",
     });
+    cy.visit("/#/login");
+    cy.get("#email").type("test@email.com");
+    cy.get("#password").type("password");
+    cy.contains("Submit").click();
+
     cy.visit("/#/products/29");
     cy.contains("Ergonomic Frozen Towels");
     cy.contains("Delete").click();
@@ -232,6 +250,12 @@ describe("Visit product pages", () => {
   });
 
   it("Can update a product", () => {
+    cy.visit("#/login");
+    // Login
+    cy.get("#email").type("test@email.com");
+    cy.get("#password").type("password");
+    cy.contains("Submit").click();
+
     cy.visit("/#/products/29");
     cy.contains("Ergonomic Frozen Towels");
     cy.contains("Edit").click();
