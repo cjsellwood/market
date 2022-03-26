@@ -22,7 +22,7 @@ describe("New Product Component", () => {
           product_id: 99,
         }),
     });
-    renderer(<NewProduct />, { auth: { token: "2f4dfd" } });
+    renderer(<NewProduct />);
 
     userEvent.type(screen.getByLabelText("Title *"), "New Product");
     expect(screen.getByLabelText("Title *")).toHaveValue("New Product");
@@ -69,9 +69,6 @@ describe("New Product Component", () => {
         method: "POST",
         mode: "cors",
         body: formData,
-        headers: {
-          Authorization: "Bearer 2f4dfd",
-        },
       }
     );
   });

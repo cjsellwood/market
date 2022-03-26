@@ -101,36 +101,7 @@ export const loginUser = createAsyncThunk(
 export const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    loadStoredUser: (state) => {
-      const storedUserId = localStorage.getItem("userId");
-      const storedToken = localStorage.getItem("token");
-      const storedExpires = localStorage.getItem("expires");
-
-      if (!storedExpires || !storedToken || !storedUserId) {
-        return;
-      }
-
-      // Check if token is expired
-      const expires = Number(storedExpires);
-      if (expires < Date.now()) {
-        return;
-      }
-
-      state.expires = expires;
-      state.token = storedToken;
-      state.userId = Number(storedUserId);
-    },
-    logOutUser: (state) => {
-      state.expires = null;
-      state.token = null;
-      state.userId = null;
-
-      localStorage.removeItem("userId");
-      localStorage.removeItem("token");
-      localStorage.removeItem("expires");
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state, action) => {
@@ -146,10 +117,6 @@ export const authSlice = createSlice({
           state.userId = action.payload.userId;
           state.token = action.payload.token;
           state.expires = action.payload.expires;
-
-          localStorage.setItem("userId", action.payload.userId.toString());
-          localStorage.setItem("token", action.payload.token);
-          localStorage.setItem("expires", action.payload.expires.toString());
         }
       )
       .addCase(registerUser.rejected, (state, action) => {
@@ -169,10 +136,6 @@ export const authSlice = createSlice({
           state.userId = action.payload.userId;
           state.token = action.payload.token;
           state.expires = action.payload.expires;
-
-          localStorage.setItem("userId", action.payload.userId.toString());
-          localStorage.setItem("token", action.payload.token);
-          localStorage.setItem("expires", action.payload.expires.toString());
         }
       )
       .addCase(loginUser.rejected, (state, action) => {
@@ -182,6 +145,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { loadStoredUser, logOutUser } = authSlice.actions;
+// export const {} = authSlice.actions;
 
 export default authSlice.reducer;

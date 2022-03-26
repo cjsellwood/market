@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import productReducer from "../store/productSlice";
-import authReducer, { loginUser } from "../store/authSlice";
 import {
   getRandom,
   getProduct,
@@ -314,32 +313,6 @@ describe("Product Slice redux testing", () => {
 
   describe("New product tests", () => {
     test("Submits a new product", async () => {
-      store = configureStore({
-        reducer: {
-          product: productReducer,
-          auth: authReducer,
-        },
-      });
-
-      // Login user
-      window.fetch = jest.fn().mockReturnValue({
-        status: 200,
-        json: () =>
-          Promise.resolve({
-            email: "jestUser@email.com",
-            username: "jestUser",
-            userId: 99,
-            token: "2f4dfd",
-            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-          }),
-      });
-      await store.dispatch(
-        loginUser({
-          email: "jestUser@email.com",
-          password: "password",
-        })
-      );
-
       window.fetch = jest.fn().mockReturnValue({
         status: 200,
         json: () =>
@@ -361,45 +334,9 @@ describe("Product Slice redux testing", () => {
       const state = store.getState().product;
       expect(state.error).toBe(null);
       expect(state.loading).toBe(false);
-
-      expect(window.fetch).toHaveBeenCalledWith(
-        "http://localhost:5000/products/new",
-        {
-          body: formData,
-          headers: { Authorization: "Bearer 2f4dfd" },
-          method: "POST",
-          mode: "cors",
-        }
-      );
     });
 
     test("Return error if submission error", async () => {
-      store = configureStore({
-        reducer: {
-          product: productReducer,
-          auth: authReducer,
-        },
-      });
-
-      // Login user
-      window.fetch = jest.fn().mockReturnValue({
-        status: 200,
-        json: () =>
-          Promise.resolve({
-            email: "jestUser@email.com",
-            username: "jestUser",
-            userId: 99,
-            token: "2f4dfd",
-            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-          }),
-      });
-      await store.dispatch(
-        loginUser({
-          email: "jestUser@email.com",
-          password: "password",
-        })
-      );
-
       window.fetch = jest.fn().mockReturnValue({
         status: 400,
       });
@@ -422,32 +359,6 @@ describe("Product Slice redux testing", () => {
 
   describe("Delete product", () => {
     test("Sends a delete request to server", async () => {
-      store = configureStore({
-        reducer: {
-          product: productReducer,
-          auth: authReducer,
-        },
-      });
-
-      // Login user
-      window.fetch = jest.fn().mockReturnValue({
-        status: 200,
-        json: () =>
-          Promise.resolve({
-            email: "jestUser@email.com",
-            username: "jestUser",
-            userId: 99,
-            token: "2f4dfd",
-            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-          }),
-      });
-      await store.dispatch(
-        loginUser({
-          email: "jestUser@email.com",
-          password: "password",
-        })
-      );
-
       window.fetch = jest.fn().mockReturnValue({
         status: 200,
         json: () => ({
@@ -459,11 +370,7 @@ describe("Product Slice redux testing", () => {
 
       expect(window.fetch).toHaveBeenLastCalledWith(
         "http://localhost:5000/products/99",
-        {
-          method: "DELETE",
-          mode: "cors",
-          headers: { Authorization: "Bearer 2f4dfd" },
-        }
+        { method: "DELETE", mode: "cors" }
       );
 
       const state = store.getState().product;
@@ -473,32 +380,6 @@ describe("Product Slice redux testing", () => {
     });
 
     test("Return error if product does not exist", async () => {
-      store = configureStore({
-        reducer: {
-          product: productReducer,
-          auth: authReducer,
-        },
-      });
-
-      // Login user
-      window.fetch = jest.fn().mockReturnValue({
-        status: 200,
-        json: () =>
-          Promise.resolve({
-            email: "jestUser@email.com",
-            username: "jestUser",
-            userId: 99,
-            token: "2f4dfd",
-            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-          }),
-      });
-      await store.dispatch(
-        loginUser({
-          email: "jestUser@email.com",
-          password: "password",
-        })
-      );
-
       window.fetch = jest.fn().mockReturnValue({
         status: 404,
         json: () => ({ error: "Product not found" }),
@@ -514,32 +395,6 @@ describe("Product Slice redux testing", () => {
 
   describe("Update product", () => {
     test("Updates a product with new information", async () => {
-      store = configureStore({
-        reducer: {
-          product: productReducer,
-          auth: authReducer,
-        },
-      });
-
-      // Login user
-      window.fetch = jest.fn().mockReturnValue({
-        status: 200,
-        json: () =>
-          Promise.resolve({
-            email: "jestUser@email.com",
-            username: "jestUser",
-            userId: 99,
-            token: "2f4dfd",
-            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-          }),
-      });
-      await store.dispatch(
-        loginUser({
-          email: "jestUser@email.com",
-          password: "password",
-        })
-      );
-
       window.fetch = jest.fn().mockReturnValue({
         status: 200,
         json: () =>
@@ -566,14 +421,7 @@ describe("Product Slice redux testing", () => {
 
       expect(window.fetch).toHaveBeenLastCalledWith(
         "http://localhost:5000/products/99",
-        {
-          method: "PUT",
-          mode: "cors",
-          body: formData,
-          headers: {
-            Authorization: "Bearer 2f4dfd",
-          },
-        }
+        { method: "PUT", mode: "cors", body: formData }
       );
 
       expect(result.payload.product_id).toBe(99);
@@ -583,32 +431,6 @@ describe("Product Slice redux testing", () => {
     });
 
     test("Return error if product does not exist", async () => {
-      store = configureStore({
-        reducer: {
-          product: productReducer,
-          auth: authReducer,
-        },
-      });
-
-      // Login user
-      window.fetch = jest.fn().mockReturnValue({
-        status: 200,
-        json: () =>
-          Promise.resolve({
-            email: "jestUser@email.com",
-            username: "jestUser",
-            userId: 99,
-            token: "2f4dfd",
-            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-          }),
-      });
-      await store.dispatch(
-        loginUser({
-          email: "jestUser@email.com",
-          password: "password",
-        })
-      );
-      
       window.fetch = jest.fn().mockReturnValue({
         status: 404,
         json: () => ({ error: "Product not found" }),

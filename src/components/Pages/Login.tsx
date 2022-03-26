@@ -1,6 +1,6 @@
 import { Heading, Flex, Button, useToast } from "@chakra-ui/react";
 import { FormEvent, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import useAppSelector from "../../hooks/useAppSelector";
 import useInput from "../../hooks/useInput";
@@ -29,8 +29,6 @@ const Login = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  let location = useLocation();
-
   const submitForm = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -46,8 +44,7 @@ const Login = () => {
     );
 
     if (login.meta.requestStatus === "fulfilled") {
-      const url = (location.state as any)?.from?.pathname || "/";
-      navigate(url);
+      navigate("/");
     }
   };
 
