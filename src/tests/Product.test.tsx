@@ -88,7 +88,9 @@ describe("Product component", () => {
       json: () => Promise.resolve(randomProducts[0]),
     });
 
-    renderer(<Product />);
+    renderer(<Product />, {
+      auth: { userId: randomProducts[0].user_id, token: "2f4dfd" },
+    });
 
     expect(
       await screen.findByText("Ergonomic Frozen Towels")
@@ -102,7 +104,13 @@ describe("Product component", () => {
 
     expect(window.fetch).toHaveBeenLastCalledWith(
       "http://localhost:5000/products/29",
-      { method: "DELETE", mode: "cors" }
+      {
+        method: "DELETE",
+        mode: "cors",
+        headers: {
+          Authorization: "Bearer 2f4dfd",
+        },
+      }
     );
 
     await waitForElementToBeRemoved(() =>
@@ -118,7 +126,7 @@ describe("Product component", () => {
       json: () => Promise.resolve(randomProducts[0]),
     });
 
-    renderer(<Product />);
+    renderer(<Product />, { auth: { userId: randomProducts[0].user_id } });
 
     expect(
       await screen.findByText("Ergonomic Frozen Towels")

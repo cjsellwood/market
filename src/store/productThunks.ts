@@ -1,4 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { RootState } from "./store";
 
 export const generateError = async (res: Response) => {
   try {
@@ -155,12 +156,16 @@ export const getSearch = createAsyncThunk(
 
 export const newProduct = createAsyncThunk(
   "products/new",
-  async (product: FormData, { rejectWithValue }) => {
+  async (product: FormData, { rejectWithValue, getState }) => {
+    const token = (getState() as RootState).auth.token;
     try {
       const res = await fetch("http://localhost:5000/products/new", {
         method: "POST",
         mode: "cors",
         body: product,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       // If an error return error message
       if (res.status !== 200) {
@@ -178,11 +183,16 @@ export const newProduct = createAsyncThunk(
 
 export const deleteProduct = createAsyncThunk(
   "products/delete",
-  async (product_id: string, { rejectWithValue }) => {
+  async (product_id: string, { rejectWithValue, getState }) => {
+    const token = (getState() as RootState).auth.token;
+
     try {
       const res = await fetch(`http://localhost:5000/products/${product_id}`, {
         method: "DELETE",
         mode: "cors",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       // If an error return error message
       if (res.status !== 200) {
@@ -202,8 +212,9 @@ export const updateProduct = createAsyncThunk(
   "products/update",
   async (
     product: { form: FormData; product_id: string },
-    { rejectWithValue }
+    { rejectWithValue, getState }
   ) => {
+    const token = (getState() as RootState).auth.token;
     try {
       const res = await fetch(
         `http://localhost:5000/products/${product.product_id}`,
@@ -211,6 +222,9 @@ export const updateProduct = createAsyncThunk(
           method: "PUT",
           mode: "cors",
           body: product.form,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       // If an error return error message
