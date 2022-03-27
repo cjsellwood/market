@@ -33,6 +33,7 @@ describe("Auth Slice redux testing", () => {
       expires: null,
       userId: null,
       error: null,
+      storageLoaded: false,
     });
   });
 
