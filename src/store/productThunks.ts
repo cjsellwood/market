@@ -154,21 +154,25 @@ export const getSearch = createAsyncThunk(
   }
 );
 
-
 export const getUserProducts = createAsyncThunk(
   "products/user",
   async (
-    query: {page: number, count?: string},
-    { rejectWithValue }
+    query: { page: number; count?: string },
+    { rejectWithValue, getState }
   ) => {
+    const token = (getState() as RootState).auth.token;
+
     try {
       const res = await fetch(
-        `http://localhost:5000/products/user?page=${
-          query.page
-        }${query.count && query.page !== 1 ? `&count=${query.count}` : ""}`,
+        `http://localhost:5000/products/user?page=${query.page}${
+          query.count && query.page !== 1 ? `&count=${query.count}` : ""
+        }`,
         {
           method: "GET",
           mode: "cors",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 

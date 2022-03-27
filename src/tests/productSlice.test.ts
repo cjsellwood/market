@@ -315,6 +315,32 @@ describe("Product Slice redux testing", () => {
 
   describe("User products", () => {
     test("Gets products created by a user", async () => {
+      store = configureStore({
+        reducer: {
+          product: productReducer,
+          auth: authReducer,
+        },
+      });
+
+      // Login user
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            email: "jestUser@email.com",
+            username: "jestUser",
+            userId: 99,
+            token: "2f4dfd",
+            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+          }),
+      });
+      await store.dispatch(
+        loginUser({
+          email: "jestUser@email.com",
+          password: "password",
+        })
+      );
+
       window.fetch = jest.fn().mockReturnValue({
         status: 200,
         json: () => Promise.resolve(category1Products),
@@ -331,6 +357,32 @@ describe("Product Slice redux testing", () => {
     });
 
     test("Get user products 2nd page", async () => {
+      store = configureStore({
+        reducer: {
+          product: productReducer,
+          auth: authReducer,
+        },
+      });
+
+      // Login user
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            email: "jestUser@email.com",
+            username: "jestUser",
+            userId: 99,
+            token: "2f4dfd",
+            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+          }),
+      });
+      await store.dispatch(
+        loginUser({
+          email: "jestUser@email.com",
+          password: "password",
+        })
+      );
+
       window.fetch = jest.fn().mockReturnValue({
         status: 200,
         json: () => Promise.resolve(category1Products),
@@ -345,7 +397,33 @@ describe("Product Slice redux testing", () => {
       expect(state.count).toBe(category1Products.count);
     });
 
-    test("Return general error if can't fetch category products", async () => {
+    test("Return general error if can't fetch user products", async () => {
+      store = configureStore({
+        reducer: {
+          product: productReducer,
+          auth: authReducer,
+        },
+      });
+
+      // Login user
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            email: "jestUser@email.com",
+            username: "jestUser",
+            userId: 99,
+            token: "2f4dfd",
+            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+          }),
+      });
+      await store.dispatch(
+        loginUser({
+          email: "jestUser@email.com",
+          password: "password",
+        })
+      );
+
       window.fetch = jest.fn().mockReturnValue({
         status: 400,
       });

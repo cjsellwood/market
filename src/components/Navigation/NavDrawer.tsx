@@ -49,6 +49,11 @@ const NavDrawer = ({
                   <Button>New Product</Button>
                 </Flex>
               </Link>
+              <Link to="/products/yours" as={RouterLink} w="100%" onClick={onClose}>
+                <Flex justifyContent="center">
+                  <Button>Your Products</Button>
+                </Flex>
+              </Link>
             </ShowToLoggedIn>
           </Flex>
           <VStack paddingTop="4">

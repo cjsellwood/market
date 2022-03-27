@@ -15,6 +15,7 @@ import { useEffect } from "react";
 import useAppDispatch from "./hooks/useAppDispatch";
 import { loadStoredUser } from "./store/authSlice";
 import RedirectLogin from "./components/Navigation/RedirectLogin";
+import UserProducts from "./components/Pages/UserProducts";
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -39,6 +40,14 @@ const App = () => {
             element={
               <RedirectLogin>
                 <NewProduct />
+              </RedirectLogin>
+            }
+          />
+          <Route
+            path="/products/yours"
+            element={
+              <RedirectLogin>
+                <UserProducts />
               </RedirectLogin>
             }
           />
