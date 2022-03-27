@@ -108,6 +108,7 @@ export const authSlice = createSlice({
       const storedUserId = localStorage.getItem("userId");
       const storedToken = localStorage.getItem("token");
       const storedExpires = localStorage.getItem("expires");
+      state.storageLoaded = true;
 
       if (!storedExpires || !storedToken || !storedUserId) {
         return;
@@ -122,7 +123,6 @@ export const authSlice = createSlice({
       state.expires = expires;
       state.token = storedToken;
       state.userId = Number(storedUserId);
-      state.storageLoaded = true;
     },
     logOutUser: (state) => {
       state.expires = null;

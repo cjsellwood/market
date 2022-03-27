@@ -12,7 +12,7 @@ const RedirectLogin = ({ children }: { children: ReactNode }) => {
       navigate("/login", { replace: true, state: { from: location } });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [storageLoaded]);
 
   if (userId) {
     return <React.Fragment>{children}</React.Fragment>;
