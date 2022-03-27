@@ -9,6 +9,7 @@ interface AuthState {
   expires: number | null;
   userId: number | null;
   error: string | null;
+  storageLoaded: boolean;
 }
 
 export const initialState: AuthState = {
@@ -19,6 +20,7 @@ export const initialState: AuthState = {
   expires: null,
   userId: null,
   error: null,
+  storageLoaded: false,
 };
 
 interface RegisterReturn {
@@ -106,6 +108,7 @@ export const authSlice = createSlice({
       const storedUserId = localStorage.getItem("userId");
       const storedToken = localStorage.getItem("token");
       const storedExpires = localStorage.getItem("expires");
+      state.storageLoaded = true;
 
       if (!storedExpires || !storedToken || !storedUserId) {
         return;

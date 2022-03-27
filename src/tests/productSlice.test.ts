@@ -10,6 +10,7 @@ import {
   newProduct,
   deleteProduct,
   updateProduct,
+  getUserProducts,
 } from "../store/productThunks";
 import {
   allProducts,
@@ -304,6 +305,130 @@ describe("Product Slice redux testing", () => {
       });
 
       await store.dispatch(getSearch({ q: "error", page: 1 }));
+
+      const state = store.getState().product;
+      expect(state.error).toBe("Connection error");
+      expect(state.loading).toBe(false);
+      expect(state.products).toEqual([]);
+    });
+  });
+
+  describe("User products", () => {
+    test("Gets products created by a user", async () => {
+      store = configureStore({
+        reducer: {
+          product: productReducer,
+          auth: authReducer,
+        },
+      });
+
+      // Login user
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            email: "jestUser@email.com",
+            username: "jestUser",
+            userId: 99,
+            token: "2f4dfd",
+            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+          }),
+      });
+      await store.dispatch(
+        loginUser({
+          email: "jestUser@email.com",
+          password: "password",
+        })
+      );
+
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () => Promise.resolve(category1Products),
+      });
+
+      await store.dispatch(getUserProducts({ page: 1 }));
+
+      const state = store.getState().product;
+
+      expect(state.products).toEqual(category1Products.products);
+      expect(state.error).toBe(null);
+      expect(state.loading).toBe(false);
+      expect(state.count).toBe(category1Products.count);
+    });
+
+    test("Get user products 2nd page", async () => {
+      store = configureStore({
+        reducer: {
+          product: productReducer,
+          auth: authReducer,
+        },
+      });
+
+      // Login user
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            email: "jestUser@email.com",
+            username: "jestUser",
+            userId: 99,
+            token: "2f4dfd",
+            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+          }),
+      });
+      await store.dispatch(
+        loginUser({
+          email: "jestUser@email.com",
+          password: "password",
+        })
+      );
+
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () => Promise.resolve(category1Products),
+      });
+
+      await store.dispatch(getUserProducts({ page: 2, count: "28" }));
+      const state = store.getState().product;
+
+      expect(state.products).toEqual(category1Products.products);
+      expect(state.error).toBe(null);
+      expect(state.loading).toBe(false);
+      expect(state.count).toBe(category1Products.count);
+    });
+
+    test("Return general error if can't fetch user products", async () => {
+      store = configureStore({
+        reducer: {
+          product: productReducer,
+          auth: authReducer,
+        },
+      });
+
+      // Login user
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            email: "jestUser@email.com",
+            username: "jestUser",
+            userId: 99,
+            token: "2f4dfd",
+            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+          }),
+      });
+      await store.dispatch(
+        loginUser({
+          email: "jestUser@email.com",
+          password: "password",
+        })
+      );
+
+      window.fetch = jest.fn().mockReturnValue({
+        status: 400,
+      });
+
+      await store.dispatch(getUserProducts({ page: 1 }));
 
       const state = store.getState().product;
       expect(state.error).toBe("Connection error");
@@ -608,7 +733,7 @@ describe("Product Slice redux testing", () => {
           password: "password",
         })
       );
-      
+
       window.fetch = jest.fn().mockReturnValue({
         status: 404,
         json: () => ({ error: "Product not found" }),

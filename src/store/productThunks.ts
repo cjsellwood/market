@@ -154,6 +154,42 @@ export const getSearch = createAsyncThunk(
   }
 );
 
+export const getUserProducts = createAsyncThunk(
+  "products/user",
+  async (
+    query: { page: number; count?: string },
+    { rejectWithValue, getState }
+  ) => {
+    const token = (getState() as RootState).auth.token;
+
+    try {
+      const res = await fetch(
+        `http://localhost:5000/products/user?page=${query.page}${
+          query.count && query.page !== 1 ? `&count=${query.count}` : ""
+        }`,
+        {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // If an error return error message
+      if (res.status !== 200) {
+        throw new Error(await generateError(res));
+      }
+
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      const newError = error as Error;
+      return rejectWithValue(newError.message);
+    }
+  }
+);
+
 export const newProduct = createAsyncThunk(
   "products/new",
   async (product: FormData, { rejectWithValue, getState }) => {

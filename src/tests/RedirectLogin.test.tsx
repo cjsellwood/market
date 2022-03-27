@@ -21,7 +21,8 @@ describe("Redirect Login component", () => {
     renderer(
       <RedirectLogin>
         <p>Content</p>
-      </RedirectLogin>
+      </RedirectLogin>,
+      { auth: { storageLoaded: true, userId: null } }
     );
 
     expect(mockNavigate).toHaveBeenCalledWith("/login", {
@@ -35,7 +36,7 @@ describe("Redirect Login component", () => {
       <RedirectLogin>
         <p>Content</p>
       </RedirectLogin>,
-      { auth: { userId: 99 } }
+      { auth: { userId: 99, storageLoaded: true } }
     );
 
     expect(mockNavigate).not.toHaveBeenCalled();
