@@ -10,6 +10,7 @@ import {
   newProduct,
   deleteProduct,
   updateProduct,
+  getUserProducts,
 } from "../store/productThunks";
 import {
   allProducts,
@@ -304,6 +305,52 @@ describe("Product Slice redux testing", () => {
       });
 
       await store.dispatch(getSearch({ q: "error", page: 1 }));
+
+      const state = store.getState().product;
+      expect(state.error).toBe("Connection error");
+      expect(state.loading).toBe(false);
+      expect(state.products).toEqual([]);
+    });
+  });
+
+  describe("User products", () => {
+    test("Gets products created by a user", async () => {
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () => Promise.resolve(category1Products),
+      });
+
+      await store.dispatch(getUserProducts({ page: 1 }));
+
+      const state = store.getState().product;
+
+      expect(state.products).toEqual(category1Products.products);
+      expect(state.error).toBe(null);
+      expect(state.loading).toBe(false);
+      expect(state.count).toBe(category1Products.count);
+    });
+
+    test("Get user products 2nd page", async () => {
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () => Promise.resolve(category1Products),
+      });
+
+      await store.dispatch(getUserProducts({ page: 2, count: "28" }));
+      const state = store.getState().product;
+
+      expect(state.products).toEqual(category1Products.products);
+      expect(state.error).toBe(null);
+      expect(state.loading).toBe(false);
+      expect(state.count).toBe(category1Products.count);
+    });
+
+    test("Return general error if can't fetch category products", async () => {
+      window.fetch = jest.fn().mockReturnValue({
+        status: 400,
+      });
+
+      await store.dispatch(getUserProducts({ page: 1 }));
 
       const state = store.getState().product;
       expect(state.error).toBe("Connection error");
@@ -608,7 +655,7 @@ describe("Product Slice redux testing", () => {
           password: "password",
         })
       );
-      
+
       window.fetch = jest.fn().mockReturnValue({
         status: 404,
         json: () => ({ error: "Product not found" }),
