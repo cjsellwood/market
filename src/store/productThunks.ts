@@ -276,3 +276,36 @@ export const updateProduct = createAsyncThunk(
     }
   }
 );
+
+export const sendMessage = createAsyncThunk(
+  "products/message",
+  async (
+    query: { text: string; product_id: number; sender: number },
+    { rejectWithValue, getState }
+  ) => {
+    const token = (getState() as RootState).auth.token;
+    try {
+      const res = await fetch(
+        `http://localhost:5000/products/${query.product_id}`,
+        {
+          method: "POST",
+          mode: "cors",
+          body: JSON.stringify({ text: query.text }),
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // If an error return error message
+      if (res.status !== 200) {
+        throw new Error(await generateError(res));
+      }
+
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      const newError = error as Error;
+      return rejectWithValue(newError.message);
+    }
+  }
+);

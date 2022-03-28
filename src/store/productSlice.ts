@@ -9,13 +9,14 @@ import {
   deleteProduct,
   updateProduct,
   getUserProducts,
+  sendMessage,
 } from "./productThunks";
 
 interface Message {
   sender: number;
   receiver: number;
   text: string;
-  time: Date;
+  time: string;
 }
 
 export interface Product {
@@ -215,6 +216,25 @@ export const productSlice = createSlice({
       .addCase(updateProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(sendMessage.pending, (state, action) => {
+        state.error = null;
+        state.product?.messages?.push({
+          sender: action.meta.arg.sender,
+          receiver: state.product.user_id,
+          text: action.meta.arg.text,
+          time: new Date().toISOString(),
+        });
+      })
+      .addCase(sendMessage.fulfilled, (state, action) => {
+        state.error = null;
+      })
+      .addCase(sendMessage.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.product!.messages = state.product?.messages?.slice(
+          0,
+          state.product.messages.length - 1
+        );
       });
   },
 });

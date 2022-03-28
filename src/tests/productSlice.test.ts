@@ -11,6 +11,7 @@ import {
   deleteProduct,
   updateProduct,
   getUserProducts,
+  sendMessage,
 } from "../store/productThunks";
 import {
   allProducts,
@@ -834,6 +835,111 @@ describe("Product Slice redux testing", () => {
       const state = store.getState().product;
       expect(state.error).toBe("Product not found");
       expect(state.loading).toBe(false);
+    });
+  });
+
+  describe("Sending message", () => {
+    test("Adds message to state and sends to server", async () => {
+      store = configureStore({
+        reducer: {
+          product: productReducer,
+          auth: authReducer,
+        },
+      });
+
+      // Login user
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            email: "jestUser@email.com",
+            username: "jestUser",
+            userId: 2,
+            token: "2f4dfd",
+            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+          }),
+      });
+      await store.dispatch(
+        loginUser({
+          email: "jestUser@email.com",
+          password: "password",
+        })
+      );
+
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () => Promise.resolve(messagedProduct),
+      });
+
+      await store.dispatch(getProduct(29));
+
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            message: "Success",
+          }),
+      });
+
+      await store.dispatch(
+        sendMessage({ text: "New message", product_id: 29, sender: 2 })
+      );
+
+      const state = store.getState().product;
+
+      expect(state.product?.messages?.length).toBe(11);
+      expect(state.product?.messages?.at(-1)?.sender).toBe(2);
+      expect(state.product?.messages?.at(-1)?.receiver).toBe(1);
+      expect(state.product?.messages?.at(-1)?.text).toBe("New message");
+    });
+
+    test("Remove message if error on server", async () => {
+      store = configureStore({
+        reducer: {
+          product: productReducer,
+          auth: authReducer,
+        },
+      });
+
+      // Login user
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            email: "jestUser@email.com",
+            username: "jestUser",
+            userId: 2,
+            token: "2f4dfd",
+            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+          }),
+      });
+      await store.dispatch(
+        loginUser({
+          email: "jestUser@email.com",
+          password: "password",
+        })
+      );
+
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () => Promise.resolve(messagedProduct),
+      });
+
+      await store.dispatch(getProduct(29));
+
+      window.fetch = jest.fn().mockReturnValue({
+        status: 400,
+        json: () => Promise.resolve({ error: "Could not add message" }),
+      });
+
+      await store.dispatch(
+        sendMessage({ text: "New message", product_id: 29, sender: 2 })
+      );
+
+      const state = store.getState().product;
+
+      expect(state.product?.messages?.length).toBe(10);
+      expect(state.error).toBe("Could not add message");
     });
   });
 });
