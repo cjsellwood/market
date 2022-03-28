@@ -16,6 +16,8 @@ import {
   allProducts,
   allProductsPage3,
   category1Products,
+  messagedProduct,
+  messagedProductAuthor,
   randomProducts,
   searchCategory,
   searchProducts,
@@ -147,6 +149,82 @@ describe("Product Slice redux testing", () => {
       const state = store.getState().product;
       expect(state.error).toBe("Connection error");
       expect(state.loading).toBe(false);
+    });
+
+    test("Fetches product with messages if logged in", async () => {
+      store = configureStore({
+        reducer: {
+          product: productReducer,
+          auth: authReducer,
+        },
+      });
+
+      // Login user
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            email: "jestUser@email.com",
+            username: "jestUser",
+            userId: 2,
+            token: "2f4dfd",
+            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+          }),
+      });
+      await store.dispatch(
+        loginUser({
+          email: "jestUser@email.com",
+          password: "password",
+        })
+      );
+
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () => Promise.resolve(messagedProduct),
+      });
+
+      await store.dispatch(getProduct(29));
+
+      const state = store.getState().product;
+      expect(state.product).toEqual(messagedProduct);
+    });
+
+    test("Fetches product with messages if author", async () => {
+      store = configureStore({
+        reducer: {
+          product: productReducer,
+          auth: authReducer,
+        },
+      });
+
+      // Login user
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            email: "jestUser@email.com",
+            username: "jestUser",
+            userId: 7,
+            token: "2f4dfd",
+            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+          }),
+      });
+      await store.dispatch(
+        loginUser({
+          email: "jestUser@email.com",
+          password: "password",
+        })
+      );
+
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () => Promise.resolve(messagedProductAuthor),
+      });
+
+      await store.dispatch(getProduct(29));
+
+      const state = store.getState().product;
+      expect(state.product).toEqual(messagedProductAuthor);
     });
   });
 

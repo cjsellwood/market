@@ -11,6 +11,13 @@ import {
   getUserProducts,
 } from "./productThunks";
 
+interface Message {
+  sender: number;
+  receiver: number;
+  text: string;
+  time: Date;
+}
+
 export interface Product {
   product_id: number;
   user_id: number;
@@ -22,6 +29,7 @@ export interface Product {
   images?: string[];
   image?: string;
   category?: string;
+  messages?: Message[];
 }
 
 interface ProductState {
