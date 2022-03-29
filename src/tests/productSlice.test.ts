@@ -882,7 +882,12 @@ describe("Product Slice redux testing", () => {
       });
 
       await store.dispatch(
-        sendMessage({ text: "New message", product_id: 29, sender: 2 })
+        sendMessage({
+          text: "New message",
+          product_id: 29,
+          sender: 2,
+          receiver: 1,
+        })
       );
 
       const state = store.getState().product;
@@ -890,6 +895,65 @@ describe("Product Slice redux testing", () => {
       expect(state.product?.messages?.length).toBe(11);
       expect(state.product?.messages?.at(-1)?.sender).toBe(2);
       expect(state.product?.messages?.at(-1)?.receiver).toBe(1);
+      expect(state.product?.messages?.at(-1)?.text).toBe("New message");
+    });
+
+    test("Adds message to state with no messages initially", async () => {
+      store = configureStore({
+        reducer: {
+          product: productReducer,
+          auth: authReducer,
+        },
+      });
+
+      // Login user
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            email: "jestUser@email.com",
+            username: "jestUser",
+            userId: 2,
+            token: "2f4dfd",
+            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+          }),
+      });
+      await store.dispatch(
+        loginUser({
+          email: "jestUser@email.com",
+          password: "password",
+        })
+      );
+
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () => Promise.resolve(randomProducts[0]),
+      });
+
+      await store.dispatch(getProduct(29));
+
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            message: "Success",
+          }),
+      });
+
+      await store.dispatch(
+        sendMessage({
+          text: "New message",
+          product_id: 29,
+          sender: 2,
+          receiver: randomProducts[0].user_id,
+        })
+      );
+
+      const state = store.getState().product;
+
+      expect(state.product?.messages?.length).toBe(1);
+      expect(state.product?.messages?.at(-1)?.sender).toBe(2);
+      expect(state.product?.messages?.at(-1)?.receiver).toBe(5);
       expect(state.product?.messages?.at(-1)?.text).toBe("New message");
     });
 
@@ -933,7 +997,12 @@ describe("Product Slice redux testing", () => {
       });
 
       await store.dispatch(
-        sendMessage({ text: "New message", product_id: 29, sender: 2 })
+        sendMessage({
+          text: "New message",
+          product_id: 29,
+          sender: 2,
+          receiver: 1,
+        })
       );
 
       const state = store.getState().product;

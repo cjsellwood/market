@@ -219,12 +219,23 @@ export const productSlice = createSlice({
       })
       .addCase(sendMessage.pending, (state, action) => {
         state.error = null;
-        state.product?.messages?.push({
-          sender: action.meta.arg.sender,
-          receiver: state.product.user_id,
-          text: action.meta.arg.text,
-          time: new Date().toISOString(),
-        });
+        if (state.product?.messages) {
+          state.product?.messages?.push({
+            sender: action.meta.arg.sender,
+            receiver: state.product.user_id,
+            text: action.meta.arg.text,
+            time: new Date().toISOString(),
+          });
+        } else {
+          state.product!.messages = [
+            {
+              sender: action.meta.arg.sender,
+              receiver: state.product!.user_id,
+              text: action.meta.arg.text,
+              time: new Date().toISOString(),
+            },
+          ];
+        }
       })
       .addCase(sendMessage.fulfilled, (state, action) => {
         state.error = null;

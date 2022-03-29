@@ -280,7 +280,12 @@ export const updateProduct = createAsyncThunk(
 export const sendMessage = createAsyncThunk(
   "products/message",
   async (
-    query: { text: string; product_id: number; sender: number },
+    query: {
+      text: string;
+      product_id: number;
+      sender: number;
+      receiver: number;
+    },
     { rejectWithValue, getState }
   ) => {
     const token = (getState() as RootState).auth.token;
@@ -290,8 +295,9 @@ export const sendMessage = createAsyncThunk(
         {
           method: "POST",
           mode: "cors",
-          body: JSON.stringify({ text: query.text }),
+          body: JSON.stringify({ text: query.text, receiver: query.receiver }),
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }

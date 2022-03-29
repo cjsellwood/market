@@ -10,16 +10,25 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import useAppSelector from "../../hooks/useAppSelector";
-import { getProduct, deleteProduct } from "../../store/productThunks";
+import {
+  getProduct,
+  deleteProduct,
+  sendMessage,
+} from "../../store/productThunks";
 import { Link as RouterLink } from "react-router-dom";
 import SearchBox from "../Parts/SearchBox";
 import ShowToAuthor from "../Navigation/ShowToAuthor";
+import ShowToUnauthorized from "../Navigation/ShowToUnauthorized";
+import ShowToLoggedIn from "../Navigation/ShowToLoggedIn";
+import useInput from "../../hooks/useInput";
+import CustomInput from "../Parts/CustomInput";
 
 const Product = () => {
   const { product, loading, error } = useAppSelector((state) => state.product);
+  const { userId } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
   const { id } = useParams();
@@ -39,6 +48,8 @@ const Product = () => {
     }
   };
 
+  const location = useLocation();
+
   // Show any errors
   const toast = useToast();
   useEffect(() => {
@@ -52,6 +63,38 @@ const Product = () => {
       });
     }
   }, [error, toast]);
+
+  const message = useInput("", "message", "Message", {
+    isRequired: true,
+    maxLength: 1000,
+  });
+
+  // Send new message
+  const submitMessage = async () => {
+    const isValid = message.isValid();
+
+    if (!isValid) {
+      return;
+    }
+
+    // Render immediately
+    const messageText = message.value;
+    message.setValue("");
+    const result = await dispatch(
+      sendMessage({
+        text: messageText,
+        product_id: product!.product_id,
+        sender: userId!,
+        receiver: product!.user_id,
+      })
+    );
+    window.scrollTo(0, 100000000000000);
+
+    // If failed to save message reset to before submit
+    if (result.meta.requestStatus !== "fulfilled") {
+      message.setValue(messageText);
+    }
+  };
 
   // If product loading
   if (loading && !product) {
@@ -129,6 +172,68 @@ const Product = () => {
           </Button>
         </Flex>
       </ShowToAuthor>
+      <Flex>
+        <ShowToUnauthorized>
+          <Button
+            colorScheme="blue"
+            onClick={() => {
+              navigate("/login", { replace: true, state: { from: location } });
+            }}
+            aria-label="link to login"
+          >
+            Login to send a message
+          </Button>
+        </ShowToUnauthorized>
+        <ShowToLoggedIn>
+          <Flex direction="column" w="100%">
+            <Heading>Messages</Heading>
+            <Flex direction="column">
+              {product.messages?.map((message, i) => {
+                return (
+                  <Flex
+                    direction="column"
+                    key={"message" + i}
+                    border="1px solid gray"
+                    m="1"
+                    p="1"
+                    borderRadius="4"
+                    marginLeft={message.sender !== product.user_id ? "8" : "1"}
+                    marginRight={message.sender === product.user_id ? "8" : "1"}
+                  >
+                    <Text wordBreak="break-word">{message.text}</Text>
+                    <Flex fontSize="sm">
+                      {new Date(message.time).toLocaleTimeString("en-US")}{" "}
+                      {new Date(message.time).toLocaleDateString()}
+                    </Flex>
+                  </Flex>
+                );
+              })}
+            </Flex>
+            <Flex direction="column" p="1">
+              <CustomInput
+                id={message.id}
+                value={message.value}
+                placeholder="Make an offer or ask a question"
+                label={message.label}
+                error={message.error}
+                onChange={message.onChange}
+                textArea
+                hideLabel
+              />
+              <Button
+                colorScheme="green"
+                w="fit-content"
+                m="1"
+                onClick={submitMessage}
+                alignSelf="flex-end"
+                aria-label="send message"
+              >
+                Send
+              </Button>
+            </Flex>
+          </Flex>
+        </ShowToLoggedIn>
+      </Flex>
     </Flex>
   );
 };
