@@ -230,7 +230,7 @@ describe("Visit product pages", () => {
     cy.contains("Ergonomic Frozen Towels");
   });
 
-  it.only("Can delete a product", () => {
+  it("Can delete a product", () => {
     cy.intercept("DELETE", "http://localhost:5000/products/29", {
       message: "Deleted",
     });
