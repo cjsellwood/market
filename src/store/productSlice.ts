@@ -12,11 +12,12 @@ import {
   sendMessage,
 } from "./productThunks";
 
-interface Message {
+export interface Message {
   sender: number;
   receiver: number;
   text: string;
   time: string;
+  senderName?: string;
 }
 
 export interface Product {

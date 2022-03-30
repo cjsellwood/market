@@ -2,6 +2,7 @@ import {
   allProducts,
   category1Products,
   messagedProduct,
+  messagedProductAuthor,
   randomProducts,
   searchCategory,
   searchProducts,
@@ -313,7 +314,7 @@ describe("Visit product pages", () => {
     cy.contains("Updated Product");
   });
 
-  it.only("Displays messages about a product to a logged in user", () => {
+  it("Displays messages about a product to a logged in user", () => {
     cy.intercept("GET", "http://localhost:5000/products/29", messagedProduct);
     cy.intercept("POST", "http://localhost:5000/products/29", {
       message: "Success",
@@ -340,5 +341,33 @@ describe("Visit product pages", () => {
     cy.get("#message").should("have.value", "");
 
     cy.contains("Lorem Ipsum");
+  });
+
+  it.only("Displays messages to the author", () => {
+    cy.intercept(
+      "GET",
+      "http://localhost:5000/products/29",
+      messagedProductAuthor
+    );
+    cy.intercept("POST", "http://localhost:5000/products/29", {
+      message: "Success",
+    });
+    cy.intercept("http://localhost:5000/auth/login", {
+      email: "cypress@email.com",
+      username: "cypress",
+      userId: messagedProductAuthor.user_id,
+      token: "2f4dfd",
+      expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    });
+
+    cy.visit("/#/products/29");
+
+    cy.contains("Login to send a message").click();
+    cy.get("#email").type("test@email.com");
+    cy.get("#password").type("password");
+    cy.contains("Submit").click();
+
+    cy.contains(messagedProductAuthor.messages[0].text);
+    cy.contains("Username 9");
   });
 });
