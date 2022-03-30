@@ -163,7 +163,7 @@ describe("Product component", () => {
       json: () => Promise.resolve(messagedProduct),
     });
 
-    renderer(<Product />);
+    renderer(<Product />, { auth: { userId: null } });
 
     expect(
       await screen.findByText("Ergonomic Frozen Towels")

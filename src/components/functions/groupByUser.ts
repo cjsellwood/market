@@ -1,6 +1,6 @@
 import { Message } from "../../store/productSlice";
 
-const groupByUser = (allMessages: Message[], authorId: number) => {
+const groupByUser = (allMessages: Message[] = [], authorId: number) => {
   const messagesMap = new Map();
   for (let message of allMessages) {
     const userId =

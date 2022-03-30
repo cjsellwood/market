@@ -343,7 +343,7 @@ describe("Visit product pages", () => {
     cy.contains("Lorem Ipsum");
   });
 
-  it.only("Displays messages to the author", () => {
+  it.only("Displays messages to the author and replies", () => {
     cy.intercept(
       "GET",
       "http://localhost:5000/products/29",
@@ -368,6 +368,13 @@ describe("Visit product pages", () => {
     cy.contains("Submit").click();
 
     cy.contains(messagedProductAuthor.messages[0].text);
-    cy.contains("Username 9");
+
+    cy.contains("Username 9").click();
+    cy.get("#message").type("New reply");
+    cy.contains("Send").click();
+
+    cy.get("#message").should("have.value", "");
+
+    cy.contains("New reply");
   });
 });

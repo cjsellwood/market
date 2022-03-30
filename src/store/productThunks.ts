@@ -43,12 +43,24 @@ export const getRandom = createAsyncThunk(
 
 export const getProduct = createAsyncThunk(
   "products/product",
-  async (id: number, { rejectWithValue }) => {
+  async (id: number, { rejectWithValue, getState }) => {
+    const token = (getState() as RootState).auth.token;
     try {
-      const res = await fetch(`http://localhost:5000/products/${id}`, {
-        method: "GET",
-        mode: "cors",
-      });
+      let res;
+      if (token) {
+        res = await fetch(`http://localhost:5000/products/${id}`, {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      } else {
+        res = await fetch(`http://localhost:5000/products/${id}`, {
+          method: "GET",
+          mode: "cors",
+        });
+      }
 
       // If an error return error message
       if (res.status !== 200) {

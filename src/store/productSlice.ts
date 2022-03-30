@@ -223,7 +223,7 @@ export const productSlice = createSlice({
         if (state.product?.messages) {
           state.product?.messages?.push({
             sender: action.meta.arg.sender,
-            receiver: state.product.user_id,
+            receiver: action.meta.arg.receiver,
             text: action.meta.arg.text,
             time: new Date().toISOString(),
           });
@@ -231,7 +231,7 @@ export const productSlice = createSlice({
           state.product!.messages = [
             {
               sender: action.meta.arg.sender,
-              receiver: state.product!.user_id,
+              receiver: action.meta.arg.receiver,
               text: action.meta.arg.text,
               time: new Date().toISOString(),
             },

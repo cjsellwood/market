@@ -9,10 +9,11 @@ const ShowToAuthor = ({
   authorId: number;
 }) => {
   const { userId } = useAppSelector((state) => state.auth);
-  if (userId !== authorId) {
+  if (userId === authorId) {
+    return <React.Fragment>{children}</React.Fragment>;
+  } else {
     return null;
   }
-  return <React.Fragment>{children}</React.Fragment>;
 };
 
 export default ShowToAuthor;

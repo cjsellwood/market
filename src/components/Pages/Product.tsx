@@ -33,6 +33,7 @@ import useInput from "../../hooks/useInput";
 import CustomInput from "../Parts/CustomInput";
 import groupByUser from "../functions/groupByUser";
 import { Message } from "../../store/productSlice";
+import Conversation from "../Parts/Conversation";
 
 const Product = () => {
   const { product, loading, error } = useAppSelector((state) => state.product);
@@ -71,38 +72,6 @@ const Product = () => {
       });
     }
   }, [error, toast]);
-
-  const message = useInput("", "message", "Message", {
-    isRequired: true,
-    maxLength: 1000,
-  });
-
-  // Send new message
-  const submitMessage = async () => {
-    const isValid = message.isValid();
-
-    if (!isValid) {
-      return;
-    }
-
-    // Render immediately
-    const messageText = message.value;
-    message.setValue("");
-    const result = await dispatch(
-      sendMessage({
-        text: messageText,
-        product_id: product!.product_id,
-        sender: userId!,
-        receiver: product!.user_id,
-      })
-    );
-    window.scrollTo(0, 100000000000000);
-
-    // If failed to save message reset to before submit
-    if (result.meta.requestStatus !== "fulfilled") {
-      message.setValue(messageText);
-    }
-  };
 
   // If product loading
   if (loading && !product) {
@@ -197,52 +166,11 @@ const Product = () => {
             <Flex direction="column" w="100%">
               <Heading>Messages</Heading>
               <Flex direction="column">
-                {product.messages?.map((message, i) => {
-                  return (
-                    <Flex
-                      direction="column"
-                      key={"message" + i}
-                      border="1px solid gray"
-                      m="1"
-                      p="1"
-                      borderRadius="4"
-                      marginLeft={
-                        message.sender !== product.user_id ? "8" : "1"
-                      }
-                      marginRight={
-                        message.sender === product.user_id ? "8" : "1"
-                      }
-                    >
-                      <Text wordBreak="break-word">{message.text}</Text>
-                      <Flex fontSize="sm">
-                        {new Date(message.time).toLocaleTimeString("en-US")}{" "}
-                        {new Date(message.time).toLocaleDateString()}
-                      </Flex>
-                    </Flex>
-                  );
-                })}
-              </Flex>
-              <Flex direction="column" p="1">
-                <CustomInput
-                  id={message.id}
-                  value={message.value}
-                  placeholder="Make an offer or ask a question"
-                  label={message.label}
-                  error={message.error}
-                  onChange={message.onChange}
-                  textArea
-                  hideLabel
+                <Conversation
+                  messages={product.messages!}
+                  product_id={product.product_id}
+                  author_id={product.user_id}
                 />
-                <Button
-                  colorScheme="green"
-                  w="fit-content"
-                  m="1"
-                  onClick={submitMessage}
-                  alignSelf="flex-end"
-                  aria-label="send message"
-                >
-                  Send
-                </Button>
               </Flex>
             </Flex>
           )}
@@ -252,64 +180,27 @@ const Product = () => {
             <Heading>Messages</Heading>
             <Accordion allowToggle>
               {Array.from(groupByUser(product.messages!, product.user_id)).map(
-                (conversation) => (
-                  <AccordionItem key={conversation[0]}>
-                    <h2>
-                      <AccordionButton>
-                        <Box flex="1" textAlign="left">
-                          {conversation[0]}
-                        </Box>
-                        <AccordionIcon />
-                      </AccordionButton>
-                    </h2>
-                    <AccordionPanel>
-                      {conversation[1].map((message: Message, i: number) => (
-                        <Flex
-                          direction="column"
-                          key={conversation[0] + "message" + i}
-                          border="1px solid gray"
-                          m="1"
-                          p="1"
-                          borderRadius="4"
-                          marginLeft={
-                            message.sender !== product.user_id ? "8" : "1"
-                          }
-                          marginRight={
-                            message.sender === product.user_id ? "8" : "1"
-                          }
-                        >
-                          <Text wordBreak="break-word">{message.text}</Text>
-                          <Flex fontSize="sm">
-                            {new Date(message.time).toLocaleTimeString("en-US")}{" "}
-                            {new Date(message.time).toLocaleDateString()}
-                          </Flex>
-                        </Flex>
-                      ))}
-                      <Flex direction="column" p="1">
-                        <CustomInput
-                          id={message.id}
-                          value={message.value}
-                          placeholder="Make an offer or ask a question"
-                          label={message.label}
-                          error={message.error}
-                          onChange={message.onChange}
-                          textArea
-                          hideLabel
+                (conversation, i) => {
+                  return (
+                    <AccordionItem key={conversation[0] + i}>
+                      <h2>
+                        <AccordionButton>
+                          <Box flex="1" textAlign="left">
+                            {conversation[0]}
+                          </Box>
+                          <AccordionIcon />
+                        </AccordionButton>
+                      </h2>
+                      <AccordionPanel>
+                        <Conversation
+                          messages={conversation[1]}
+                          product_id={product.product_id}
+                          author_id={product.user_id}
                         />
-                        <Button
-                          colorScheme="green"
-                          w="fit-content"
-                          m="1"
-                          onClick={submitMessage}
-                          alignSelf="flex-end"
-                          aria-label="send message"
-                        >
-                          Send
-                        </Button>
-                      </Flex>
-                    </AccordionPanel>
-                  </AccordionItem>
-                )
+                      </AccordionPanel>
+                    </AccordionItem>
+                  );
+                }
               )}
             </Accordion>
           </Flex>

@@ -96,6 +96,12 @@ describe("Product Slice redux testing", () => {
 
   describe("Single Product", () => {
     test("Fetches a single products information", async () => {
+      store = configureStore({
+        reducer: {
+          product: productReducer,
+          auth: authReducer,
+        },
+      });
       window.fetch = jest.fn().mockReturnValue({
         status: 200,
         json: () => Promise.resolve(randomProducts[0]),
@@ -120,6 +126,13 @@ describe("Product Slice redux testing", () => {
     });
 
     test("Should return error if not a product", async () => {
+      store = configureStore({
+        reducer: {
+          product: productReducer,
+          auth: authReducer,
+        },
+      });
+
       window.fetch = jest.fn().mockReturnValue({
         status: 404,
         json: () => Promise.resolve({ error: "Product not found" }),
@@ -141,6 +154,13 @@ describe("Product Slice redux testing", () => {
     });
 
     test("Return general error if can't fetch product", async () => {
+      store = configureStore({
+        reducer: {
+          product: productReducer,
+          auth: authReducer,
+        },
+      });
+      
       window.fetch = jest.fn().mockReturnValue({
         status: 400,
       });
