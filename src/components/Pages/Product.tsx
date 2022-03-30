@@ -15,24 +15,17 @@ import {
   AccordionButton,
   AccordionPanel,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import useAppSelector from "../../hooks/useAppSelector";
-import {
-  getProduct,
-  deleteProduct,
-  sendMessage,
-} from "../../store/productThunks";
+import { getProduct, deleteProduct } from "../../store/productThunks";
 import { Link as RouterLink } from "react-router-dom";
 import SearchBox from "../Parts/SearchBox";
 import ShowToAuthor from "../Navigation/ShowToAuthor";
 import ShowToUnauthorized from "../Navigation/ShowToUnauthorized";
 import ShowToLoggedIn from "../Navigation/ShowToLoggedIn";
-import useInput from "../../hooks/useInput";
-import CustomInput from "../Parts/CustomInput";
 import groupByUser from "../functions/groupByUser";
-import { Message } from "../../store/productSlice";
 import Conversation from "../Parts/Conversation";
 
 const Product = () => {
