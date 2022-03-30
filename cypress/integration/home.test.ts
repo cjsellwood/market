@@ -230,7 +230,6 @@ describe("Visit product pages", () => {
     cy.intercept("DELETE", "http://localhost:5000/products/29", {
       message: "Deleted",
     });
-    cy.visit("/#/products/29");
 
     cy.visit("/#/login");
     cy.get("#email").type("test@email.com");
