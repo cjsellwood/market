@@ -244,7 +244,7 @@ describe("Visit product pages", () => {
     cy.visit("/#/products/29");
     cy.wait("@get29");
     cy.contains("Ergonomic Frozen Towels");
-    cy.contains("Delete").click();
+    cy.get("button[aria-label='delete product']").click();
 
     cy.url().should("eq", "http://localhost:3000/#/products");
     cy.intercept("http://localhost:5000/products/29", {

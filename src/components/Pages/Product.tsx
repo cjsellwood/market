@@ -137,7 +137,12 @@ const Product = () => {
               <Button colorScheme="green">Edit</Button>
             </Flex>
           </Link>
-          <Button onClick={handleDelete} colorScheme="red" isLoading={loading}>
+          <Button
+            onClick={handleDelete}
+            colorScheme="red"
+            isLoading={loading}
+            aria-label="delete product"
+          >
             Delete
           </Button>
         </Flex>
