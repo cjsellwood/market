@@ -53,7 +53,7 @@ const Conversation = ({
 
   return (
     <React.Fragment>
-      {(messages || []).map((message: Message, i: number) => (
+      {messages.map((message: Message, i: number) => (
         <Flex
           direction="column"
           key={"message" + i}

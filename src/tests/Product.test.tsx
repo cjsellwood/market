@@ -1,5 +1,5 @@
 import { screen, waitForElementToBeRemoved } from "@testing-library/react";
-import { messagedProduct, randomProducts, renderer } from "./helpers";
+import { messagedProduct, messagedProductAuthor, randomProducts, renderer } from "./helpers";
 import Product from "../components/Pages/Product";
 import userEvent from "@testing-library/user-event";
 
@@ -242,6 +242,52 @@ describe("Product component", () => {
     expect(screen.queryByText("New message")).toBeInTheDocument();
     expect(screen.queryByText("New message")!.nodeName).toBe("P");
     expect(screen.getByLabelText("Message")).toHaveValue("");
+  });
+
+  it("Can reply to a message as the author of product", async () => {
+    window.fetch = jest.fn().mockReturnValue({
+      status: 200,
+      json: () => Promise.resolve(messagedProductAuthor),
+    });
+    window.scrollTo = jest.fn();
+
+    renderer(<Product />, {
+      auth: { userId: messagedProductAuthor.user_id, token: "2f4dfd" },
+    });
+
+    expect(
+      await screen.findByText("Ergonomic Frozen Towels")
+    ).toBeInTheDocument();
+
+    userEvent.type(screen.getAllByLabelText("Message")[0], "New reply");
+    expect(screen.getAllByLabelText("Message")[0]).toHaveValue("New reply");
+
+    window.fetch = jest.fn().mockReturnValue({
+      status: 200,
+      json: () => Promise.resolve({ message: "Success" }),
+    });
+
+    userEvent.click(screen.getAllByLabelText("send message")[0]);
+
+    expect(window.fetch).toHaveBeenCalledWith(
+      "http://localhost:5000/products/29",
+      {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          Authorization: "Bearer 2f4dfd",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text: "New reply",
+          receiver: 9,
+        }),
+      }
+    );
+
+    expect(screen.queryByText("New reply")).toBeInTheDocument();
+    expect(screen.queryByText("New reply")!.nodeName).toBe("P");
+    expect(screen.getAllByLabelText("Message")[0]).toHaveValue("");
   });
 
   it("Shows error and resets message if server error", async () => {
