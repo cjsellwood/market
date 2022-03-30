@@ -43,12 +43,24 @@ export const getRandom = createAsyncThunk(
 
 export const getProduct = createAsyncThunk(
   "products/product",
-  async (id: number, { rejectWithValue }) => {
+  async (id: number, { rejectWithValue, getState }) => {
+    const token = (getState() as RootState).auth.token;
     try {
-      const res = await fetch(`http://localhost:5000/products/${id}`, {
-        method: "GET",
-        mode: "cors",
-      });
+      let res;
+      if (token) {
+        res = await fetch(`http://localhost:5000/products/${id}`, {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      } else {
+        res = await fetch(`http://localhost:5000/products/${id}`, {
+          method: "GET",
+          mode: "cors",
+        });
+      }
 
       // If an error return error message
       if (res.status !== 200) {
@@ -259,6 +271,45 @@ export const updateProduct = createAsyncThunk(
           mode: "cors",
           body: product.form,
           headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // If an error return error message
+      if (res.status !== 200) {
+        throw new Error(await generateError(res));
+      }
+
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      const newError = error as Error;
+      return rejectWithValue(newError.message);
+    }
+  }
+);
+
+export const sendMessage = createAsyncThunk(
+  "products/message",
+  async (
+    query: {
+      text: string;
+      product_id: number;
+      sender: number;
+      receiver: number;
+    },
+    { rejectWithValue, getState }
+  ) => {
+    const token = (getState() as RootState).auth.token;
+    try {
+      const res = await fetch(
+        `http://localhost:5000/products/${query.product_id}`,
+        {
+          method: "POST",
+          mode: "cors",
+          body: JSON.stringify({ text: query.text, receiver: query.receiver }),
+          headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }

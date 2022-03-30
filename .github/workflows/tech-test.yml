@@ -19,7 +19,9 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           start: npm start
+          browser: chrome
           wait-on: "http://localhost:3000"
+          
 
       - name: Deployment
         if: steps.jest.outcome == 'success' && steps.cypress.outcome == 'success'

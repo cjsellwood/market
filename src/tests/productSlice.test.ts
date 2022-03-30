@@ -11,11 +11,14 @@ import {
   deleteProduct,
   updateProduct,
   getUserProducts,
+  sendMessage,
 } from "../store/productThunks";
 import {
   allProducts,
   allProductsPage3,
   category1Products,
+  messagedProduct,
+  messagedProductAuthor,
   randomProducts,
   searchCategory,
   searchProducts,
@@ -93,6 +96,12 @@ describe("Product Slice redux testing", () => {
 
   describe("Single Product", () => {
     test("Fetches a single products information", async () => {
+      store = configureStore({
+        reducer: {
+          product: productReducer,
+          auth: authReducer,
+        },
+      });
       window.fetch = jest.fn().mockReturnValue({
         status: 200,
         json: () => Promise.resolve(randomProducts[0]),
@@ -117,6 +126,13 @@ describe("Product Slice redux testing", () => {
     });
 
     test("Should return error if not a product", async () => {
+      store = configureStore({
+        reducer: {
+          product: productReducer,
+          auth: authReducer,
+        },
+      });
+
       window.fetch = jest.fn().mockReturnValue({
         status: 404,
         json: () => Promise.resolve({ error: "Product not found" }),
@@ -138,6 +154,13 @@ describe("Product Slice redux testing", () => {
     });
 
     test("Return general error if can't fetch product", async () => {
+      store = configureStore({
+        reducer: {
+          product: productReducer,
+          auth: authReducer,
+        },
+      });
+      
       window.fetch = jest.fn().mockReturnValue({
         status: 400,
       });
@@ -147,6 +170,82 @@ describe("Product Slice redux testing", () => {
       const state = store.getState().product;
       expect(state.error).toBe("Connection error");
       expect(state.loading).toBe(false);
+    });
+
+    test("Fetches product with messages if logged in", async () => {
+      store = configureStore({
+        reducer: {
+          product: productReducer,
+          auth: authReducer,
+        },
+      });
+
+      // Login user
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            email: "jestUser@email.com",
+            username: "jestUser",
+            userId: 2,
+            token: "2f4dfd",
+            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+          }),
+      });
+      await store.dispatch(
+        loginUser({
+          email: "jestUser@email.com",
+          password: "password",
+        })
+      );
+
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () => Promise.resolve(messagedProduct),
+      });
+
+      await store.dispatch(getProduct(29));
+
+      const state = store.getState().product;
+      expect(state.product).toEqual(messagedProduct);
+    });
+
+    test("Fetches product with messages if author", async () => {
+      store = configureStore({
+        reducer: {
+          product: productReducer,
+          auth: authReducer,
+        },
+      });
+
+      // Login user
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            email: "jestUser@email.com",
+            username: "jestUser",
+            userId: 7,
+            token: "2f4dfd",
+            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+          }),
+      });
+      await store.dispatch(
+        loginUser({
+          email: "jestUser@email.com",
+          password: "password",
+        })
+      );
+
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () => Promise.resolve(messagedProductAuthor),
+      });
+
+      await store.dispatch(getProduct(29));
+
+      const state = store.getState().product;
+      expect(state.product).toEqual(messagedProductAuthor);
     });
   });
 
@@ -756,6 +855,180 @@ describe("Product Slice redux testing", () => {
       const state = store.getState().product;
       expect(state.error).toBe("Product not found");
       expect(state.loading).toBe(false);
+    });
+  });
+
+  describe("Sending message", () => {
+    test("Adds message to state and sends to server", async () => {
+      store = configureStore({
+        reducer: {
+          product: productReducer,
+          auth: authReducer,
+        },
+      });
+
+      // Login user
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            email: "jestUser@email.com",
+            username: "jestUser",
+            userId: 2,
+            token: "2f4dfd",
+            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+          }),
+      });
+      await store.dispatch(
+        loginUser({
+          email: "jestUser@email.com",
+          password: "password",
+        })
+      );
+
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () => Promise.resolve(messagedProduct),
+      });
+
+      await store.dispatch(getProduct(29));
+
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            message: "Success",
+          }),
+      });
+
+      await store.dispatch(
+        sendMessage({
+          text: "New message",
+          product_id: 29,
+          sender: 2,
+          receiver: 1,
+        })
+      );
+
+      const state = store.getState().product;
+
+      expect(state.product?.messages?.length).toBe(11);
+      expect(state.product?.messages?.at(-1)?.sender).toBe(2);
+      expect(state.product?.messages?.at(-1)?.receiver).toBe(1);
+      expect(state.product?.messages?.at(-1)?.text).toBe("New message");
+    });
+
+    test("Adds message to state with no messages initially", async () => {
+      store = configureStore({
+        reducer: {
+          product: productReducer,
+          auth: authReducer,
+        },
+      });
+
+      // Login user
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            email: "jestUser@email.com",
+            username: "jestUser",
+            userId: 2,
+            token: "2f4dfd",
+            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+          }),
+      });
+      await store.dispatch(
+        loginUser({
+          email: "jestUser@email.com",
+          password: "password",
+        })
+      );
+
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () => Promise.resolve(randomProducts[0]),
+      });
+
+      await store.dispatch(getProduct(29));
+
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            message: "Success",
+          }),
+      });
+
+      await store.dispatch(
+        sendMessage({
+          text: "New message",
+          product_id: 29,
+          sender: 2,
+          receiver: randomProducts[0].user_id,
+        })
+      );
+
+      const state = store.getState().product;
+
+      expect(state.product?.messages?.length).toBe(1);
+      expect(state.product?.messages?.at(-1)?.sender).toBe(2);
+      expect(state.product?.messages?.at(-1)?.receiver).toBe(5);
+      expect(state.product?.messages?.at(-1)?.text).toBe("New message");
+    });
+
+    test("Remove message if error on server", async () => {
+      store = configureStore({
+        reducer: {
+          product: productReducer,
+          auth: authReducer,
+        },
+      });
+
+      // Login user
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () =>
+          Promise.resolve({
+            email: "jestUser@email.com",
+            username: "jestUser",
+            userId: 2,
+            token: "2f4dfd",
+            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+          }),
+      });
+      await store.dispatch(
+        loginUser({
+          email: "jestUser@email.com",
+          password: "password",
+        })
+      );
+
+      window.fetch = jest.fn().mockReturnValue({
+        status: 200,
+        json: () => Promise.resolve(messagedProduct),
+      });
+
+      await store.dispatch(getProduct(29));
+
+      window.fetch = jest.fn().mockReturnValue({
+        status: 400,
+        json: () => Promise.resolve({ error: "Could not add message" }),
+      });
+
+      await store.dispatch(
+        sendMessage({
+          text: "New message",
+          product_id: 29,
+          sender: 2,
+          receiver: 1,
+        })
+      );
+
+      const state = store.getState().product;
+
+      expect(state.product?.messages?.length).toBe(10);
+      expect(state.error).toBe("Could not add message");
     });
   });
 });

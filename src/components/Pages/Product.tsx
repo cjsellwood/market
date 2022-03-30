@@ -8,18 +8,29 @@ import {
   ButtonGroup,
   Button,
   useToast,
+  Accordion,
+  AccordionItem,
+  Box,
+  AccordionIcon,
+  AccordionButton,
+  AccordionPanel,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import useAppSelector from "../../hooks/useAppSelector";
 import { getProduct, deleteProduct } from "../../store/productThunks";
 import { Link as RouterLink } from "react-router-dom";
 import SearchBox from "../Parts/SearchBox";
 import ShowToAuthor from "../Navigation/ShowToAuthor";
+import ShowToUnauthorized from "../Navigation/ShowToUnauthorized";
+import ShowToLoggedIn from "../Navigation/ShowToLoggedIn";
+import groupByUser from "../functions/groupByUser";
+import Conversation from "../Parts/Conversation";
 
 const Product = () => {
   const { product, loading, error } = useAppSelector((state) => state.product);
+  const { userId } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
   const { id } = useParams();
@@ -38,6 +49,8 @@ const Product = () => {
       navigate("/products");
     }
   };
+
+  const location = useLocation();
 
   // Show any errors
   const toast = useToast();
@@ -124,11 +137,73 @@ const Product = () => {
               <Button colorScheme="green">Edit</Button>
             </Flex>
           </Link>
-          <Button onClick={handleDelete} colorScheme="red" isLoading={loading}>
+          <Button
+            onClick={handleDelete}
+            colorScheme="red"
+            isLoading={loading}
+            aria-label="delete product"
+          >
             Delete
           </Button>
         </Flex>
       </ShowToAuthor>
+      <Flex>
+        <ShowToUnauthorized>
+          <Button
+            colorScheme="blue"
+            onClick={() => {
+              navigate("/login", { replace: true, state: { from: location } });
+            }}
+            aria-label="link to login"
+          >
+            Login to send a message
+          </Button>
+        </ShowToUnauthorized>
+        <ShowToLoggedIn>
+          {product.user_id !== userId && (
+            <Flex direction="column" w="100%">
+              <Heading>Messages</Heading>
+              <Flex direction="column">
+                <Conversation
+                  messages={product.messages!}
+                  product_id={product.product_id}
+                  author_id={product.user_id}
+                />
+              </Flex>
+            </Flex>
+          )}
+        </ShowToLoggedIn>
+        <ShowToAuthor authorId={product.user_id}>
+          <Flex direction="column" w="100%">
+            <Heading>Messages</Heading>
+            <Accordion allowToggle>
+              {Array.from(groupByUser(product.messages!, product.user_id)).map(
+                (conversation, i) => {
+                  return (
+                    <AccordionItem key={conversation[0] + i}>
+                      <h2>
+                        <AccordionButton>
+                          <Box flex="1" textAlign="left">
+                            {conversation[0]}
+                          </Box>
+                          <AccordionIcon />
+                        </AccordionButton>
+                      </h2>
+                      <AccordionPanel>
+                        <Conversation
+                          messages={conversation[1]}
+                          product_id={product.product_id}
+                          author_id={product.user_id}
+                        />
+                      </AccordionPanel>
+                    </AccordionItem>
+                  );
+                }
+              )}
+            </Accordion>
+          </Flex>
+        </ShowToAuthor>
+      </Flex>
     </Flex>
   );
 };

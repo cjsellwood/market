@@ -1,6 +1,8 @@
 import {
   allProducts,
   category1Products,
+  messagedProduct,
+  messagedProductAuthor,
   randomProducts,
   searchCategory,
   searchProducts,
@@ -12,7 +14,11 @@ describe("Visit product pages", () => {
   beforeEach(() => {
     cy.viewport(360, 640);
     cy.intercept("http://localhost:5000/products/random", randomProducts);
-    cy.intercept("http://localhost:5000/products/29", randomProducts[0]);
+    cy.intercept(
+      "GET",
+      "http://localhost:5000/products/29",
+      randomProducts[0]
+    ).as("get29");
     cy.intercept("http://localhost:5000/products/23", randomProducts[0]);
     cy.intercept("http://localhost:5000/products?page=1", allProducts);
     cy.intercept("http://localhost:5000/products?page=2&count=50", {
@@ -45,7 +51,7 @@ describe("Visit product pages", () => {
       userId: randomProducts[0].user_id,
       token: "2f4dfd",
       expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-    });
+    }).as("login");
   });
   it("Navigates to home screen and uses navigation menu", () => {
     cy.visit("/");
@@ -228,14 +234,17 @@ describe("Visit product pages", () => {
     cy.intercept("DELETE", "http://localhost:5000/products/29", {
       message: "Deleted",
     });
+
     cy.visit("/#/login");
     cy.get("#email").type("test@email.com");
     cy.get("#password").type("password");
     cy.contains("Submit").click();
+    cy.wait("@login");
 
     cy.visit("/#/products/29");
+    cy.wait("@get29");
     cy.contains("Ergonomic Frozen Towels");
-    cy.contains("Delete").click();
+    cy.get("button[aria-label='delete product']").click();
 
     cy.url().should("eq", "http://localhost:3000/#/products");
     cy.intercept("http://localhost:5000/products/29", {
@@ -250,11 +259,12 @@ describe("Visit product pages", () => {
   });
 
   it("Can update a product", () => {
-    cy.visit("#/login");
     // Login
+    cy.visit("#/login");
     cy.get("#email").type("test@email.com");
     cy.get("#password").type("password");
     cy.contains("Submit").click();
+    cy.wait("@login");
 
     cy.visit("/#/products/29");
     cy.contains("Ergonomic Frozen Towels");
@@ -310,5 +320,69 @@ describe("Visit product pages", () => {
     cy.contains("Submit").click();
     cy.url().should("eq", "http://localhost:3000/#/products/29");
     cy.contains("Updated Product");
+  });
+
+  it("Displays messages about a product to a logged in user", () => {
+    cy.intercept("GET", "http://localhost:5000/products/29", messagedProduct);
+    cy.intercept("POST", "http://localhost:5000/products/29", {
+      message: "Success",
+    });
+    cy.intercept("http://localhost:5000/auth/login", {
+      email: "cypress@email.com",
+      username: "cypress",
+      userId: 2,
+      token: "2f4dfd",
+      expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    });
+
+    cy.visit("/#/products/29");
+
+    cy.contains("Login to send a message").click();
+    cy.get("#email").type("test@email.com");
+    cy.get("#password").type("password");
+    cy.contains("Submit").click();
+
+    cy.get("#message").type("Lorem Ipsum");
+
+    cy.contains("Send").click();
+
+    cy.get("#message").should("have.value", "");
+
+    cy.contains("Lorem Ipsum");
+  });
+
+  it("Displays messages to the author and replies", () => {
+    cy.intercept(
+      "GET",
+      "http://localhost:5000/products/29",
+      messagedProductAuthor
+    );
+    cy.intercept("POST", "http://localhost:5000/products/29", {
+      message: "Success",
+    });
+    cy.intercept("http://localhost:5000/auth/login", {
+      email: "cypress@email.com",
+      username: "cypress",
+      userId: messagedProductAuthor.user_id,
+      token: "2f4dfd",
+      expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    });
+
+    cy.visit("/#/products/29");
+
+    cy.contains("Login to send a message").click();
+    cy.get("#email").type("test@email.com");
+    cy.get("#password").type("password");
+    cy.contains("Submit").click();
+
+    cy.contains(messagedProductAuthor.messages[0].text);
+
+    cy.contains("Username 9").click();
+    cy.get("#message").type("New reply");
+    cy.contains("Send").click();
+
+    cy.get("#message").should("have.value", "");
+
+    cy.contains("New reply");
   });
 });

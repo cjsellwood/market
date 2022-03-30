@@ -1,9 +1,16 @@
 import { screen, waitForElementToBeRemoved } from "@testing-library/react";
-import { randomProducts, renderer } from "./helpers";
+import { messagedProduct, messagedProductAuthor, randomProducts, renderer } from "./helpers";
 import Product from "../components/Pages/Product";
 import userEvent from "@testing-library/user-event";
 
 let mockNavigate = jest.fn();
+let mockLocation = {
+  pathname: "/products/29",
+  search: "",
+  hash: "",
+  state: null,
+  key: "default",
+};
 jest.mock("react-router-dom", () => {
   return {
     ...jest.requireActual("react-router-dom"),
@@ -11,6 +18,7 @@ jest.mock("react-router-dom", () => {
       id: "29",
     }),
     useNavigate: () => mockNavigate,
+    useLocation: () => mockLocation,
   };
 });
 
@@ -69,6 +77,8 @@ describe("Product component", () => {
       screen.queryByAltText("Ergonomic Frozen Towels 1")
     ).not.toBeVisible();
     expect(screen.queryByAltText("Ergonomic Frozen Towels 2")).toBeVisible();
+
+    expect(screen.queryByText("Login to send a message")).toBeInTheDocument();
   });
 
   it("Show not found if trying to access product that does not exist", async () => {
@@ -145,5 +155,186 @@ describe("Product component", () => {
     expect(screen.queryByText("Delete")).toBeInTheDocument();
 
     expect(await screen.findByText("Deletion error")).toBeInTheDocument();
+  });
+
+  it("Has a link that to login for unauthorized users", async () => {
+    window.fetch = jest.fn().mockReturnValue({
+      status: 200,
+      json: () => Promise.resolve(messagedProduct),
+    });
+
+    renderer(<Product />, { auth: { userId: null } });
+
+    expect(
+      await screen.findByText("Ergonomic Frozen Towels")
+    ).toBeInTheDocument();
+
+    userEvent.click(screen.getByText("Login to send a message"));
+
+    expect(mockNavigate).toHaveBeenCalledWith("/login", {
+      replace: true,
+      state: {
+        from: mockLocation,
+      },
+    });
+  });
+
+  it("Shows messages if logged in", async () => {
+    window.fetch = jest.fn().mockReturnValue({
+      status: 200,
+      json: () => Promise.resolve(messagedProduct),
+    });
+
+    renderer(<Product />, {
+      auth: { userId: 2, token: "2f4dfd" },
+    });
+
+    expect(
+      await screen.findByText("Ergonomic Frozen Towels")
+    ).toBeInTheDocument();
+
+    expect(
+      screen.queryByText(messagedProduct.messages[0].text)
+    ).toBeInTheDocument();
+  });
+
+  it("Can send a new message when logged in", async () => {
+    window.fetch = jest.fn().mockReturnValue({
+      status: 200,
+      json: () => Promise.resolve(messagedProduct),
+    });
+    window.scrollTo = jest.fn();
+
+    renderer(<Product />, {
+      auth: { userId: 2, token: "2f4dfd" },
+    });
+
+    expect(
+      await screen.findByText("Ergonomic Frozen Towels")
+    ).toBeInTheDocument();
+
+    userEvent.type(screen.getByLabelText("Message"), "New message");
+    expect(screen.getByLabelText("Message")).toHaveValue("New message");
+
+    window.fetch = jest.fn().mockReturnValue({
+      status: 200,
+      json: () => Promise.resolve({ message: "Success" }),
+    });
+
+    userEvent.click(screen.getByLabelText("send message"));
+
+    expect(window.fetch).toHaveBeenCalledWith(
+      "http://localhost:5000/products/29",
+      {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          Authorization: "Bearer 2f4dfd",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text: "New message",
+          receiver: messagedProduct.user_id,
+        }),
+      }
+    );
+
+    expect(screen.queryByText("New message")).toBeInTheDocument();
+    expect(screen.queryByText("New message")!.nodeName).toBe("P");
+    expect(screen.getByLabelText("Message")).toHaveValue("");
+  });
+
+  it("Can reply to a message as the author of product", async () => {
+    window.fetch = jest.fn().mockReturnValue({
+      status: 200,
+      json: () => Promise.resolve(messagedProductAuthor),
+    });
+    window.scrollTo = jest.fn();
+
+    renderer(<Product />, {
+      auth: { userId: messagedProductAuthor.user_id, token: "2f4dfd" },
+    });
+
+    expect(
+      await screen.findByText("Ergonomic Frozen Towels")
+    ).toBeInTheDocument();
+
+    userEvent.type(screen.getAllByLabelText("Message")[0], "New reply");
+    expect(screen.getAllByLabelText("Message")[0]).toHaveValue("New reply");
+
+    window.fetch = jest.fn().mockReturnValue({
+      status: 200,
+      json: () => Promise.resolve({ message: "Success" }),
+    });
+
+    userEvent.click(screen.getAllByLabelText("send message")[0]);
+
+    expect(window.fetch).toHaveBeenCalledWith(
+      "http://localhost:5000/products/29",
+      {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          Authorization: "Bearer 2f4dfd",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text: "New reply",
+          receiver: 9,
+        }),
+      }
+    );
+
+    expect(screen.queryByText("New reply")).toBeInTheDocument();
+    expect(screen.queryByText("New reply")!.nodeName).toBe("P");
+    expect(screen.getAllByLabelText("Message")[0]).toHaveValue("");
+  });
+
+  it("Shows error and resets message if server error", async () => {
+    window.fetch = jest.fn().mockReturnValue({
+      status: 200,
+      json: () => Promise.resolve(messagedProduct),
+    });
+    window.scrollTo = jest.fn();
+
+    renderer(<Product />, {
+      auth: { userId: 2, token: "2f4dfd" },
+    });
+
+    expect(
+      await screen.findByText("Ergonomic Frozen Towels")
+    ).toBeInTheDocument();
+
+    userEvent.type(screen.getByLabelText("Message"), "New message");
+
+    window.fetch = jest.fn().mockReturnValue({
+      status: 400,
+      json: () => Promise.resolve({ error: "Could not save message" }),
+    });
+
+    userEvent.click(screen.getByLabelText("send message"));
+
+    expect(await screen.findByLabelText("Message")).toHaveValue("New message");
+    expect(screen.queryByText("Could not save message")).toBeInTheDocument();
+  });
+
+  it("Don't send message if invalid", async () => {
+    window.fetch = jest.fn().mockReturnValue({
+      status: 200,
+      json: () => Promise.resolve(messagedProduct),
+    });
+    window.scrollTo = jest.fn();
+
+    renderer(<Product />, {
+      auth: { userId: 2, token: "2f4dfd" },
+    });
+
+    expect(
+      await screen.findByText("Ergonomic Frozen Towels")
+    ).toBeInTheDocument();
+
+    userEvent.click(screen.getByLabelText("send message"));
+
+    expect(await screen.findByText("Message is required")).toBeInTheDocument();
   });
 });

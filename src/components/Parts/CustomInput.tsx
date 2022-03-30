@@ -17,6 +17,8 @@ interface CustomInputProps {
   type?: string;
   onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   textArea?: boolean;
+  placeholder?: string;
+  hideLabel?: boolean;
 }
 
 const CustomInput = ({
@@ -28,22 +30,40 @@ const CustomInput = ({
   type,
   onChange,
   textArea,
+  placeholder,
+  hideLabel,
 }: CustomInputProps) => {
   return (
     <Flex direction="column">
       <FormControl isInvalid={error !== ""}>
-        <FormLabel htmlFor={id} marginBottom="1">
-          {label}{" "}
-          {isRequired && (
-            <Text as="span" color="red">
-              *
-            </Text>
-          )}
-        </FormLabel>
+        {!hideLabel && (
+          <FormLabel htmlFor={id} marginBottom="1">
+            {label}{" "}
+            {isRequired && (
+              <Text as="span" color="red">
+                *
+              </Text>
+            )}
+          </FormLabel>
+        )}
         {textArea ? (
-          <Textarea id={id} value={value} onChange={onChange} resize={"none"} />
+          <Textarea
+            id={id}
+            value={value}
+            onChange={onChange}
+            resize={"none"}
+            placeholder={placeholder}
+            aria-label={label}
+          />
         ) : (
-          <Input id={id} value={value} onChange={onChange} type={type} />
+          <Input
+            id={id}
+            value={value}
+            onChange={onChange}
+            type={type}
+            placeholder={placeholder}
+            aria-label={label}
+          />
         )}
         <Text color="red.500" fontSize="14px" h="16px" marginTop="1">
           {error}

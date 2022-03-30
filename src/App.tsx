@@ -16,14 +16,19 @@ import useAppDispatch from "./hooks/useAppDispatch";
 import { loadStoredUser } from "./store/authSlice";
 import RedirectLogin from "./components/Navigation/RedirectLogin";
 import UserProducts from "./components/Pages/UserProducts";
+import useAppSelector from "./hooks/useAppSelector";
 
 const App = () => {
   const dispatch = useAppDispatch();
+  const { storageLoaded } = useAppSelector((state) => state.auth);
 
   // Load a previously logged in user
   useEffect(() => {
     dispatch(loadStoredUser());
   }, [dispatch]);
+  if (!storageLoaded) {
+    return null;
+  }
   return (
     <Box bg="gray.100" minW="100%" minH="100vh">
       <ScrollToTop />
