@@ -14,7 +14,11 @@ describe("Visit product pages", () => {
   beforeEach(() => {
     cy.viewport(360, 640);
     cy.intercept("http://localhost:5000/products/random", randomProducts);
-    cy.intercept("GET", "http://localhost:5000/products/29", randomProducts[0]);
+    cy.intercept(
+      "GET",
+      "http://localhost:5000/products/29",
+      randomProducts[0]
+    ).as("get29");
     cy.intercept("http://localhost:5000/products/23", randomProducts[0]);
     cy.intercept("http://localhost:5000/products?page=1", allProducts);
     cy.intercept("http://localhost:5000/products?page=2&count=50", {
@@ -226,7 +230,7 @@ describe("Visit product pages", () => {
     cy.contains("Ergonomic Frozen Towels");
   });
 
-  it("Can delete a product", () => {
+  it.only("Can delete a product", () => {
     cy.intercept("DELETE", "http://localhost:5000/products/29", {
       message: "Deleted",
     });
@@ -238,6 +242,7 @@ describe("Visit product pages", () => {
     cy.wait("@login");
 
     cy.visit("/#/products/29");
+    cy.wait("@get29");
     cy.contains("Ergonomic Frozen Towels");
     cy.contains("Delete").click();
 
