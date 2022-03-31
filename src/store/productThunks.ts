@@ -78,10 +78,13 @@ export const getProduct = createAsyncThunk(
 
 export const getAll = createAsyncThunk(
   "products/all",
-  async (query: { page: number; count?: string }, { rejectWithValue }) => {
+  async (
+    query: { page: number; sort: string; count?: string },
+    { rejectWithValue }
+  ) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/products?page=${query.page}${
+        `http://localhost:5000/products?page=${query.page}&sort=${query.sort}${
           query.count && query.page !== 1 ? `&count=${query.count}` : ""
         }`,
         {

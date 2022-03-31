@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import productReducer from "../store/productSlice";
+import productReducer, { setSort } from "../store/productSlice";
 import authReducer, { loginUser } from "../store/authSlice";
 import {
   getRandom,
@@ -50,6 +50,7 @@ describe("Product Slice redux testing", () => {
       loading: false,
       error: null,
       reloadError: false,
+      sort: "no",
     });
   });
 
@@ -160,7 +161,7 @@ describe("Product Slice redux testing", () => {
           auth: authReducer,
         },
       });
-      
+
       window.fetch = jest.fn().mockReturnValue({
         status: 400,
       });
@@ -255,7 +256,7 @@ describe("Product Slice redux testing", () => {
         status: 200,
         json: () => Promise.resolve(allProducts),
       });
-      await store.dispatch(getAll({ page: 1 }));
+      await store.dispatch(getAll({ page: 1, sort: "no" }));
 
       const state = store.getState().product;
       expect(state.products).toEqual(allProducts.products);
@@ -270,7 +271,7 @@ describe("Product Slice redux testing", () => {
         json: () => Promise.resolve(allProductsPage3),
       });
 
-      await store.dispatch(getAll({ page: 3, count: "50" }));
+      await store.dispatch(getAll({ page: 3, sort: "no", count: "50" }));
       const state = store.getState().product;
       expect(state.products).toEqual(allProductsPage3.products);
       expect(state.error).toBe(null);
@@ -283,7 +284,7 @@ describe("Product Slice redux testing", () => {
         status: 400,
       });
 
-      await store.dispatch(getAll({ page: 1 }));
+      await store.dispatch(getAll({ page: 1, sort: "no" }));
 
       const state = store.getState().product;
       expect(state.error).toBe("Connection error");
@@ -1029,6 +1030,15 @@ describe("Product Slice redux testing", () => {
 
       expect(state.product?.messages?.length).toBe(10);
       expect(state.error).toBe("Could not add message");
+    });
+  });
+
+  describe("Changing sort", () => {
+    test("Updates sort in state", () => {
+      store.dispatch(setSort("lh"));
+
+      const state = store.getState().product;
+      expect(state.sort).toBe("lh");
     });
   });
 });

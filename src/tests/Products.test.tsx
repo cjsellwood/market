@@ -18,7 +18,7 @@ describe("Products component", () => {
     renderer(<Products />);
 
     expect(window.fetch).toHaveBeenCalledWith(
-      "http://localhost:5000/products?page=1",
+      "http://localhost:5000/products?page=1&sort=no",
       {
         method: "GET",
         mode: "cors",
@@ -68,7 +68,7 @@ describe("Products component", () => {
     userEvent.click(screen.getByLabelText("Page 2"));
 
     expect(window.fetch).toHaveBeenCalledWith(
-      "http://localhost:5000/products?page=2&count=50",
+      "http://localhost:5000/products?page=2&sort=no&count=50",
       {
         method: "GET",
         mode: "cors",
@@ -102,7 +102,7 @@ describe("Products component", () => {
     userEvent.click(screen.getByLabelText("Page 2"));
 
     expect(window.fetch).toHaveBeenCalledWith(
-      "http://localhost:5000/products?page=2&count=50",
+      "http://localhost:5000/products?page=2&sort=no&count=50",
       {
         method: "GET",
         mode: "cors",
@@ -125,5 +125,28 @@ describe("Products component", () => {
     expect(await screen.findByText("Refined Cotton Ball")).toBeInTheDocument();
 
     expect(window.scrollTo).toHaveBeenCalled();
+  });
+
+  test("Can change the order of products on page", async () => {
+    window.fetch = jest.fn().mockReturnValue({
+      status: 200,
+      json: () => Promise.resolve(allProducts),
+    });
+
+    renderer(<Products />);
+
+    expect(await screen.findByText("Refined Cotton Ball")).toBeInTheDocument();
+    expect(screen.queryByText("Date: Old to New")).toBeInTheDocument();
+
+    userEvent.selectOptions(screen.getByLabelText("select sort"), "lh");
+
+    expect(screen.queryByText("Date: Old to New")).not.toBeInTheDocument();
+    expect(screen.queryByText("Price: Low to High")).not.toBeInTheDocument();
+
+    expect(window.fetch).toHaveBeenNthCalledWith(
+      2,
+      "http://localhost:5000/products?page=1&sort=lh",
+      { method: "GET", mode: "cors" }
+    );
   });
 });

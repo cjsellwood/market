@@ -7,10 +7,13 @@ import useAppSelector from "../../hooks/useAppSelector";
 import ProductCard from "../Parts/ProductCard";
 import PageButtons from "../Navigation/PageButtons";
 import SearchBox from "../Parts/SearchBox";
+import SortSelect from "../Parts/SortSelect";
 
 const Products = () => {
   // Get page from url if included
   const [searchParams] = useSearchParams();
+
+  const { sort } = useAppSelector((state) => state.product);
 
   // Set page whenever page in url changes
   useEffect(() => {
@@ -23,10 +26,14 @@ const Products = () => {
   // Fetch products for a page
   useEffect(() => {
     dispatch(
-      getAll({ page: Number(page), count: count === "0" ? undefined : count })
+      getAll({
+        page: Number(page),
+        sort: sort,
+        count: count === "0" ? undefined : count,
+      })
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, page]);
+  }, [dispatch, page, sort]);
 
   const { products, loading, error, count } = useAppSelector(
     (state) => state.product
@@ -60,6 +67,7 @@ const Products = () => {
   return (
     <Grid templateColumns="1fr" pt="2">
       <SearchBox />
+      <SortSelect />
       {products.map((product) => {
         return <ProductCard product={product} key={product.product_id} />;
       })}

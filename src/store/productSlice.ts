@@ -41,6 +41,7 @@ interface ProductState {
   loading: boolean;
   error: string | null;
   reloadError: boolean;
+  sort: string;
 }
 
 const initialState: ProductState = {
@@ -50,6 +51,7 @@ const initialState: ProductState = {
   loading: false,
   error: null,
   reloadError: false,
+  sort: "no",
 };
 
 export const productSlice = createSlice({
@@ -59,6 +61,9 @@ export const productSlice = createSlice({
     setError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;
       state.reloadError = !state.reloadError;
+    },
+    setSort: (state, action: PayloadAction<string>) => {
+      state.sort = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -251,6 +256,6 @@ export const productSlice = createSlice({
   },
 });
 
-export const { setError } = productSlice.actions;
+export const { setError, setSort } = productSlice.actions;
 
 export default productSlice.reducer;
