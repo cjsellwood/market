@@ -32,7 +32,7 @@ describe("Category page tests", () => {
     renderer(<Category />);
 
     expect(window.fetch).toHaveBeenCalledWith(
-      "http://localhost:5000/products/category/1?page=1",
+      "http://localhost:5000/products/category/1?page=1&sort=no",
       {
         method: "GET",
         mode: "cors",
@@ -55,7 +55,7 @@ describe("Category page tests", () => {
     renderer(<Category />);
 
     expect(window.fetch).toHaveBeenCalledWith(
-      "http://localhost:5000/products/category/5?page=1",
+      "http://localhost:5000/products/category/5?page=1&sort=no",
       {
         method: "GET",
         mode: "cors",

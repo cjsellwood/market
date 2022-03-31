@@ -8,6 +8,7 @@ import { getCategory } from "../../store/productThunks";
 import PageButtons from "../Navigation/PageButtons";
 import ProductCard from "../Parts/ProductCard";
 import SearchBox from "../Parts/SearchBox";
+import SortSelect from "../Parts/SortSelect";
 
 const Category = () => {
   // Get page from url if included
@@ -29,21 +30,22 @@ const Category = () => {
       (el) => el.toLowerCase().split(" ").join("") === category
     );
 
+  const { products, loading, error, count, sort } = useAppSelector(
+    (state) => state.product
+  );
+
   // Fetch products for a page
   useEffect(() => {
     dispatch(
       getCategory({
         category_id,
         page: Number(page),
+        sort: sort,
         count: count === "0" ? undefined : count,
       })
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, page, category_id]);
-
-  const { products, loading, error, count } = useAppSelector(
-    (state) => state.product
-  );
+  }, [dispatch, page, category_id, sort]);
 
   // Show any errors
   const toast = useToast();
@@ -73,6 +75,7 @@ const Category = () => {
   return (
     <Grid templateColumns="1fr" pt="2">
       <SearchBox initialCategory={category_id.toString()} />
+      {products.length !== 0 && <SortSelect />}
       {products.map((product) => {
         return <ProductCard product={product} key={product.product_id} />;
       })}
