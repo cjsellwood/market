@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import productReducer from "../store/productSlice";
+import productReducer, { setSort } from "../store/productSlice";
 import authReducer, { loginUser } from "../store/authSlice";
 import {
   getRandom,
@@ -50,6 +50,7 @@ describe("Product Slice redux testing", () => {
       loading: false,
       error: null,
       reloadError: false,
+      sort: "no",
     });
   });
 
@@ -160,7 +161,7 @@ describe("Product Slice redux testing", () => {
           auth: authReducer,
         },
       });
-      
+
       window.fetch = jest.fn().mockReturnValue({
         status: 400,
       });
@@ -255,7 +256,7 @@ describe("Product Slice redux testing", () => {
         status: 200,
         json: () => Promise.resolve(allProducts),
       });
-      await store.dispatch(getAll({ page: 1 }));
+      await store.dispatch(getAll({ page: 1, sort: "no" }));
 
       const state = store.getState().product;
       expect(state.products).toEqual(allProducts.products);
@@ -270,7 +271,7 @@ describe("Product Slice redux testing", () => {
         json: () => Promise.resolve(allProductsPage3),
       });
 
-      await store.dispatch(getAll({ page: 3, count: "50" }));
+      await store.dispatch(getAll({ page: 3, sort: "no", count: "50" }));
       const state = store.getState().product;
       expect(state.products).toEqual(allProductsPage3.products);
       expect(state.error).toBe(null);
@@ -283,7 +284,7 @@ describe("Product Slice redux testing", () => {
         status: 400,
       });
 
-      await store.dispatch(getAll({ page: 1 }));
+      await store.dispatch(getAll({ page: 1, sort: "no" }));
 
       const state = store.getState().product;
       expect(state.error).toBe("Connection error");
@@ -299,7 +300,9 @@ describe("Product Slice redux testing", () => {
         json: () => Promise.resolve(category1Products),
       });
 
-      await store.dispatch(getCategory({ category_id: 1, page: 1 }));
+      await store.dispatch(
+        getCategory({ category_id: 1, sort: "no", page: 1 })
+      );
       const state = store.getState().product;
 
       expect(state.products).toEqual(category1Products.products);
@@ -315,7 +318,7 @@ describe("Product Slice redux testing", () => {
       });
 
       await store.dispatch(
-        getCategory({ category_id: 1, page: 2, count: "28" })
+        getCategory({ category_id: 1, page: 2, sort: "no", count: "28" })
       );
       const state = store.getState().product;
 
@@ -330,7 +333,9 @@ describe("Product Slice redux testing", () => {
         status: 400,
       });
 
-      await store.dispatch(getCategory({ category_id: 1, page: 1 }));
+      await store.dispatch(
+        getCategory({ category_id: 1, page: 1, sort: "no" })
+      );
 
       const state = store.getState().product;
       expect(state.error).toBe("Connection error");
@@ -346,7 +351,7 @@ describe("Product Slice redux testing", () => {
         json: () => Promise.resolve(searchProducts),
       });
 
-      await store.dispatch(getSearch({ q: "the", page: 1 }));
+      await store.dispatch(getSearch({ q: "the", page: 1, sort: "no" }));
 
       const state = store.getState().product;
       expect(state.products).toEqual(searchProducts.products);
@@ -361,7 +366,9 @@ describe("Product Slice redux testing", () => {
         json: () => Promise.resolve({ products: [], count: "0" }),
       });
 
-      await store.dispatch(getSearch({ q: "zzzzzzzzzzzzzzzz", page: 1 }));
+      await store.dispatch(
+        getSearch({ q: "zzzzzzzzzzzzzzzz", page: 1, sort: "no" })
+      );
 
       const state = store.getState().product;
       expect(state.products).toEqual([]);
@@ -374,7 +381,9 @@ describe("Product Slice redux testing", () => {
         json: () => Promise.resolve(searchProducts2),
       });
 
-      await store.dispatch(getSearch({ q: "the", page: 2, count: "38" }));
+      await store.dispatch(
+        getSearch({ q: "the", page: 2, sort: "no", count: "38" })
+      );
 
       const state = store.getState().product;
       expect(state.products).toEqual(searchProducts2.products);
@@ -389,7 +398,9 @@ describe("Product Slice redux testing", () => {
         json: () => Promise.resolve(searchCategory),
       });
 
-      await store.dispatch(getSearch({ q: "the", page: 1, category_id: 1 }));
+      await store.dispatch(
+        getSearch({ q: "the", page: 1, sort: "no", category_id: 1 })
+      );
 
       const state = store.getState().product;
       expect(state.products).toEqual(searchCategory.products);
@@ -403,7 +414,7 @@ describe("Product Slice redux testing", () => {
         status: 400,
       });
 
-      await store.dispatch(getSearch({ q: "error", page: 1 }));
+      await store.dispatch(getSearch({ q: "error", page: 1, sort: "no" }));
 
       const state = store.getState().product;
       expect(state.error).toBe("Connection error");
@@ -1029,6 +1040,15 @@ describe("Product Slice redux testing", () => {
 
       expect(state.product?.messages?.length).toBe(10);
       expect(state.error).toBe("Could not add message");
+    });
+  });
+
+  describe("Changing sort", () => {
+    test("Updates sort in state", () => {
+      store.dispatch(setSort("lh"));
+
+      const state = store.getState().product;
+      expect(state.sort).toBe("lh");
     });
   });
 });

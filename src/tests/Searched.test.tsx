@@ -62,7 +62,7 @@ describe("Searched Component tests", () => {
     renderer(<Searched />);
 
     expect(window.fetch).toHaveBeenCalledWith(
-      "http://localhost:5000/products/search?q=the&page=1",
+      "http://localhost:5000/products/search?q=the&page=1&sort=no",
       {
         method: "GET",
         mode: "cors",
@@ -113,7 +113,7 @@ describe("Searched Component tests", () => {
     renderer(<Searched />);
 
     expect(window.fetch).toHaveBeenCalledWith(
-      "http://localhost:5000/products/search?q=the&page=1&category=1",
+      "http://localhost:5000/products/search?q=the&page=1&sort=no&category=1",
       {
         method: "GET",
         mode: "cors",
@@ -146,7 +146,7 @@ describe("Searched Component tests", () => {
     renderer(<Searched />);
 
     expect(window.fetch).toHaveBeenCalledWith(
-      "http://localhost:5000/products/search?q=the&page=1&category=1",
+      "http://localhost:5000/products/search?q=the&page=1&sort=no&category=1",
       {
         method: "GET",
         mode: "cors",
@@ -178,13 +178,14 @@ describe("Searched Component tests", () => {
       product: {
         count: searchProducts.count,
         products: searchProducts.products,
+        sort: "no",
       },
     });
 
     userEvent.click(screen.getByText(">"));
 
     expect(window.fetch).toHaveBeenCalledWith(
-      "http://localhost:5000/products/search?q=the&page=2&count=38&category=1",
+      "http://localhost:5000/products/search?q=the&page=2&sort=no&count=38&category=1",
       {
         method: "GET",
         mode: "cors",

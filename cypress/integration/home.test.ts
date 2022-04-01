@@ -20,29 +20,29 @@ describe("Visit product pages", () => {
       randomProducts[0]
     ).as("get29");
     cy.intercept("http://localhost:5000/products/23", randomProducts[0]);
-    cy.intercept("http://localhost:5000/products?page=1", allProducts);
-    cy.intercept("http://localhost:5000/products?page=2&count=50", {
+    cy.intercept("http://localhost:5000/products?page=1&sort=no", allProducts);
+    cy.intercept("http://localhost:5000/products?page=2&sort=no&count=50", {
       products: searchCategory.products,
       count: "50",
     });
     cy.intercept(
-      "http://localhost:5000/products/category/1?page=1",
+      "http://localhost:5000/products/category/1?page=1&sort=no",
       category1Products
     );
     cy.intercept(
-      "http://localhost:5000/products/category/7?page=1",
+      "http://localhost:5000/products/category/7?page=1&sort=no",
       category1Products
     );
     cy.intercept(
-      "http://localhost:5000/products/search?q=the&page=1",
+      "http://localhost:5000/products/search?q=the&page=1&sort=no",
       searchProducts
     );
     cy.intercept(
-      "http://localhost:5000/products/search?q=the&page=2&count=38",
+      "http://localhost:5000/products/search?q=the&page=2&sort=no&count=38",
       searchProducts2
     );
     cy.intercept(
-      "http://localhost:5000/products/search?q=the&page=1&category=1",
+      "http://localhost:5000/products/search?q=the&page=1&sort=no&category=1",
       searchCategory
     );
     cy.intercept("http://localhost:5000/auth/login", {
@@ -178,7 +178,7 @@ describe("Visit product pages", () => {
     cy.contains("Search for a product");
 
     cy.get("input").clear().type("the");
-    cy.get("select").select("Cars");
+    cy.get("select").first().select("Cars");
     cy.get("[aria-label='submit search']").click();
     cy.url().should("eq", "http://localhost:3000/#/search?q=the&category=1");
 

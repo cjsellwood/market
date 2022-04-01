@@ -7,6 +7,7 @@ import { getSearch } from "../../store/productThunks";
 import PageButtons from "../Navigation/PageButtons";
 import ProductCard from "../Parts/ProductCard";
 import SearchBox from "../Parts/SearchBox";
+import SortSelect from "../Parts/SortSelect";
 
 const Searched = () => {
   // Get page from url if included
@@ -23,7 +24,7 @@ const Searched = () => {
   }, [searchParams]);
 
   const dispatch = useAppDispatch();
-  const { products, loading, error, count } = useAppSelector(
+  const { products, loading, error, count, sort } = useAppSelector(
     (state) => state.product
   );
 
@@ -34,13 +35,14 @@ const Searched = () => {
         getSearch({
           q: query,
           page: Number(page),
+          sort: sort,
           count: count === "0" ? undefined : count,
           category_id: Number(category_id),
         })
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, page, query, category_id]);
+  }, [dispatch, page, query, category_id, sort]);
 
   // Show any errors
   const toast = useToast();
@@ -73,6 +75,7 @@ const Searched = () => {
         initialCategory={category_id || undefined}
         initialSearch={query || undefined}
       />
+      {products.length !== 0 && <SortSelect />}
       {!query && <Text>Search for a product</Text>}
       {query && !products.length && !error && <Text>No results</Text>}
       {query &&

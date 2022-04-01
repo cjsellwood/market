@@ -78,10 +78,13 @@ export const getProduct = createAsyncThunk(
 
 export const getAll = createAsyncThunk(
   "products/all",
-  async (query: { page: number; count?: string }, { rejectWithValue }) => {
+  async (
+    query: { page: number; sort: string; count?: string },
+    { rejectWithValue }
+  ) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/products?page=${query.page}${
+        `http://localhost:5000/products?page=${query.page}&sort=${query.sort}${
           query.count && query.page !== 1 ? `&count=${query.count}` : ""
         }`,
         {
@@ -107,14 +110,14 @@ export const getAll = createAsyncThunk(
 export const getCategory = createAsyncThunk(
   "products/category",
   async (
-    query: { category_id: number; page: number; count?: string },
+    query: { category_id: number; page: number; sort: string; count?: string },
     { rejectWithValue }
   ) => {
     try {
       const res = await fetch(
         `http://localhost:5000/products/category/${query.category_id}?page=${
           query.page
-        }${query.count && query.page !== 1 ? `&count=${query.count}` : ""}`,
+        }&sort=${query.sort}${query.count && query.page !== 1 ? `&count=${query.count}` : ""}`,
         {
           method: "GET",
           mode: "cors",
@@ -138,12 +141,12 @@ export const getCategory = createAsyncThunk(
 export const getSearch = createAsyncThunk(
   "products/search",
   async (
-    query: { q: string; page: number; count?: string; category_id?: number },
+    query: { q: string; page: number; sort: string; count?: string; category_id?: number },
     { rejectWithValue }
   ) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/products/search?q=${query.q}&page=${query.page}${
+        `http://localhost:5000/products/search?q=${query.q}&page=${query.page}&sort=${query.sort}${
           query.count && query.page !== 1 ? `&count=${query.count}` : ""
         }${query.category_id ? `&category=${query.category_id}` : ""}`,
         {
