@@ -20,7 +20,6 @@ const ProductCard = (props: { product: Product }) => {
         m="1"
         templateColumns="120px 1fr"
         borderRadius="4"
-        bg="white"
         boxShadow="base"
         overflow="hidden"
       >

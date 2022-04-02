@@ -30,7 +30,7 @@ const App = () => {
     return null;
   }
   return (
-    <Box bg="gray.100" minW="100%" minH="100vh">
+    <Box minW="100%" minH="100vh">
       <ScrollToTop />
       <Navbar />
       <Box paddingTop="56px">

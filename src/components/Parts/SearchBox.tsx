@@ -36,7 +36,7 @@ const SearchBox = ({
   }, [initialSearch]);
 
   return (
-    <Flex as="form" onSubmit={submitForm} m="1" bg="white" borderRadius="4">
+    <Flex as="form" onSubmit={submitForm} m="1" borderRadius="4">
       <Box w="100%">
         <Flex>
           <Input
