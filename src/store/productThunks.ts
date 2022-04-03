@@ -20,9 +20,9 @@ export const generateError = async (res: Response) => {
 
 export const getRandom = createAsyncThunk(
   "products/random",
-  async (product, { rejectWithValue }) => {
+  async (_product, { rejectWithValue }) => {
     try {
-      const res = await fetch("http://localhost:5000/products/random", {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND}/products/random`, {
         method: "GET",
         mode: "cors",
       });
@@ -48,7 +48,7 @@ export const getProduct = createAsyncThunk(
     try {
       let res;
       if (token) {
-        res = await fetch(`http://localhost:5000/products/${id}`, {
+        res = await fetch(`${process.env.REACT_APP_BACKEND}/products/${id}`, {
           method: "GET",
           mode: "cors",
           headers: {
@@ -56,7 +56,7 @@ export const getProduct = createAsyncThunk(
           },
         });
       } else {
-        res = await fetch(`http://localhost:5000/products/${id}`, {
+        res = await fetch(`${process.env.REACT_APP_BACKEND}/products/${id}`, {
           method: "GET",
           mode: "cors",
         });
@@ -84,7 +84,7 @@ export const getAll = createAsyncThunk(
   ) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/products?page=${query.page}&sort=${query.sort}${
+        `${process.env.REACT_APP_BACKEND}/products?page=${query.page}&sort=${query.sort}${
           query.count && query.page !== 1 ? `&count=${query.count}` : ""
         }`,
         {
@@ -115,9 +115,11 @@ export const getCategory = createAsyncThunk(
   ) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/products/category/${query.category_id}?page=${
+        `${process.env.REACT_APP_BACKEND}/products/category/${query.category_id}?page=${
           query.page
-        }&sort=${query.sort}${query.count && query.page !== 1 ? `&count=${query.count}` : ""}`,
+        }&sort=${query.sort}${
+          query.count && query.page !== 1 ? `&count=${query.count}` : ""
+        }`,
         {
           method: "GET",
           mode: "cors",
@@ -141,14 +143,22 @@ export const getCategory = createAsyncThunk(
 export const getSearch = createAsyncThunk(
   "products/search",
   async (
-    query: { q: string; page: number; sort: string; count?: string; category_id?: number },
+    query: {
+      q: string;
+      page: number;
+      sort: string;
+      count?: string;
+      category_id?: number;
+    },
     { rejectWithValue }
   ) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/products/search?q=${query.q}&page=${query.page}&sort=${query.sort}${
-          query.count && query.page !== 1 ? `&count=${query.count}` : ""
-        }${query.category_id ? `&category=${query.category_id}` : ""}`,
+        `${process.env.REACT_APP_BACKEND}/products/search?q=${query.q}&page=${query.page}&sort=${
+          query.sort
+        }${query.count && query.page !== 1 ? `&count=${query.count}` : ""}${
+          query.category_id ? `&category=${query.category_id}` : ""
+        }`,
         {
           method: "GET",
           mode: "cors",
@@ -179,7 +189,7 @@ export const getUserProducts = createAsyncThunk(
 
     try {
       const res = await fetch(
-        `http://localhost:5000/products/user?page=${query.page}${
+        `${process.env.REACT_APP_BACKEND}/products/user?page=${query.page}${
           query.count && query.page !== 1 ? `&count=${query.count}` : ""
         }`,
         {
@@ -210,7 +220,7 @@ export const newProduct = createAsyncThunk(
   async (product: FormData, { rejectWithValue, getState }) => {
     const token = (getState() as RootState).auth.token;
     try {
-      const res = await fetch("http://localhost:5000/products/new", {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND}/products/new`, {
         method: "POST",
         mode: "cors",
         body: product,
@@ -238,7 +248,7 @@ export const deleteProduct = createAsyncThunk(
     const token = (getState() as RootState).auth.token;
 
     try {
-      const res = await fetch(`http://localhost:5000/products/${product_id}`, {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND}/products/${product_id}`, {
         method: "DELETE",
         mode: "cors",
         headers: {
@@ -267,17 +277,14 @@ export const updateProduct = createAsyncThunk(
   ) => {
     const token = (getState() as RootState).auth.token;
     try {
-      const res = await fetch(
-        `http://localhost:5000/products/${product.product_id}`,
-        {
-          method: "PUT",
-          mode: "cors",
-          body: product.form,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await fetch(`${process.env.REACT_APP_BACKEND}/products/${product.product_id}`, {
+        method: "PUT",
+        mode: "cors",
+        body: product.form,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       // If an error return error message
       if (res.status !== 200) {
         throw new Error(await generateError(res));
@@ -305,18 +312,15 @@ export const sendMessage = createAsyncThunk(
   ) => {
     const token = (getState() as RootState).auth.token;
     try {
-      const res = await fetch(
-        `http://localhost:5000/products/${query.product_id}`,
-        {
-          method: "POST",
-          mode: "cors",
-          body: JSON.stringify({ text: query.text, receiver: query.receiver }),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await fetch(`${process.env.REACT_APP_BACKEND}/products/${query.product_id}`, {
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify({ text: query.text, receiver: query.receiver }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       // If an error return error message
       if (res.status !== 200) {
         throw new Error(await generateError(res));

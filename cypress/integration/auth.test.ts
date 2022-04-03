@@ -1,7 +1,7 @@
 describe("Testing auth pages", () => {
   beforeEach(() => {
     cy.viewport(360, 640);
-    cy.intercept("http://localhost:5000/auth/register", {
+    cy.intercept("http://10.0.0.6:5000/auth/register", {
       email: "cypress@email.com",
       username: "cypress",
       userId: 99,
@@ -9,7 +9,7 @@ describe("Testing auth pages", () => {
       expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
     });
 
-    cy.intercept("http://localhost:5000/auth/login", {
+    cy.intercept("http://10.0.0.6:5000/auth/login", {
       email: "cypress@email.com",
       username: "cypress",
       userId: 99,
@@ -59,7 +59,7 @@ describe("Testing auth pages", () => {
   });
 
   it("Shows error if incorrect credentials", () => {
-    cy.intercept("http://localhost:5000/auth/login", {
+    cy.intercept("http://10.0.0.6:5000/auth/login", {
       statusCode: 400,
       body: {
         error: "Incorrect username or password",

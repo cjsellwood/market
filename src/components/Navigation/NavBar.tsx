@@ -24,7 +24,7 @@ const NavBar = () => {
       top="0"
     >
       <Link as={RouterLink} to="/">
-        <Heading>Market</Heading>
+        <Heading>The Nexus</Heading>
       </Link>
       <IconButton
         onClick={onOpen}
