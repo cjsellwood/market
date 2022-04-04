@@ -1,10 +1,22 @@
 {
   "files": {
-    "main.js": "/market/static/js/main.ca0007dc.js",
+    "main.css": "/market/static/css/main.c9af7b62.css",
+    "main.js": "/market/static/js/main.e4c5d927.js",
+    "static/media/rubik-all-400-normal.woff": "/market/static/media/rubik-all-400-normal.84344aed90cae7142af2.woff",
+    "static/media/righteous-all-400-normal.woff": "/market/static/media/righteous-all-400-normal.89b35d4247a221738fea.woff",
+    "static/media/rubik-latin-400-normal.woff2": "/market/static/media/rubik-latin-400-normal.9e93371ff3a7cf393143.woff2",
+    "static/media/righteous-latin-400-normal.woff2": "/market/static/media/righteous-latin-400-normal.ff971242700f520e3f61.woff2",
+    "static/media/rubik-latin-ext-400-normal.woff2": "/market/static/media/rubik-latin-ext-400-normal.885aa459f539afd12ff3.woff2",
+    "static/media/righteous-latin-ext-400-normal.woff2": "/market/static/media/righteous-latin-ext-400-normal.c8eff68a7456cce7e462.woff2",
+    "static/media/rubik-cyrillic-400-normal.woff2": "/market/static/media/rubik-cyrillic-400-normal.4079b7a6be7ad6e3e4e5.woff2",
+    "static/media/rubik-cyrillic-ext-400-normal.woff2": "/market/static/media/rubik-cyrillic-ext-400-normal.278b98a647b399d24ae5.woff2",
+    "static/media/rubik-hebrew-400-normal.woff2": "/market/static/media/rubik-hebrew-400-normal.ed87eb2718a159d8d12f.woff2",
     "index.html": "/market/index.html",
-    "main.ca0007dc.js.map": "/market/static/js/main.ca0007dc.js.map"
+    "main.c9af7b62.css.map": "/market/static/css/main.c9af7b62.css.map",
+    "main.e4c5d927.js.map": "/market/static/js/main.e4c5d927.js.map"
   },
   "entrypoints": [
-    "static/js/main.ca0007dc.js"
+    "static/css/main.c9af7b62.css",
+    "static/js/main.e4c5d927.js"
   ]
 }
