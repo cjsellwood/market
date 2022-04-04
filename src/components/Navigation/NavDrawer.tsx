@@ -8,9 +8,9 @@ import {
   Drawer,
   DrawerContent,
   Button,
-  VStack,
   useColorMode,
   Icon,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import { categories } from "../../categories";
@@ -29,66 +29,108 @@ const NavDrawer = ({
   const dispatch = useAppDispatch();
 
   const { colorMode, toggleColorMode } = useColorMode();
+  const background = useColorModeValue("mainBackground", "mainBackgroundDark");
   return (
     <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
       <DrawerOverlay />
-      <DrawerContent>
+      <DrawerContent bg={background}>
         <Button
           onClick={() => {
             toggleColorMode();
             onClose();
           }}
           aria-label="toggle theme"
+          bg="transparent"
           position="absolute"
           left="12px"
           top="8px"
           width="40px"
+          _active={{ bg: "transparent" }}
+          _hover={{ bg: "transparent" }}
         >
           {colorMode === "light" ? (
-            <Icon boxSize="5" viewBox="0 0 16 16" data-testid="moon">
+            <Icon
+              boxSize="6"
+              viewBox="0 0 16 16"
+              data-testid="moon"
+              fill="secondary"
+            >
               <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z" />
             </Icon>
           ) : (
-            <SunIcon boxSize="5" data-testid="sun"/>
+            <SunIcon boxSize="6" data-testid="sun" color="secondary" />
           )}
         </Button>
-        <DrawerCloseButton size="lg" aria-label="close menu" />
+        <DrawerCloseButton
+          size="lg"
+          aria-label="close menu"
+          color="secondary"
+          tabIndex={1}
+          _active={{ bg: "transparent" }}
+          _hover={{ bg: "transparent" }}
+        />
         <DrawerBody paddingTop="16">
-          <Flex justifyContent="space-evenly">
+          <Flex justifyContent="space-evenly" marginX="-3">
             <ShowToUnauthorized>
-              <Link to="/login" as={RouterLink} w="100%" onClick={onClose}>
-                <Flex justifyContent="center">
-                  <Button w="80%" tabIndex={-1}>
-                    Login
-                  </Button>
-                </Flex>
+              <Link
+                to="/login"
+                as={RouterLink}
+                onClick={onClose}
+                variant="link-button"
+                w="50%"
+              >
+                Login
               </Link>
-              <Link to="/register" as={RouterLink} w="100%" onClick={onClose}>
-                <Flex justifyContent="center">
-                  <Button w="80%" tabIndex={-1}>Register</Button>
-                </Flex>
+              <Link
+                to="/register"
+                as={RouterLink}
+                onClick={onClose}
+                variant="link-button"
+                w="50%"
+              >
+                Register
               </Link>
             </ShowToUnauthorized>
             <ShowToLoggedIn>
-              <Link to="/new" as={RouterLink} w="100%" onClick={onClose}>
-                <Flex justifyContent="center">
-                  <Button tabIndex={-1}>New Product</Button>
-                </Flex>
+              <Link
+                to="/new"
+                as={RouterLink}
+                onClick={onClose}
+                variant="link-button"
+                paddingX="3"
+                marginX="1.5"
+                w="50%"
+              >
+                New Product
               </Link>
               <Link
                 to="/products/yours"
                 as={RouterLink}
-                w="100%"
                 onClick={onClose}
+                variant="link-button"
+                marginX="1.5"
+                paddingX="3"
+                w="50%"
               >
-                <Flex justifyContent="center">
-                  <Button tabIndex={-1}>Your Products</Button>
-                </Flex>
+                My Products
               </Link>
             </ShowToLoggedIn>
           </Flex>
-          <VStack paddingTop="4">
-            <Link to="/products" as={RouterLink} onClick={onClose}>
+          <Flex
+            marginTop="4"
+            flexDirection="column"
+            bg="#bdbdbd"
+          >
+            <Link
+              to="/products"
+              as={RouterLink}
+              onClick={onClose}
+              bg={background}
+              fontWeight="bold"
+              fontSize="1.2rem"
+              marginBottom="1"
+              p="2"
+            >
               All Products
             </Link>
             {categories.map((category) => {
@@ -98,20 +140,28 @@ const NavDrawer = ({
                   to={`/${category.toLowerCase().split(" ").join("")}`}
                   as={RouterLink}
                   onClick={onClose}
+                  bg={background}
+                  fontWeight="bold"
+                  fontSize="lg"
+                  marginBottom="1"
+                  p="2"
                 >
                   {category}
                 </Link>
               );
             })}
-          </VStack>
+          </Flex>
           <ShowToLoggedIn>
-            <Flex justifyContent="space-evenly" paddingTop="8" w="100%">
-              <Link to="" as={RouterLink}  onClick={onClose}>
-                <Flex justifyContent="center">
-                  <Button onClick={() => dispatch(logOutUser())} tabIndex={-1}>
-                    Log Out
-                  </Button>
-                </Flex>
+            <Flex justifyContent="center" paddingTop="8">
+              <Link
+                onClick={() => {
+                  dispatch(logOutUser());
+                  onClose();
+                }}
+                variant="link-button"
+                w="50%"
+              >
+                Log Out
               </Link>
             </Flex>
           </ShowToLoggedIn>

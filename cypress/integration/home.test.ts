@@ -56,7 +56,7 @@ describe("Visit product pages", () => {
   it("Navigates to home screen and uses navigation menu", () => {
     cy.visit("/");
 
-    cy.contains("The Nexus");
+    cy.contains("THE NEXUS");
 
     cy.get("[aria-label='open menu']").click();
 
@@ -77,7 +77,7 @@ describe("Visit product pages", () => {
     cy.url().should("include", "register");
     cy.contains("a", "All Products").should("not.exist");
 
-    cy.contains("The Nexus").click();
+    cy.contains("THE NEXUS").click();
     cy.url().should("eq", "http://localhost:3000/#/");
   });
 
@@ -151,9 +151,9 @@ describe("Visit product pages", () => {
 
     cy.get("[aria-label='open menu']").click();
 
-    cy.contains("a", "Cars").click();
+    cy.contains("a", "Cars and Vehicles").click();
 
-    cy.url().should("eq", "http://localhost:3000/#/cars");
+    cy.url().should("eq", "http://localhost:3000/#/carsandvehicles");
 
     cy.contains("Handcrafted Wooden Fish");
   });
@@ -178,7 +178,7 @@ describe("Visit product pages", () => {
     cy.contains("Search for a product");
 
     cy.get("input").clear().type("the");
-    cy.get("select").first().select("Cars");
+    cy.get("select").first().select("Cars and Vehicles");
     cy.get("[aria-label='submit search']").click();
     cy.url().should("eq", "http://localhost:3000/#/search?q=the&category=1");
 
@@ -204,7 +204,7 @@ describe("Visit product pages", () => {
     cy.get("#title").type("New Product");
     cy.get("#title").should("have.value", "New Product");
 
-    cy.get("select").select("Cars");
+    cy.get("select").select("Cars and Vehicles");
     cy.get("select").should("have.value", "1");
 
     cy.get("#description").type(

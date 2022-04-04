@@ -1,5 +1,5 @@
 export const categories = [
-  "Cars",
+  "Cars and Vehicles",
   "Clothing",
   "Computers",
   "Electronics",

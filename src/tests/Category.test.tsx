@@ -4,7 +4,7 @@ import { category1Products, renderer, searchCategory } from "./helpers";
 
 const originalFetch = window.fetch;
 
-let mockResponse = { category: "cars" };
+let mockResponse = { category: "carsandvehicles" };
 let mockParams = {
   get: (term: string): null | number => null,
 };

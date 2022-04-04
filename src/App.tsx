@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, useColorModeValue } from "@chakra-ui/react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./components/Pages/Home";
 import Login from "./components/Pages/Login";
@@ -19,6 +19,10 @@ import UserProducts from "./components/Pages/UserProducts";
 import useAppSelector from "./hooks/useAppSelector";
 
 const App = () => {
+  const backgroundColor = useColorModeValue(
+    "mainBackground",
+    "mainBackgroundDark"
+  );
   const dispatch = useAppDispatch();
   const { storageLoaded } = useAppSelector((state) => state.auth);
 
@@ -30,7 +34,7 @@ const App = () => {
     return null;
   }
   return (
-    <Box minW="100%" minH="100vh">
+    <Box minW="100%" minH="100vh" backgroundColor={backgroundColor}>
       <ScrollToTop />
       <Navbar />
       <Box paddingTop="56px">

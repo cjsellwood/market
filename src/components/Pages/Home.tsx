@@ -22,8 +22,13 @@ const Home = () => {
         return <ProductCard product={product} key={product.product_id} />;
       })}
       <Flex justifyContent="center" m="2">
-        <Link to="/products" as={RouterLink}>
-          <Button bg="blue.200">See more</Button>
+        <Link
+          to="/products"
+          as={RouterLink}
+          w="50%"
+          variant="link-button"
+        >
+          See more
         </Link>
       </Flex>
     </Grid>

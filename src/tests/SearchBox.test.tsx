@@ -24,7 +24,7 @@ describe("Searchbox component", () => {
     expect(
       (
         screen.getByRole("option", {
-          name: "Cars",
+          name: "Cars and Vehicles",
         }) as HTMLOptionElement
       ).selected
     ).toBe(false);
@@ -36,10 +36,10 @@ describe("Searchbox component", () => {
     userEvent.type(screen.getByLabelText("search"), "the");
     expect(screen.getByLabelText("search")).toHaveValue("the");
 
-    userEvent.selectOptions(screen.getByRole("combobox"), "Cars");
+    userEvent.selectOptions(screen.getByRole("combobox"), "Cars and Vehicles");
 
     expect(
-      (screen.getByRole("option", { name: "Cars" }) as HTMLOptionElement)
+      (screen.getByRole("option", { name: "Cars and Vehicles" }) as HTMLOptionElement)
         .selected
     ).toBe(true);
 
@@ -56,7 +56,7 @@ describe("Searchbox component", () => {
     renderer(<SearchBox />);
 
     userEvent.type(screen.getByLabelText("search"), "the");
-    userEvent.selectOptions(screen.getByRole("combobox"), "Cars");
+    userEvent.selectOptions(screen.getByRole("combobox"), "Cars and Vehicles");
 
     userEvent.click(screen.getByLabelText("submit search"));
 
@@ -99,7 +99,7 @@ describe("Searchbox component", () => {
     expect(
       (
         screen.getByRole("option", {
-          name: "Cars",
+          name: "Cars and Vehicles",
         }) as HTMLOptionElement
       ).selected
     ).toBe(true);
