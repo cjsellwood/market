@@ -1,4 +1,4 @@
-import { Grid, Link, Flex, Button } from "@chakra-ui/react";
+import { Grid, Link, Flex } from "@chakra-ui/react";
 import { useEffect } from "react";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import useAppSelector from "../../hooks/useAppSelector";

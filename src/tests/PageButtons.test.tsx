@@ -37,7 +37,7 @@ describe("Products component", () => {
     expect(screen.queryByText("<")).not.toBeInTheDocument();
     expect(screen.queryByText("1")).toBeInTheDocument();
     expect(screen.queryByText(">")).not.toBeInTheDocument();
-    expect(screen.queryByText("1")).toHaveStyle("outline: 2px solid red");
+    expect(screen.queryByText("1")).toHaveStyle("borderColor: #d70475");
   });
 
   test("On page 1 with count 50 should be (1) 2 3 >", () => {
@@ -48,7 +48,7 @@ describe("Products component", () => {
     expect(screen.queryByText("2")).toBeInTheDocument();
     expect(screen.queryByText("3")).toBeInTheDocument();
     expect(screen.queryByText(">")).toBeInTheDocument();
-    expect(screen.queryByText("1")).toHaveStyle("outline: 2px solid red");
+    expect(screen.queryByText("1")).toHaveStyle("borderColor: #d70475");
   });
 
   test("On page 2 with count 50 should be < 1 (2) 3 >", () => {
@@ -59,7 +59,7 @@ describe("Products component", () => {
     expect(screen.queryByText("2")).toBeInTheDocument();
     expect(screen.queryByText("3")).toBeInTheDocument();
     expect(screen.queryByText(">")).toBeInTheDocument();
-    expect(screen.queryByText("2")).toHaveStyle("outline: 2px solid red");
+    expect(screen.queryByText("2")).toHaveStyle("borderColor: #d70475");
   });
 
   test("On page 3 with count 50 should be < 1 2 (3)", () => {
@@ -70,7 +70,7 @@ describe("Products component", () => {
     expect(screen.queryByText("2")).toBeInTheDocument();
     expect(screen.queryByText("3")).toBeInTheDocument();
     expect(screen.queryByText(">")).not.toBeInTheDocument();
-    expect(screen.queryByText("3")).toHaveStyle("outline: 2px solid red");
+    expect(screen.queryByText("3")).toHaveStyle("borderColor: #d70475");
   });
 
   test("On page 1 with count 150 should be (1) 2 3 4 5 >", () => {
@@ -83,7 +83,7 @@ describe("Products component", () => {
     expect(screen.queryByText("4")).toBeInTheDocument();
     expect(screen.queryByText("5")).toBeInTheDocument();
     expect(screen.queryByText(">")).toBeInTheDocument();
-    expect(screen.queryByText("1")).toHaveStyle("outline: 2px solid red");
+    expect(screen.queryByText("1")).toHaveStyle("borderColor: #d70475");
   });
 
   test("On page 2 with count 150 should be < 1 (2) 3 4 5 >", () => {
@@ -96,7 +96,7 @@ describe("Products component", () => {
     expect(screen.queryByText("4")).toBeInTheDocument();
     expect(screen.queryByText("5")).toBeInTheDocument();
     expect(screen.queryByText(">")).toBeInTheDocument();
-    expect(screen.queryByText("2")).toHaveStyle("outline: 2px solid red");
+    expect(screen.queryByText("2")).toHaveStyle("borderColor: #d70475");
   });
 
   test("On page 3 with count 150 should be < 1 2 (3) 4 5 >", () => {
@@ -109,7 +109,7 @@ describe("Products component", () => {
     expect(screen.queryByText("4")).toBeInTheDocument();
     expect(screen.queryByText("5")).toBeInTheDocument();
     expect(screen.queryByText(">")).toBeInTheDocument();
-    expect(screen.queryByText("3")).toHaveStyle("outline: 2px solid red");
+    expect(screen.queryByText("3")).toHaveStyle("borderColor: #d70475");
   });
 
   test("On page 4 with count 150 should be < 2 3 (4) 5 6 >", () => {
@@ -122,7 +122,7 @@ describe("Products component", () => {
     expect(screen.queryByText("5")).toBeInTheDocument();
     expect(screen.queryByText("6")).toBeInTheDocument();
     expect(screen.queryByText(">")).toBeInTheDocument();
-    expect(screen.queryByText("4")).toHaveStyle("outline: 2px solid red");
+    expect(screen.queryByText("4")).toHaveStyle("borderColor: #d70475");
   });
 
   test("On page 8 with count 150 should be < 4 5 6 7 (8) ", () => {
@@ -135,7 +135,7 @@ describe("Products component", () => {
     expect(screen.queryByText("7")).toBeInTheDocument();
     expect(screen.queryByText("8")).toBeInTheDocument();
     expect(screen.queryByText(">")).not.toBeInTheDocument();
-    expect(screen.queryByText("8")).toHaveStyle("outline: 2px solid red");
+    expect(screen.queryByText("8")).toHaveStyle("borderColor: #d70475");
   });
 
   test("Clicking on previous page button", () => {
