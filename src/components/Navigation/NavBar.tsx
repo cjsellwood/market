@@ -16,7 +16,8 @@ const NavBar = () => {
     <Flex
       alignItems="center"
       p="2"
-      bg="blue.200"
+      bg="primary"
+      color="white"
       justifyContent="space-between"
       w="100%"
       position="fixed"
@@ -24,12 +25,22 @@ const NavBar = () => {
       top="0"
     >
       <Link as={RouterLink} to="/">
-        <Heading>Market</Heading>
+        <Heading
+          fontFamily="logo"
+          fontWeight="300"
+          fontSize="3xl"
+          // textShadow="1px 1px lightblue"
+          color="secondary"
+        >
+          THE NEXUS
+        </Heading>
       </Link>
       <IconButton
         onClick={onOpen}
         aria-label="open menu"
+        backgroundColor="transparent"
         icon={<HamburgerIcon boxSize="7" />}
+        color="#d70475"
       />
       <NavDrawer isOpen={isOpen} onClose={onClose} />
     </Flex>

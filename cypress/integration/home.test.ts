@@ -13,39 +13,39 @@ import "cypress-file-upload";
 describe("Visit product pages", () => {
   beforeEach(() => {
     cy.viewport(360, 640);
-    cy.intercept("http://localhost:5000/products/random", randomProducts);
+    cy.intercept("http://10.0.0.6:5000/products/random", randomProducts);
     cy.intercept(
       "GET",
-      "http://localhost:5000/products/29",
+      "http://10.0.0.6:5000/products/29",
       randomProducts[0]
     ).as("get29");
-    cy.intercept("http://localhost:5000/products/23", randomProducts[0]);
-    cy.intercept("http://localhost:5000/products?page=1&sort=no", allProducts);
-    cy.intercept("http://localhost:5000/products?page=2&sort=no&count=50", {
+    cy.intercept("http://10.0.0.6:5000/products/23", randomProducts[0]);
+    cy.intercept("http://10.0.0.6:5000/products?page=1&sort=no", allProducts);
+    cy.intercept("http://10.0.0.6:5000/products?page=2&sort=no&count=50", {
       products: searchCategory.products,
       count: "50",
     });
     cy.intercept(
-      "http://localhost:5000/products/category/1?page=1&sort=no",
+      "http://10.0.0.6:5000/products/category/1?page=1&sort=no",
       category1Products
     );
     cy.intercept(
-      "http://localhost:5000/products/category/7?page=1&sort=no",
+      "http://10.0.0.6:5000/products/category/7?page=1&sort=no",
       category1Products
     );
     cy.intercept(
-      "http://localhost:5000/products/search?q=the&page=1&sort=no",
+      "http://10.0.0.6:5000/products/search?q=the&page=1&sort=no",
       searchProducts
     );
     cy.intercept(
-      "http://localhost:5000/products/search?q=the&page=2&sort=no&count=38",
+      "http://10.0.0.6:5000/products/search?q=the&page=2&sort=no&count=38",
       searchProducts2
     );
     cy.intercept(
-      "http://localhost:5000/products/search?q=the&page=1&sort=no&category=1",
+      "http://10.0.0.6:5000/products/search?q=the&page=1&sort=no&category=1",
       searchCategory
     );
-    cy.intercept("http://localhost:5000/auth/login", {
+    cy.intercept("http://10.0.0.6:5000/auth/login", {
       email: "cypress@email.com",
       username: "cypress",
       userId: randomProducts[0].user_id,
@@ -56,7 +56,7 @@ describe("Visit product pages", () => {
   it("Navigates to home screen and uses navigation menu", () => {
     cy.visit("/");
 
-    cy.contains("Market");
+    cy.contains("THE NEXUS");
 
     cy.get("[aria-label='open menu']").click();
 
@@ -77,7 +77,7 @@ describe("Visit product pages", () => {
     cy.url().should("include", "register");
     cy.contains("a", "All Products").should("not.exist");
 
-    cy.contains("Market").click();
+    cy.contains("THE NEXUS").click();
     cy.url().should("eq", "http://localhost:3000/#/");
   });
 
@@ -151,9 +151,9 @@ describe("Visit product pages", () => {
 
     cy.get("[aria-label='open menu']").click();
 
-    cy.contains("a", "Cars").click();
+    cy.contains("a", "Cars and Vehicles").click();
 
-    cy.url().should("eq", "http://localhost:3000/#/cars");
+    cy.url().should("eq", "http://localhost:3000/#/carsandvehicles");
 
     cy.contains("Handcrafted Wooden Fish");
   });
@@ -178,7 +178,7 @@ describe("Visit product pages", () => {
     cy.contains("Search for a product");
 
     cy.get("input").clear().type("the");
-    cy.get("select").first().select("Cars");
+    cy.get("select").first().select("Cars and Vehicles");
     cy.get("[aria-label='submit search']").click();
     cy.url().should("eq", "http://localhost:3000/#/search?q=the&category=1");
 
@@ -187,10 +187,10 @@ describe("Visit product pages", () => {
   });
 
   it("Can create a new product", () => {
-    cy.intercept("POST", "http://localhost:5000/products/new", {
+    cy.intercept("POST", "http://10.0.0.6:5000/products/new", {
       product_id: 99,
     });
-    cy.intercept("http://localhost:5000/products/99", randomProducts[0]);
+    cy.intercept("http://10.0.0.6:5000/products/99", randomProducts[0]);
 
     cy.visit("/#/new");
 
@@ -204,7 +204,7 @@ describe("Visit product pages", () => {
     cy.get("#title").type("New Product");
     cy.get("#title").should("have.value", "New Product");
 
-    cy.get("select").select("Cars");
+    cy.get("select").select("Cars and Vehicles");
     cy.get("select").should("have.value", "1");
 
     cy.get("#description").type(
@@ -231,7 +231,7 @@ describe("Visit product pages", () => {
   });
 
   it("Can delete a product", () => {
-    cy.intercept("DELETE", "http://localhost:5000/products/29", {
+    cy.intercept("DELETE", "http://10.0.0.6:5000/products/29", {
       message: "Deleted",
     });
 
@@ -247,7 +247,7 @@ describe("Visit product pages", () => {
     cy.get("button[aria-label='delete product']").click();
 
     cy.url().should("eq", "http://localhost:3000/#/products");
-    cy.intercept("http://localhost:5000/products/29", {
+    cy.intercept("http://10.0.0.6:5000/products/29", {
       statusCode: 404,
       body: {
         error: "Product not found",
@@ -298,10 +298,10 @@ describe("Visit product pages", () => {
     cy.get("input[type='file']").attachFile("test.jpg");
     cy.get("img").first().should("have.attr", "src").should("contain", "blob");
 
-    cy.intercept("PUT", "http://localhost:5000/products/29", {
+    cy.intercept("PUT", "http://10.0.0.6:5000/products/29", {
       product_id: 29,
     });
-    cy.intercept("http://localhost:5000/products/29", {
+    cy.intercept("http://10.0.0.6:5000/products/29", {
       product_id: 29,
       user_id: 5,
       title: "Updated Product",
@@ -323,11 +323,11 @@ describe("Visit product pages", () => {
   });
 
   it("Displays messages about a product to a logged in user", () => {
-    cy.intercept("GET", "http://localhost:5000/products/29", messagedProduct);
-    cy.intercept("POST", "http://localhost:5000/products/29", {
+    cy.intercept("GET", "http://10.0.0.6:5000/products/29", messagedProduct);
+    cy.intercept("POST", "http://10.0.0.6:5000/products/29", {
       message: "Success",
     });
-    cy.intercept("http://localhost:5000/auth/login", {
+    cy.intercept("http://10.0.0.6:5000/auth/login", {
       email: "cypress@email.com",
       username: "cypress",
       userId: 2,
@@ -354,13 +354,13 @@ describe("Visit product pages", () => {
   it("Displays messages to the author and replies", () => {
     cy.intercept(
       "GET",
-      "http://localhost:5000/products/29",
+      "http://10.0.0.6:5000/products/29",
       messagedProductAuthor
     );
-    cy.intercept("POST", "http://localhost:5000/products/29", {
+    cy.intercept("POST", "http://10.0.0.6:5000/products/29", {
       message: "Success",
     });
-    cy.intercept("http://localhost:5000/auth/login", {
+    cy.intercept("http://10.0.0.6:5000/auth/login", {
       email: "cypress@email.com",
       username: "cypress",
       userId: messagedProductAuthor.user_id,

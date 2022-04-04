@@ -1,5 +1,12 @@
 import { SearchIcon } from "@chakra-ui/icons";
-import { Flex, Box, Input, IconButton, Select } from "@chakra-ui/react";
+import {
+  Flex,
+  Box,
+  Input,
+  IconButton,
+  Select,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { categories } from "../../categories";
@@ -35,8 +42,20 @@ const SearchBox = ({
     }
   }, [initialSearch]);
 
+  const background = useColorModeValue("card", "cardDark");
+  const borderColor = useColorModeValue("#dedede", "#4d4d4d");
+
   return (
-    <Flex as="form" onSubmit={submitForm} m="1" bg="white" borderRadius="4">
+    <Flex
+      as="form"
+      onSubmit={submitForm}
+      m="1"
+      borderRadius="4"
+      // borderWidth="1px"
+      borderColor={borderColor}
+      bg={background}
+      // overflow="hidden"
+    >
       <Box w="100%">
         <Flex>
           <Input
@@ -46,12 +65,19 @@ const SearchBox = ({
             placeholder="Search"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
+            border="none"
+            borderRadius="2"
           />
           <IconButton
             type="submit"
             aria-label="submit search"
             icon={<SearchIcon />}
-            colorScheme="blue"
+            backgroundColor="secondary"
+            color="white"
+            border="none"
+            borderRadius="0 4px 0 0"
+            _active={{ bg: "secondary" }}
+            _hover={{ bg: "secondary" }}
           />
         </Flex>
         <Select
@@ -59,11 +85,33 @@ const SearchBox = ({
           aria-label="select category"
           value={category_id}
           onChange={(e) => setCategory_id(e.target.value)}
+          borderWidth="0"
+          borderRadius="2"
+          borderTopWidth="1px"
+          borderTopColor={borderColor}
+          bg={background}
         >
-          <option value="0">All Categories</option>
+          <option
+            value="0"
+            style={{
+              backgroundColor:
+                /* istanbul ignore next */
+                background === "card" ? "white" : "rgb(39, 39, 42)",
+            }}
+          >
+            All Categories
+          </option>
           {categories.map((category, i) => {
             return (
-              <option value={i + 1} key={category}>
+              <option
+                value={i + 1}
+                key={category}
+                style={{
+                  backgroundColor:
+                    /* istanbul ignore next */
+                    background === "card" ? "white" : "rgb(39, 39, 42)",
+                }}
+              >
                 {category}
               </option>
             );

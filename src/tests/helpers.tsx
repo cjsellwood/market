@@ -40,7 +40,7 @@ export const randomProducts = [
     ],
     listed: "2022-02-28T13:00:00.000Z",
     location: "Funkville",
-    category: "Cars",
+    category: "Cars and Vehicles",
   },
   {
     product_id: 12,

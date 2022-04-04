@@ -58,16 +58,19 @@ const Products = () => {
   // Show loading spinner
   if (loading) {
     return (
-      <Flex w="100%" h="50vh" justifyContent="center" alignItems="center">
-        <Spinner size="xl" thickness="4px" speed="0.5s" label="loading" />
-      </Flex>
+      <Grid templateColumns="1fr" pt="2">
+        <SearchBox />
+        <Flex w="100%" h="50vh" justifyContent="center" alignItems="center">
+          <Spinner size="xl" thickness="4px" speed="0.5s" label="loading" />
+        </Flex>
+      </Grid>
     );
   }
 
   return (
     <Grid templateColumns="1fr" pt="2">
       <SearchBox />
-      <SortSelect />
+      {products.length !== 0 && <SortSelect />}
       {products.map((product) => {
         return <ProductCard product={product} key={product.product_id} />;
       })}

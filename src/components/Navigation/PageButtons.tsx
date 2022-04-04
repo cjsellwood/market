@@ -34,7 +34,7 @@ const PageButtons = ({
   }
 
   return (
-    <ButtonGroup colorScheme="blue" size="sm">
+    <ButtonGroup>
       {page !== 1 && (
         <Button
           onClick={() => {
@@ -54,6 +54,12 @@ const PageButtons = ({
             }
           }}
           aria-label="Previous Page"
+          bg="transparent"
+          borderBottomWidth="3px"
+          borderColor="transparent"
+          borderRadius="0"
+          _active={{ bg: "transparent" }}
+          _hover={{ bg: "transparent" }}
         >
           &lt;
         </Button>
@@ -82,8 +88,13 @@ const PageButtons = ({
               }
             }}
             aria-label={`Page ${pageNumber}`}
-            outline={page === pageNumber ? "2px solid red" : "none"}
             key={pageNumber}
+            borderBottomWidth="3px"
+            borderColor={page === pageNumber ? "#d70475" : "transparent"}
+            borderRadius="0"
+            bg="transparent"
+            _active={{ bg: "transparent" }}
+            _hover={{ bg: "transparent" }}
           >
             {pageNumber}
           </Button>
@@ -100,6 +111,12 @@ const PageButtons = ({
             );
           }}
           aria-label="Next Page"
+          bg="transparent"
+          borderBottomWidth="3px"
+          borderColor="transparent"
+          borderRadius="0"
+          _active={{ bg: "transparent" }}
+          _hover={{ bg: "transparent" }}
         >
           &gt;
         </Button>

@@ -1,4 +1,4 @@
-import { Grid, Link, Flex, Button } from "@chakra-ui/react";
+import { Grid, Link, Flex } from "@chakra-ui/react";
 import { useEffect } from "react";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import useAppSelector from "../../hooks/useAppSelector";
@@ -22,8 +22,13 @@ const Home = () => {
         return <ProductCard product={product} key={product.product_id} />;
       })}
       <Flex justifyContent="center" m="2">
-        <Link to="/products" as={RouterLink}>
-          <Button bg="blue.200">See more</Button>
+        <Link
+          to="/products"
+          as={RouterLink}
+          w="50%"
+          variant="link-button"
+        >
+          See more
         </Link>
       </Flex>
     </Grid>

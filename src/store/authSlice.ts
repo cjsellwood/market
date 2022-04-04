@@ -41,7 +41,7 @@ export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (user: RegisterInput, { rejectWithValue }) => {
     try {
-      const res = await fetch("http://localhost:5000/auth/register", {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND}/auth/register`, {
         method: "POST",
         mode: "cors",
         headers: {
@@ -75,7 +75,7 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (user: LoginInput, { rejectWithValue }) => {
     try {
-      const res = await fetch("http://localhost:5000/auth/login", {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND}/auth/login`, {
         method: "POST",
         mode: "cors",
         headers: {
