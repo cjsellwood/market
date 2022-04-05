@@ -17,6 +17,7 @@ const theme = extendTheme({
   colors: {
     primary: "#060698",
     secondary: "#d70475",
+    success: "#0f8a30",
     card: "white",
     cardDark: "rgb(39, 39, 42)",
     mainBackground: "rgb(244, 244, 251)",
@@ -45,6 +46,18 @@ const theme = extendTheme({
           marginX: 2,
           paddingY: 1,
           paddingX: 4,
+        },
+      },
+    },
+    Button: {
+      variants: {
+        "submit-button": {
+          borderRadius: 4,
+          borderWidth: "2px",
+          borderColor: "success",
+          fontWeight: "bold",
+          fontSize: "md",
+          color: "success",
         },
       },
     },
