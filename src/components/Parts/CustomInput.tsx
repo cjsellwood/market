@@ -60,7 +60,6 @@ const CustomInput = ({
             fontSize="14px"
             borderColor={borderColor}
             borderRadius="4"
-            borderWidth="2px"
           />
         ) : (
           <Input
@@ -73,6 +72,7 @@ const CustomInput = ({
             fontSize="14px"
             borderColor={borderColor}
             borderRadius="4"
+            step="1"
           />
         )}
         <Text color="red.500" fontSize="14px" h="16px" marginTop="1">

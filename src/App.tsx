@@ -17,6 +17,7 @@ import { loadStoredUser } from "./store/authSlice";
 import RedirectLogin from "./components/Navigation/RedirectLogin";
 import UserProducts from "./components/Pages/UserProducts";
 import useAppSelector from "./hooks/useAppSelector";
+import "./App.css";
 
 const App = () => {
   const backgroundColor = useColorModeValue(

@@ -10,6 +10,7 @@ import {
   Input,
   ButtonGroup,
   Image,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import useAppSelector from "../../hooks/useAppSelector";
@@ -68,7 +69,7 @@ const NewProduct = () => {
     formData.append("title", title.value);
     formData.append("category_id", category_id);
     formData.append("description", description.value);
-    formData.append("price", price.value);
+    formData.append("price", Math.round(Number(price.value)).toString());
     formData.append("location", location.value);
 
     const res = await dispatch(newProduct(formData));
@@ -165,11 +166,20 @@ const NewProduct = () => {
     (fileInputs[i] as HTMLInputElement).value = "";
   };
 
+  const selectBackground = useColorModeValue("card", "cardDark");
+  const buttonBackgroundColor = useColorModeValue("success", "transparent");
+  const buttonTextColor = useColorModeValue("white", "success");
+  const selectBorderColor = useColorModeValue("#b0b0b0", "#4a4a4a");
+
+  const fileButtonTextColor = useColorModeValue("#000", "#fff");
+
   return (
     <Flex justify="center" align="center" direction="column">
-      <Heading>New Product</Heading>
+      <Heading color="secondary" p="4" fontSize="26px">
+        NEW PRODUCT
+      </Heading>
       <Flex direction="column" width="100%">
-        <Flex justifyContent="center" bg="gray.300" width="100%">
+        <Flex justifyContent="center" bg="rgb(10, 10, 10)" width="100%">
           {images.map((image, i) => {
             if (image !== null) {
               return (
@@ -193,20 +203,47 @@ const NewProduct = () => {
                   display={imageShown === i ? "flex" : "none"}
                   key={`Image ${i + 1}`}
                 >
-                  <Text>No Image</Text>
+                  <Text color="white">No Image</Text>
                 </Flex>
               );
             }
           })}
         </Flex>
+        <ButtonGroup justifyContent="center" p="2">
+          {images.map((image, i) => {
+            return (
+              <Button
+                onClick={() => setImageShown(i)}
+                aria-label={`Image ${i + 1}`}
+                key={`Image ${i + 1}`}
+                backgroundColor={imageShown === i ? "#e5067d" : "#060698"}
+                variant="image-button"
+                className="no-highlight"
+              >
+                {i + 1}
+              </Button>
+            );
+          })}
+        </ButtonGroup>
         {images.map((image, i) => {
           return (
             <Flex
-              justifyContent="center"
-              display={imageShown === i ? "flex" : "none"}
               key={`File ${i + 1}`}
+              display={imageShown === i ? "flex" : "none"}
+              justifyContent="space-evenly"
+              p="1"
+              paddingX="8"
             >
-              <Button colorScheme="blue" as="label" htmlFor={`File ${i + 1}`}>
+              <Button
+                as="label"
+                htmlFor={`File ${i + 1}`}
+                variant="neutral-button"
+                color={fileButtonTextColor}
+                borderColor={selectBorderColor}
+                w="50%"
+                cursor={"pointer"}
+                _focus={{ boxShadow: "0 0 0 3px rgba(66, 153, 225, 0.6);" }}
+              >
                 {image ? "Change" : "Add"}
               </Button>
               <Input
@@ -218,29 +255,18 @@ const NewProduct = () => {
                 onChange={setFile}
               />
               <Button
-                colorScheme="red"
                 onClick={() => removeFile(i)}
                 aria-label="remove image"
+                variant="neutral-button"
+                color={fileButtonTextColor}
+                borderColor={selectBorderColor}
+                w="50%"
               >
                 Remove
               </Button>
             </Flex>
           );
         })}
-        <ButtonGroup justifyContent="center" colorScheme="blue" p="1" size="sm">
-          {images.map((image, i) => {
-            return (
-              <Button
-                onClick={() => setImageShown(i)}
-                aria-label={`Image ${i + 1}`}
-                key={`Image ${i + 1}`}
-                outline={imageShown === i ? "2px solid red" : "none"}
-              >
-                {i + 1}
-              </Button>
-            );
-          })}
-        </ButtonGroup>
       </Flex>
       <Flex
         as="form"
@@ -276,13 +302,30 @@ const NewProduct = () => {
               setCategoryError("");
             }}
             isInvalid={categoryError !== ""}
+            borderColor={selectBorderColor}
           >
-            <option value="0" hidden>
+            <option
+              value="0"
+              hidden
+              style={{
+                backgroundColor:
+                  /* istanbul ignore next */
+                  selectBackground === "card" ? "white" : "rgb(22, 27, 34)",
+              }}
+            >
               Select a category
             </option>
             {categories.map((category, i) => {
               return (
-                <option value={i + 1} key={category}>
+                <option
+                  value={i + 1}
+                  key={category}
+                  style={{
+                    backgroundColor:
+                      /* istanbul ignore next */
+                      selectBackground === "card" ? "white" : "rgb(22, 27, 34)",
+                  }}
+                >
                   {category}
                 </option>
               );
@@ -321,7 +364,13 @@ const NewProduct = () => {
           onChange={location.onChange}
         />
         <Flex justify="center">
-          <Button colorScheme="green" type="submit" isLoading={loading}>
+          <Button
+            variant="submit-button"
+            type="submit"
+            isLoading={loading}
+            bg={buttonBackgroundColor}
+            color={buttonTextColor}
+          >
             Submit
           </Button>
         </Flex>

@@ -105,13 +105,16 @@ const Product = () => {
           );
         })}
       </Flex>
-      <ButtonGroup justifyContent="center" colorScheme="blue" p="1" size="sm">
+      <ButtonGroup justifyContent="center" p="2">
         {product.images!.map((image, i) => {
           return (
             <Button
               onClick={() => setImageShown(i)}
               aria-label={`Image ${i + 1}`}
               key={`Image ${i + 1}`}
+              backgroundColor={imageShown === i ? "#e5067d" : "#060698"}
+              variant="image-button"
+              className="no-highlight"
             >
               {i + 1}
             </Button>

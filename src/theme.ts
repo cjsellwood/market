@@ -16,7 +16,7 @@ const theme = extendTheme({
   },
   colors: {
     primary: "#060698",
-    secondary: "#d70475",
+    secondary: "#e5067d",
     success: "#0f8a30",
     card: "white",
     cardDark: "rgb(39, 39, 42)",
@@ -58,6 +58,16 @@ const theme = extendTheme({
           fontWeight: "bold",
           fontSize: "md",
           color: "success",
+        },
+        "image-button": {
+          borderRadius: "100",
+          color: "white",
+          bg: "primary",
+        },
+        "neutral-button": {
+          borderWidth: "1px",
+          fontWeight: "normal",
+          marginX: "2",
         },
       },
     },

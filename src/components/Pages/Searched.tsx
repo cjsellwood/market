@@ -77,7 +77,11 @@ const Searched = () => {
       />
       {products.length !== 0 && <SortSelect />}
       {!query && <Text>Search for a product</Text>}
-      {query && !products.length && !error && <Text>No results</Text>}
+      {query && !products.length && !error && (
+        <Flex justifyContent="center" p="4">
+          <Text fontSize="lg">No results</Text>
+        </Flex>
+      )}
       {query &&
         products.map((product) => {
           return <ProductCard product={product} key={product.product_id} />;

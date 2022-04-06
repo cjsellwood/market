@@ -151,6 +151,51 @@ describe("Edit Product Component", () => {
     expect(screen.queryByAltText("Image 2")).toBeVisible();
   });
 
+  test("Can add images if none present initially", async () => {
+    window.fetch = jest.fn().mockReturnValue({
+      status: 200,
+      json: () =>
+        Promise.resolve({
+          product_id: 29,
+          user_id: 5,
+          title: "Ergonomic Frozen Towels",
+          description:
+            "Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals",
+          price: 946,
+          images: [],
+          listed: "2022-02-28T13:00:00.000Z",
+          location: "Funkville",
+          category: "Cars and Vehicles",
+        }),
+    });
+    window.URL.createObjectURL = jest.fn().mockReturnValue("blob");
+
+    renderer(<EditProduct />, { auth: { userId: randomProducts[0].user_id } });
+
+    expect(mockNavigate).not.toHaveBeenCalled();
+
+    await screen.findByDisplayValue("Ergonomic Frozen Towels");
+
+    const fileInputs = screen.getAllByLabelText("upload image", {
+      selector: "input",
+    });
+
+    const file1 = new File(["test 1"], "image1.png", { type: "image/png" });
+    const file2 = new File(["test 2"], "image2.png", { type: "image/png" });
+
+    userEvent.upload(fileInputs[0], file1);
+    userEvent.upload(fileInputs[1], file2);
+
+    expect((fileInputs[0] as HTMLInputElement).files![0]).toStrictEqual(file1);
+    expect((fileInputs[1] as HTMLInputElement).files![0]).toStrictEqual(file2);
+
+    expect(screen.queryByAltText("Image 1")).toBeInTheDocument();
+    expect(screen.queryByAltText("Image 2")).toBeInTheDocument();
+
+    expect(screen.getByAltText("Image 1")).toHaveAttribute("src", "blob");
+    expect(screen.getByAltText("Image 2")).toHaveAttribute("src", "blob");
+  });
+
   test("Can submit form with updated values and images", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 200,
