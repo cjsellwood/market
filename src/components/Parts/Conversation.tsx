@@ -1,4 +1,4 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text, useColorModeValue } from "@chakra-ui/react";
 import React from "react";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import useAppSelector from "../../hooks/useAppSelector";
@@ -51,6 +51,9 @@ const Conversation = ({
     }
   };
 
+  const buttonBackgroundColor = useColorModeValue("success", "transparent");
+  const buttonTextColor = useColorModeValue("white", "success");
+
   return (
     <React.Fragment>
       {messages.map((message: Message, i: number) => (
@@ -89,6 +92,9 @@ const Conversation = ({
           onClick={submitMessage}
           alignSelf="flex-end"
           aria-label="send message"
+          variant="submit-button"
+          bg={buttonBackgroundColor}
+          color={buttonTextColor}
         >
           Send
         </Button>

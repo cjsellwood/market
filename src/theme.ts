@@ -1,6 +1,9 @@
 import { extendTheme, ThemeConfig } from "@chakra-ui/react";
 import "@fontsource/righteous";
-import "@fontsource/rubik";
+import "@fontsource/rubik/300.css";
+import "@fontsource/rubik/400.css";
+import "@fontsource/rubik/500.css";
+import "@fontsource/rubik/700.css";
 
 const config: ThemeConfig = {
   initialColorMode: "light",
@@ -47,10 +50,30 @@ const theme = extendTheme({
           paddingY: 1,
           paddingX: 4,
         },
+        "neutral-link": {
+          borderWidth: "1px",
+          fontWeight: "normal",
+          marginX: "2",
+          borderRadius: "6",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        },
       },
     },
     Button: {
       variants: {
+        "link-button": {
+          borderWidth: "2px",
+          borderColor: "secondary",
+          color: "secondary",
+          borderRadius: 4,
+          fontWeight: "bold",
+          fontSize: "lg",
+          marginX: 2,
+          paddingY: 1,
+          paddingX: 4,
+        },
         "submit-button": {
           borderRadius: 4,
           borderWidth: "2px",
