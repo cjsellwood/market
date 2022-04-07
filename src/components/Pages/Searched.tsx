@@ -76,7 +76,11 @@ const Searched = () => {
         initialSearch={query || undefined}
       />
       {products.length !== 0 && <SortSelect />}
-      {!query && <Text>Search for a product</Text>}
+      {!query && (
+        <Flex justifyContent="center" p="4">
+          <Text fontSize="lg">Search for a product</Text>
+        </Flex>
+      )}
       {query && !products.length && !error && (
         <Flex justifyContent="center" p="4">
           <Text fontSize="lg">No results</Text>
