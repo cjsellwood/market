@@ -34,15 +34,31 @@ const Conversation = ({
     // Render immediately
     const messageText = message.value;
     message.setValue("");
-    const receiverId = messages[0].sender;
-    const result = await dispatch(
-      sendMessage({
-        text: messageText,
-        product_id: product_id,
-        sender: author_id === userId ? author_id : userId!,
-        receiver: author_id === userId ? receiverId : author_id,
-      })
-    );
+
+    let result;
+    // If sent by the author of product
+    if (author_id === userId) {
+      const receiverId = messages[0].sender;
+      result = await dispatch(
+        sendMessage({
+          text: messageText,
+          product_id: product_id,
+          sender: userId,
+          receiver: receiverId,
+        })
+      );
+      // If sent by user to author of product
+    } else {
+      result = await dispatch(
+        sendMessage({
+          text: messageText,
+          product_id: product_id,
+          sender: userId!,
+          receiver: author_id,
+        })
+      );
+    }
+
     window.scrollTo({ left: 0, top: 100000000000000, behavior: "smooth" });
 
     // If failed to save message reset to before submit
@@ -53,28 +69,46 @@ const Conversation = ({
 
   const buttonBackgroundColor = useColorModeValue("success", "transparent");
   const buttonTextColor = useColorModeValue("white", "success");
+  const secondaryText = useColorModeValue("secondaryText", "secondaryTextDark");
 
   return (
     <React.Fragment>
-      {messages.map((message: Message, i: number) => (
-        <Flex
-          direction="column"
-          key={"message" + i}
-          border="1px solid gray"
-          m="1"
-          p="1"
-          borderRadius="4"
-          marginLeft={message.sender !== author_id ? "8" : "1"}
-          marginRight={message.sender === author_id ? "8" : "1"}
-        >
-          <Text wordBreak="break-word">{message.text}</Text>
-          <Flex fontSize="sm">
-            {new Date(message.time).toLocaleTimeString("en-US")}{" "}
-            {new Date(message.time).toLocaleDateString()}
+      <Flex direction="column">
+        {messages.map((message: Message, i: number) => (
+          <Flex
+            direction="column"
+            key={"message" + i}
+            m="1"
+            marginLeft={message.sender === userId ? "12" : "1"}
+            marginRight={message.sender !== userId ? "12" : "1"}
+          >
+            <Flex justifyContent={message.sender === userId ? "end" : "start"}>
+              <Text
+                wordBreak="break-word"
+                color="white"
+                bg={message.sender === userId ? "secondary" : "primary"}
+                borderRadius="8"
+                p="2"
+                width="fit-content"
+              >
+                {message.text}
+              </Text>
+            </Flex>
+            <Flex
+              paddingX="1"
+              justifyContent={message.sender === userId ? "end" : "start"}
+            >
+              <Text fontSize="13px" fontWeight="300" color={secondaryText}>
+                {new Date(message.time).toLocaleDateString()}{" "}
+                {new Date(message.time)
+                  .toLocaleTimeString("en-US")
+                  .toLowerCase()}{" "}
+              </Text>
+            </Flex>
           </Flex>
-        </Flex>
-      ))}
-      <Flex direction="column" p="1">
+        ))}
+      </Flex>
+      <Flex direction="column" marginLeft="12" paddingTop="2">
         <CustomInput
           id={message.id}
           value={message.value}
@@ -88,7 +122,8 @@ const Conversation = ({
         <Button
           colorScheme="green"
           w="fit-content"
-          m="1"
+          marginBottom="1"
+          marginTop="-4"
           onClick={submitMessage}
           alignSelf="flex-end"
           aria-label="send message"

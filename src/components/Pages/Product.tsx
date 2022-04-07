@@ -167,13 +167,13 @@ const Product = () => {
         </Flex>
         <Text>{product.description}</Text>
         <Text fontSize="md" lineHeight="2" paddingTop="2">
-          <Text fontWeight="500" display="inline">
+          <Text as="span" fontWeight="500" display="inline">
             Location:
           </Text>{" "}
           {product.location}
         </Text>
         <Text fontSize="md" lineHeight="2">
-          <Text fontWeight="500" display="inline">
+          <Text as="span" fontWeight="500" display="inline">
             Listed:
           </Text>{" "}
           {new Date(product.listed).toLocaleDateString()}
@@ -221,9 +221,11 @@ const Product = () => {
         </ShowToUnauthorized>
         <ShowToLoggedIn>
           {product.user_id !== userId && (
-            <Flex direction="column" w="100%">
+            <Flex direction="column" w="100%" paddingX="3">
               <Divider marginY="2" borderColor="#858585" />
-              <Heading>Messages</Heading>
+              <Heading textAlign="center" fontWeight="500" fontSize="2xl">
+                Messages
+              </Heading>
               <Flex direction="column">
                 <Conversation
                   messages={product.messages!}
@@ -237,20 +239,27 @@ const Product = () => {
         <ShowToAuthor authorId={product.user_id}>
           <Divider marginY="2" borderColor="#858585" />
           <Flex direction="column" w="100%">
-            <Heading textAlign="center">Messages</Heading>
+            <Heading
+              textAlign="center"
+              fontWeight="500"
+              fontSize="2xl"
+              paddingBottom="2"
+            >
+              Messages
+            </Heading>
             {product.messages && !product.messages!.length && (
               <Flex justifyContent="center" alignItems="center" p="2">
                 <Text>No Messages</Text>
               </Flex>
             )}
-            <Accordion allowToggle>
+            <Accordion allowToggle defaultIndex={0}>
               {Array.from(groupByUser(product.messages!, product.user_id)).map(
                 (conversation, i) => {
                   return (
                     <AccordionItem key={conversation[0] + i}>
                       <h2>
                         <AccordionButton>
-                          <Box flex="1" textAlign="left">
+                          <Box flex="1" textAlign="center" fontSize="lg">
                             {conversation[0]}
                           </Box>
                           <AccordionIcon />

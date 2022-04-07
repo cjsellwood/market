@@ -97,7 +97,7 @@ const NavDrawer = ({
                 as={RouterLink}
                 onClick={onClose}
                 variant="link-button"
-                paddingX="3"
+                paddingX="2"
                 marginX="1.5"
                 w="50%"
               >
@@ -109,7 +109,7 @@ const NavDrawer = ({
                 onClick={onClose}
                 variant="link-button"
                 marginX="1.5"
-                paddingX="3"
+                paddingX="2"
                 w="50%"
               >
                 My Products
