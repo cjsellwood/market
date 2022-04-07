@@ -1,5 +1,11 @@
 import { screen, waitForElementToBeRemoved } from "@testing-library/react";
-import { messagedProduct, messagedProductAuthor, randomProducts, renderer } from "./helpers";
+import {
+  messagedProduct,
+  messagedProductAuthor,
+  messagedProductAuthorNoMessages,
+  randomProducts,
+  renderer,
+} from "./helpers";
 import Product from "../components/Pages/Product";
 import userEvent from "@testing-library/user-event";
 
@@ -49,7 +55,9 @@ describe("Product component", () => {
     ).toBeInTheDocument();
     expect(screen.queryByText(/Andy shoes are designed/)).toBeInTheDocument();
     expect(screen.queryByText("$946")).toBeInTheDocument();
-    expect(screen.queryByText("Cars and Vehicles", { selector: "a" })).toBeInTheDocument();
+    expect(
+      screen.queryByText("Cars and Vehicles", { selector: "a" })
+    ).toBeInTheDocument();
     expect(screen.queryAllByText(/2022/).length).not.toEqual(0);
     expect(screen.queryAllByText(/Funkville/).length).not.toEqual(0);
   });
@@ -196,6 +204,23 @@ describe("Product component", () => {
     expect(
       screen.queryByText(messagedProduct.messages[0].text)
     ).toBeInTheDocument();
+  });
+
+  it("Shows no messages if none found when author", async () => {
+    window.fetch = jest.fn().mockReturnValue({
+      status: 200,
+      json: () => Promise.resolve(messagedProductAuthorNoMessages),
+    });
+
+    renderer(<Product />, {
+      auth: { userId: 7, token: "2f4dfd" },
+    });
+
+    expect(
+      await screen.findByText("Ergonomic Frozen Towels")
+    ).toBeInTheDocument();
+
+    expect(screen.queryByText("No Messages")).toBeInTheDocument();
   });
 
   it("Can send a new message when logged in", async () => {

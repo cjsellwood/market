@@ -1419,3 +1419,21 @@ export const messagedProductAuthor = {
     },
   ],
 };
+
+export const messagedProductAuthorNoMessages = {
+  product_id: 29,
+  user_id: 7,
+  title: "Ergonomic Frozen Towels",
+  description:
+    "Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals",
+  price: 946,
+  images: [
+    "https://placeimg.com/500/500/tech",
+    "https://placeimg.com/500/500/arch",
+    "https://placeimg.com/500/500/animals",
+  ],
+  listed: "2022-02-28T13:00:00.000Z",
+  location: "Funkville",
+  category: "Cars",
+  messages: [],
+};

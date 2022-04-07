@@ -99,7 +99,7 @@ const Product = () => {
       </Flex>
     );
   }
-
+  
   return (
     <Flex direction="column">
       <SearchBox />
@@ -247,7 +247,7 @@ const Product = () => {
             >
               Messages
             </Heading>
-            {product.messages && !product.messages!.length && (
+            {product.messages && !product.messages.length && (
               <Flex justifyContent="center" alignItems="center" p="2">
                 <Text>No Messages</Text>
               </Flex>

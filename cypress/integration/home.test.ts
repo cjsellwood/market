@@ -199,7 +199,7 @@ describe("Visit product pages", () => {
     cy.get("#password").type("password");
     cy.contains("Submit").click();
 
-    cy.contains("New Product");
+    cy.contains("NEW PRODUCT");
 
     cy.get("#title").type("New Product");
     cy.get("#title").should("have.value", "New Product");
@@ -377,7 +377,7 @@ describe("Visit product pages", () => {
 
     cy.contains(messagedProductAuthor.messages[0].text);
 
-    cy.contains("Username 9").click();
+    cy.contains("Username 9");
     cy.get("#message").type("New reply");
     cy.contains("Send").click();
 
