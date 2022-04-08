@@ -41,6 +41,7 @@ describe("NavDrawer component", () => {
     expect(screen.queryByText("Login")).toBeInTheDocument();
     expect(screen.queryByText("Register")).toBeInTheDocument();
     expect(screen.queryByText("Log Out")).not.toBeInTheDocument();
+    expect(screen.queryByText("You are now logged out")).toBeInTheDocument();
   });
 
   test("Change theme", () => {

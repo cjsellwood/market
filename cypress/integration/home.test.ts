@@ -248,7 +248,7 @@ describe("Visit product pages", () => {
     cy.contains("Ergonomic Frozen Towels");
     cy.get("button[aria-label='delete product']").click();
 
-    cy.url().should("eq", "http://localhost:3000/#/products");
+    cy.url().should("eq", "http://localhost:3000/#/products/yours");
     cy.intercept("http://10.0.0.6:5000/products/29", {
       statusCode: 404,
       body: {

@@ -135,7 +135,8 @@ describe("Product component", () => {
       screen.queryByText("Ergonomic Frozen Towels")
     );
 
-    expect(mockNavigate).toHaveBeenCalledWith("/products");
+    expect(mockNavigate).toHaveBeenCalledWith("/products/yours");
+    expect(screen.queryByText("Successfully deleted")).toBeInTheDocument();
   });
 
   it("Shows error if can't delete", async () => {

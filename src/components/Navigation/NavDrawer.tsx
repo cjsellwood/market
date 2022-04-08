@@ -11,6 +11,7 @@ import {
   useColorMode,
   Icon,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import { categories } from "../../categories";
@@ -30,6 +31,8 @@ const NavDrawer = ({
 
   const { colorMode, toggleColorMode } = useColorMode();
   const background = useColorModeValue("mainBackground", "mainBackgroundDark");
+
+  const toast = useToast();
   return (
     <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
       <DrawerOverlay />
@@ -153,6 +156,13 @@ const NavDrawer = ({
                 onClick={() => {
                   dispatch(logOutUser());
                   onClose();
+                  toast({
+                    title: "You are now logged out",
+                    duration: 5000,
+                    position: "top",
+                    status: "success",
+                    isClosable: true,
+                  });
                 }}
                 variant="link-button"
                 w="50%"

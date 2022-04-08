@@ -51,7 +51,14 @@ const Product = () => {
   const handleDelete = async () => {
     const result = await dispatch(deleteProduct(id!));
     if (result.meta.requestStatus === "fulfilled") {
-      navigate("/products");
+      navigate("/products/yours");
+      toast({
+        title: "Successfully deleted",
+        duration: 5000,
+        position: "top",
+        status: "success",
+        isClosable: true,
+      });
     }
   };
 
@@ -99,7 +106,7 @@ const Product = () => {
       </Flex>
     );
   }
-  
+
   return (
     <Flex direction="column">
       <SearchBox />

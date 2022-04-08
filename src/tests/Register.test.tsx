@@ -1,4 +1,4 @@
-import { screen, waitForElementToBeRemoved } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Register from "../components/Pages/Register";
 import { renderer } from "./helpers";
@@ -10,7 +10,7 @@ describe("Register component testing", () => {
     renderer(<Register />);
   });
 
-  it("Should allow filling out form and submitting", () => {
+  it("Should allow filling out form and submitting", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 200,
       json: () =>
@@ -41,9 +41,21 @@ describe("Register component testing", () => {
 
     userEvent.click(screen.getByText("Submit"));
 
-    waitForElementToBeRemoved(() => screen.getByText("Submit"));
+    await screen.findByText("You are now registered");
 
-    expect(window.fetch).toHaveBeenCalled();
+    expect(window.fetch).toHaveBeenCalledWith(
+      "http://localhost:5000/auth/register",
+      {
+        body: JSON.stringify({
+          email: "jestUser@email.com",
+          username: "jestUser",
+          password: "password",
+        }),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+        mode: "cors",
+      }
+    );
   });
 
   it("Should not submit form if no email", () => {

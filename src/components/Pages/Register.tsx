@@ -1,4 +1,10 @@
-import { Button, Flex, Heading, useColorModeValue } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Heading,
+  useColorModeValue,
+  useToast,
+} from "@chakra-ui/react";
 import { FormEvent, useEffect } from "react";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import { registerUser } from "../../store/authSlice";
@@ -49,6 +55,7 @@ const Register = () => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const toast = useToast();
 
   const submitForm = async (e: FormEvent) => {
     e.preventDefault();
@@ -80,6 +87,13 @@ const Register = () => {
 
     if (register.meta.requestStatus === "fulfilled") {
       navigate("/");
+      toast({
+        title: "You are now registered",
+        duration: 5000,
+        position: "top",
+        status: "success",
+        isClosable: true,
+      });
     }
   };
 

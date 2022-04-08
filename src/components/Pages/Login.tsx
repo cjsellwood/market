@@ -54,6 +54,13 @@ const Login = () => {
     if (login.meta.requestStatus === "fulfilled") {
       const url = (location.state as any)?.from?.pathname || "/";
       navigate(url);
+      toast({
+        title: "You are now logged in",
+        duration: 5000,
+        position: "top",
+        status: "success",
+        isClosable: true,
+      });
     }
   };
 
