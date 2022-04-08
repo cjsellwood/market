@@ -75,7 +75,7 @@ const Searched = () => {
         initialCategory={category_id || undefined}
         initialSearch={query || undefined}
       />
-      {products.length !== 0 && <SortSelect />}
+      {products.length !== 0 && <SortSelect setPage={setPage} />}
       {!query && (
         <Flex justifyContent="center" p="4">
           <Text fontSize="lg">Search for a product</Text>

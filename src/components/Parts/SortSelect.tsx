@@ -1,9 +1,14 @@
 import { Flex, FormLabel, Select, useColorModeValue } from "@chakra-ui/react";
+import React, { SetStateAction } from "react";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import useAppSelector from "../../hooks/useAppSelector";
 import { setSort } from "../../store/productSlice";
 
-const SortSelect = () => {
+const SortSelect = ({
+  setPage,
+}: {
+  setPage: React.Dispatch<SetStateAction<number>>;
+}) => {
   const { sort } = useAppSelector((state) => state.product);
   const dispatch = useAppDispatch();
 
@@ -24,7 +29,10 @@ const SortSelect = () => {
         name="sort"
         aria-label="select sort"
         value={sort}
-        onChange={(e) => dispatch(setSort(e.target.value))}
+        onChange={(e) => {
+          dispatch(setSort(e.target.value));
+          setPage(1);
+        }}
         border="none"
         background={background}
         borderRadius="4"
