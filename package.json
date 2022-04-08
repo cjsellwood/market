@@ -1,8 +1,8 @@
 {
-  "name": "market",
+  "name": "the_nexus",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://cjsellwood.github.io/market",
+  "homepage": "https://cjsellwood.github.io/the_nexus",
   "dependencies": {
     "@chakra-ui/icons": "^1.1.7",
     "@chakra-ui/react": "^1.8.5",
