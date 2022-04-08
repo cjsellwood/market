@@ -7,6 +7,7 @@ import {
   LinkOverlay,
   LinkBox,
   useColorModeValue,
+  AspectRatio,
 } from "@chakra-ui/react";
 import { Product } from "../../store/productSlice";
 import { Link as RouterLink } from "react-router-dom";
@@ -23,18 +24,29 @@ const ProductCard = (props: { product: Product }) => {
       <Grid
         m="1"
         marginBottom="2"
-        templateColumns="120px 1fr"
+        templateColumns="minmax(120px, 1fr) 3fr"
         borderRadius="4"
         boxShadow="md"
         backgroundColor={cardBackground}
         overflow="hidden"
       >
-        <Flex alignItems="center" minHeight="120px">
-          <Image src={image} alt={title} objectFit="cover" />
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+        >
+          <AspectRatio ratio={1 / 1} width="100%">
+            {image ? (
+              <Image src={image} alt={title} objectFit="cover" />
+            ) : (
+              <Text color={secondaryText} fontSize="sm">
+                No Image
+              </Text>
+            )}
+          </AspectRatio>
         </Flex>
-        <Flex direction="column" p="1">
+        <Flex direction="column" p="1.5">
           <LinkOverlay to={`/products/${product_id}`} as={RouterLink}>
-            <Heading fontSize="1rem" fontWeight="bold" noOfLines={1}>
+            <Heading fontSize="1rem" fontWeight="500" noOfLines={1}>
               {title}
             </Heading>
           </LinkOverlay>
@@ -42,7 +54,9 @@ const ProductCard = (props: { product: Product }) => {
             {description}
           </Text>
           <Text flexGrow="1"></Text>
-          <Heading fontSize="1rem">${price}</Heading>
+          <Heading fontSize="1rem" fontWeight="500">
+            ${price}
+          </Heading>
           <Flex justifyContent="space-between">
             <Text fontSize="0.8rem" noOfLines={1} color={secondaryText}>
               {location}

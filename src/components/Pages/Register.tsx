@@ -102,7 +102,7 @@ const Register = () => {
 
   return (
     <Flex justify="center" align="center" direction="column">
-      <Heading color="secondary" p="4" fontSize="26px">
+      <Heading color="secondary" p="4" fontSize="26px" fontWeight="500">
         REGISTER
       </Heading>
       <Flex

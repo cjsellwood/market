@@ -14,7 +14,7 @@ const SortSelect = () => {
         fontSize="15px"
         m="0"
         marginRight="2"
-        fontWeight="bold"
+        fontWeight="500"
         htmlFor="sort"
       >
         Sort by:

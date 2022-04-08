@@ -248,7 +248,7 @@ const EditProduct = () => {
 
   return (
     <Flex justify="center" align="center" direction="column">
-      <Heading color="secondary" p="4" fontSize="26px">
+      <Heading color="secondary" p="4" fontSize="26px" fontWeight="500">
         EDIT PRODUCT
       </Heading>
       <Flex direction="column" width="100%">
@@ -375,6 +375,7 @@ const EditProduct = () => {
               setCategoryError("");
             }}
             isInvalid={categoryError !== ""}
+            fontSize="sm"
           >
             <option
               value="0"

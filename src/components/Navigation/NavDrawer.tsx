@@ -116,17 +116,13 @@ const NavDrawer = ({
               </Link>
             </ShowToLoggedIn>
           </Flex>
-          <Flex
-            marginTop="4"
-            flexDirection="column"
-            bg="#bdbdbd"
-          >
+          <Flex marginTop="4" flexDirection="column" bg="#bdbdbd63">
             <Link
               to="/products"
               as={RouterLink}
               onClick={onClose}
               bg={background}
-              fontWeight="bold"
+              fontWeight="500"
               fontSize="1.2rem"
               marginBottom="1"
               p="2"
@@ -141,7 +137,7 @@ const NavDrawer = ({
                   as={RouterLink}
                   onClick={onClose}
                   bg={background}
-                  fontWeight="bold"
+                  fontWeight="500"
                   fontSize="lg"
                   marginBottom="1"
                   p="2"

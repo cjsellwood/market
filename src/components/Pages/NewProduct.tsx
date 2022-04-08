@@ -175,7 +175,7 @@ const NewProduct = () => {
 
   return (
     <Flex justify="center" align="center" direction="column">
-      <Heading color="secondary" p="4" fontSize="26px">
+      <Heading color="secondary" p="4" fontSize="26px" fontWeight="500">
         NEW PRODUCT
       </Heading>
       <Flex direction="column" width="100%">
@@ -303,6 +303,7 @@ const NewProduct = () => {
             }}
             isInvalid={categoryError !== ""}
             borderColor={selectBorderColor}
+            fontSize="sm"
           >
             <option
               value="0"

@@ -29,7 +29,6 @@ const NavBar = () => {
           fontFamily="logo"
           fontWeight="300"
           fontSize="3xl"
-          // textShadow="1px 1px lightblue"
           color="secondary"
         >
           THE NEXUS
