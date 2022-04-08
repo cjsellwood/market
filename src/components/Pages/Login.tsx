@@ -1,4 +1,10 @@
-import { Heading, Flex, Button, useToast } from "@chakra-ui/react";
+import {
+  Heading,
+  Flex,
+  Button,
+  useToast,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { FormEvent, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import useAppDispatch from "../../hooks/useAppDispatch";
@@ -48,6 +54,13 @@ const Login = () => {
     if (login.meta.requestStatus === "fulfilled") {
       const url = (location.state as any)?.from?.pathname || "/";
       navigate(url);
+      toast({
+        title: "You are now logged in",
+        duration: 5000,
+        position: "top",
+        status: "success",
+        isClosable: true,
+      });
     }
   };
 
@@ -75,15 +88,20 @@ const Login = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
+  const buttonBackgroundColor = useColorModeValue("success", "transparent");
+  const buttonTextColor = useColorModeValue("white", "success");
+
   return (
     <Flex justify="center" align="center" direction="column">
-      <Heading>Login</Heading>
+      <Heading color="secondary" p="4" fontSize="26px" fontWeight="500">
+        LOGIN
+      </Heading>
       <Flex
         as="form"
         gap="3"
         direction="column"
         w="100%"
-        p="4"
+        paddingX="4"
         onSubmit={submitForm}
       >
         <CustomInput
@@ -105,7 +123,13 @@ const Login = () => {
           onChange={password.onChange}
         />
         <Flex justify="center">
-          <Button colorScheme="green" type="submit" isLoading={loading}>
+          <Button
+            variant="submit-button"
+            type="submit"
+            isLoading={loading}
+            bg={buttonBackgroundColor}
+            color={buttonTextColor}
+          >
             Submit
           </Button>
         </Flex>

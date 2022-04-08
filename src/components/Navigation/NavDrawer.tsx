@@ -11,6 +11,7 @@ import {
   useColorMode,
   Icon,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import { categories } from "../../categories";
@@ -30,6 +31,8 @@ const NavDrawer = ({
 
   const { colorMode, toggleColorMode } = useColorMode();
   const background = useColorModeValue("mainBackground", "mainBackgroundDark");
+
+  const toast = useToast();
   return (
     <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
       <DrawerOverlay />
@@ -97,7 +100,7 @@ const NavDrawer = ({
                 as={RouterLink}
                 onClick={onClose}
                 variant="link-button"
-                paddingX="3"
+                paddingX="2"
                 marginX="1.5"
                 w="50%"
               >
@@ -109,24 +112,20 @@ const NavDrawer = ({
                 onClick={onClose}
                 variant="link-button"
                 marginX="1.5"
-                paddingX="3"
+                paddingX="2"
                 w="50%"
               >
                 My Products
               </Link>
             </ShowToLoggedIn>
           </Flex>
-          <Flex
-            marginTop="4"
-            flexDirection="column"
-            bg="#bdbdbd"
-          >
+          <Flex marginTop="4" flexDirection="column" bg="#bdbdbd63">
             <Link
               to="/products"
               as={RouterLink}
               onClick={onClose}
               bg={background}
-              fontWeight="bold"
+              fontWeight="500"
               fontSize="1.2rem"
               marginBottom="1"
               p="2"
@@ -141,7 +140,7 @@ const NavDrawer = ({
                   as={RouterLink}
                   onClick={onClose}
                   bg={background}
-                  fontWeight="bold"
+                  fontWeight="500"
                   fontSize="lg"
                   marginBottom="1"
                   p="2"
@@ -157,6 +156,13 @@ const NavDrawer = ({
                 onClick={() => {
                   dispatch(logOutUser());
                   onClose();
+                  toast({
+                    title: "You are now logged out",
+                    duration: 5000,
+                    position: "top",
+                    status: "success",
+                    isClosable: true,
+                  });
                 }}
                 variant="link-button"
                 w="50%"

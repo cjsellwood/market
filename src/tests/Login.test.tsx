@@ -1,4 +1,4 @@
-import { screen, waitForElementToBeRemoved } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Login from "../components/Pages/Login";
 import { renderer } from "./helpers";
@@ -33,9 +33,20 @@ describe("Login component testing", () => {
 
     userEvent.click(screen.getByText("Submit"));
 
-    waitForElementToBeRemoved(() => screen.getByText("Submit"));
+    await screen.findByText("You are now logged in");
 
-    expect(window.fetch).toHaveBeenCalled();
+    expect(window.fetch).toHaveBeenCalledWith(
+      "http://localhost:5000/auth/login",
+      {
+        body: JSON.stringify({
+          email: "jestUser@email.com",
+          password: "password",
+        }),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+        mode: "cors",
+      }
+    );
   });
 
   it("Should not submit form if no email", () => {

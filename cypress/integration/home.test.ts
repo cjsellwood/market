@@ -3,6 +3,8 @@ import {
   category1Products,
   messagedProduct,
   messagedProductAuthor,
+  product23,
+  product29,
   randomProducts,
   searchCategory,
   searchProducts,
@@ -17,9 +19,9 @@ describe("Visit product pages", () => {
     cy.intercept(
       "GET",
       "http://10.0.0.6:5000/products/29",
-      randomProducts[0]
+      product29
     ).as("get29");
-    cy.intercept("http://10.0.0.6:5000/products/23", randomProducts[0]);
+    cy.intercept("http://10.0.0.6:5000/products/23", product23);
     cy.intercept("http://10.0.0.6:5000/products?page=1&sort=no", allProducts);
     cy.intercept("http://10.0.0.6:5000/products?page=2&sort=no&count=50", {
       products: searchCategory.products,
@@ -188,9 +190,9 @@ describe("Visit product pages", () => {
 
   it("Can create a new product", () => {
     cy.intercept("POST", "http://10.0.0.6:5000/products/new", {
-      product_id: 99,
+      product_id: 29,
     });
-    cy.intercept("http://10.0.0.6:5000/products/99", randomProducts[0]);
+    cy.intercept("http://10.0.0.6:5000/products/29", product29);
 
     cy.visit("/#/new");
 
@@ -199,7 +201,7 @@ describe("Visit product pages", () => {
     cy.get("#password").type("password");
     cy.contains("Submit").click();
 
-    cy.contains("New Product");
+    cy.contains("NEW PRODUCT");
 
     cy.get("#title").type("New Product");
     cy.get("#title").should("have.value", "New Product");
@@ -226,7 +228,7 @@ describe("Visit product pages", () => {
     cy.get("img").should("exist");
 
     cy.contains("Submit").click();
-    cy.url().should("eq", "http://localhost:3000/#/products/99");
+    cy.url().should("eq", "http://localhost:3000/#/products/29");
     cy.contains("Ergonomic Frozen Towels");
   });
 
@@ -246,7 +248,7 @@ describe("Visit product pages", () => {
     cy.contains("Ergonomic Frozen Towels");
     cy.get("button[aria-label='delete product']").click();
 
-    cy.url().should("eq", "http://localhost:3000/#/products");
+    cy.url().should("eq", "http://localhost:3000/#/products/yours");
     cy.intercept("http://10.0.0.6:5000/products/29", {
       statusCode: 404,
       body: {
@@ -377,7 +379,7 @@ describe("Visit product pages", () => {
 
     cy.contains(messagedProductAuthor.messages[0].text);
 
-    cy.contains("Username 9").click();
+    cy.contains("Username 9");
     cy.get("#message").type("New reply");
     cy.contains("Send").click();
 

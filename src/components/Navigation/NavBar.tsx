@@ -7,7 +7,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
-
 import NavDrawer from "./NavDrawer";
 
 const NavBar = () => {
@@ -23,17 +22,21 @@ const NavBar = () => {
       position="fixed"
       zIndex="10"
       top="0"
+      borderBottomWidth="1px"
+      borderColor="#80808061"
     >
       <Link as={RouterLink} to="/">
-        <Heading
-          fontFamily="logo"
-          fontWeight="300"
-          fontSize="3xl"
-          // textShadow="1px 1px lightblue"
-          color="secondary"
-        >
-          THE NEXUS
-        </Heading>
+        <Flex alignItems="center">
+          <Heading
+            fontFamily="logo"
+            fontWeight="300"
+            fontSize="3xl"
+            color="secondary"
+            paddingX="2"
+          >
+            THE NEXUS
+          </Heading>
+        </Flex>
       </Link>
       <IconButton
         onClick={onOpen}

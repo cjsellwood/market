@@ -1,5 +1,11 @@
 import { screen, waitForElementToBeRemoved } from "@testing-library/react";
-import { messagedProduct, messagedProductAuthor, randomProducts, renderer } from "./helpers";
+import {
+  messagedProduct,
+  messagedProductAuthor,
+  messagedProductAuthorNoMessages,
+  product29,
+  renderer,
+} from "./helpers";
 import Product from "../components/Pages/Product";
 import userEvent from "@testing-library/user-event";
 
@@ -31,7 +37,7 @@ describe("Product component", () => {
   it("Display a single product", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 200,
-      json: () => Promise.resolve(randomProducts[0]),
+      json: () => Promise.resolve(product29),
     });
 
     renderer(<Product />);
@@ -49,7 +55,9 @@ describe("Product component", () => {
     ).toBeInTheDocument();
     expect(screen.queryByText(/Andy shoes are designed/)).toBeInTheDocument();
     expect(screen.queryByText("$946")).toBeInTheDocument();
-    expect(screen.queryByText("Cars and Vehicles", { selector: "a" })).toBeInTheDocument();
+    expect(
+      screen.queryByText("Cars and Vehicles", { selector: "a" })
+    ).toBeInTheDocument();
     expect(screen.queryAllByText(/2022/).length).not.toEqual(0);
     expect(screen.queryAllByText(/Funkville/).length).not.toEqual(0);
   });
@@ -57,7 +65,7 @@ describe("Product component", () => {
   it("Can change show product images", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 200,
-      json: () => Promise.resolve(randomProducts[0]),
+      json: () => Promise.resolve(product29),
     });
 
     renderer(<Product />);
@@ -95,11 +103,11 @@ describe("Product component", () => {
   it("Can delete the product", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 200,
-      json: () => Promise.resolve(randomProducts[0]),
+      json: () => Promise.resolve(product29),
     });
 
     renderer(<Product />, {
-      auth: { userId: randomProducts[0].user_id, token: "2f4dfd" },
+      auth: { userId: product29.user_id, token: "2f4dfd" },
     });
 
     expect(
@@ -127,16 +135,17 @@ describe("Product component", () => {
       screen.queryByText("Ergonomic Frozen Towels")
     );
 
-    expect(mockNavigate).toHaveBeenCalledWith("/products");
+    expect(mockNavigate).toHaveBeenCalledWith("/products/yours");
+    expect(screen.queryByText("Successfully deleted")).toBeInTheDocument();
   });
 
   it("Shows error if can't delete", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 200,
-      json: () => Promise.resolve(randomProducts[0]),
+      json: () => Promise.resolve(product29),
     });
 
-    renderer(<Product />, { auth: { userId: randomProducts[0].user_id } });
+    renderer(<Product />, { auth: { userId: product29.user_id } });
 
     expect(
       await screen.findByText("Ergonomic Frozen Towels")
@@ -196,6 +205,23 @@ describe("Product component", () => {
     expect(
       screen.queryByText(messagedProduct.messages[0].text)
     ).toBeInTheDocument();
+  });
+
+  it("Shows no messages if none found when author", async () => {
+    window.fetch = jest.fn().mockReturnValue({
+      status: 200,
+      json: () => Promise.resolve(messagedProductAuthorNoMessages),
+    });
+
+    renderer(<Product />, {
+      auth: { userId: 7, token: "2f4dfd" },
+    });
+
+    expect(
+      await screen.findByText("Ergonomic Frozen Towels")
+    ).toBeInTheDocument();
+
+    expect(screen.queryByText("No Messages")).toBeInTheDocument();
   });
 
   it("Can send a new message when logged in", async () => {

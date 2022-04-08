@@ -11,6 +11,7 @@ import {
   ButtonGroup,
   Image,
   Spinner,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import useAppSelector from "../../hooks/useAppSelector";
@@ -90,8 +91,16 @@ const EditProduct = () => {
         price.setValue(product.price.toString());
         location.setValue(product.location);
 
-        setImages(product.images!);
-        setUpdatedImages(product.images!);
+        setImages([
+          product.images![0] || null,
+          product.images![1] || null,
+          product.images![2] || null,
+        ]);
+        setUpdatedImages([
+          product.images![0] || "",
+          product.images![1] || "",
+          product.images![2] || "",
+        ]);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -221,6 +230,14 @@ const EditProduct = () => {
     (fileInputs[i] as HTMLInputElement).value = "";
   };
 
+  const selectBackground = useColorModeValue("card", "cardDark");
+  const selectBorderColor = useColorModeValue("#b0b0b0", "#4a4a4a");
+
+  const fileButtonTextColor = useColorModeValue("#000", "#fff");
+
+  const buttonBackgroundColor = useColorModeValue("success", "transparent");
+  const buttonTextColor = useColorModeValue("white", "success");
+
   if (!product && loading) {
     return (
       <Flex w="100%" h="50vh" justifyContent="center" alignItems="center">
@@ -231,9 +248,11 @@ const EditProduct = () => {
 
   return (
     <Flex justify="center" align="center" direction="column">
-      <Heading>Edit Product</Heading>
+      <Heading color="secondary" p="4" fontSize="26px" fontWeight="500">
+        EDIT PRODUCT
+      </Heading>
       <Flex direction="column" width="100%">
-        <Flex justifyContent="center" bg="gray.300" width="100%">
+        <Flex justifyContent="center" bg="rgb(10, 10, 10)" width="100%">
           {images.map((image, i) => {
             if (image !== null) {
               return (
@@ -257,20 +276,47 @@ const EditProduct = () => {
                   display={imageShown === i ? "flex" : "none"}
                   key={`Image ${i + 1}`}
                 >
-                  <Text>No Image</Text>
+                  <Text color="white">No Image</Text>
                 </Flex>
               );
             }
           })}
         </Flex>
+        <ButtonGroup justifyContent="center" p="2">
+          {images.map((image, i) => {
+            return (
+              <Button
+                onClick={() => setImageShown(i)}
+                aria-label={`Image ${i + 1}`}
+                key={`Image ${i + 1}`}
+                backgroundColor={imageShown === i ? "#e5067d" : "#060698"}
+                variant="image-button"
+                className="no-highlight"
+              >
+                {i + 1}
+              </Button>
+            );
+          })}
+        </ButtonGroup>
         {images.map((image, i) => {
           return (
             <Flex
-              justifyContent="center"
               display={imageShown === i ? "flex" : "none"}
               key={`File ${i + 1}`}
+              justifyContent="space-evenly"
+              p="1"
+              paddingX="8"
             >
-              <Button colorScheme="blue" as="label" htmlFor={`File ${i + 1}`}>
+              <Button
+                as="label"
+                htmlFor={`File ${i + 1}`}
+                variant="neutral-button"
+                color={fileButtonTextColor}
+                borderColor={selectBorderColor}
+                w="50%"
+                cursor={"pointer"}
+                _focus={{ boxShadow: "0 0 0 3px rgba(66, 153, 225, 0.6);" }}
+              >
                 {image ? "Change" : "Add"}
               </Button>
               <Input
@@ -282,29 +328,18 @@ const EditProduct = () => {
                 onChange={setFile}
               />
               <Button
-                colorScheme="red"
                 onClick={() => removeFile(i)}
                 aria-label="remove image"
+                variant="neutral-button"
+                color={fileButtonTextColor}
+                borderColor={selectBorderColor}
+                w="50%"
               >
                 Remove
               </Button>
             </Flex>
           );
         })}
-        <ButtonGroup justifyContent="center" colorScheme="blue" p="1" size="sm">
-          {images.map((image, i) => {
-            return (
-              <Button
-                onClick={() => setImageShown(i)}
-                aria-label={`Image ${i + 1}`}
-                key={`Image ${i + 1}`}
-                outline={imageShown === i ? "2px solid red" : "none"}
-              >
-                {i + 1}
-              </Button>
-            );
-          })}
-        </ButtonGroup>
       </Flex>
       <Flex
         as="form"
@@ -340,13 +375,30 @@ const EditProduct = () => {
               setCategoryError("");
             }}
             isInvalid={categoryError !== ""}
+            fontSize="sm"
           >
-            <option value="0" hidden>
+            <option
+              value="0"
+              hidden
+              style={{
+                backgroundColor:
+                  /* istanbul ignore next */
+                  selectBackground === "card" ? "white" : "rgb(22, 27, 34)",
+              }}
+            >
               Select a category
             </option>
             {categories.map((category, i) => {
               return (
-                <option value={i + 1} key={category}>
+                <option
+                  value={i + 1}
+                  key={category}
+                  style={{
+                    backgroundColor:
+                      /* istanbul ignore next */
+                      selectBackground === "card" ? "white" : "rgb(22, 27, 34)",
+                  }}
+                >
                   {category}
                 </option>
               );
@@ -385,7 +437,13 @@ const EditProduct = () => {
           onChange={location.onChange}
         />
         <Flex justify="center">
-          <Button colorScheme="green" type="submit" isLoading={loading}>
+          <Button
+            variant="submit-button"
+            type="submit"
+            isLoading={loading}
+            bg={buttonBackgroundColor}
+            color={buttonTextColor}
+          >
             Submit
           </Button>
         </Flex>

@@ -75,9 +75,17 @@ const Searched = () => {
         initialCategory={category_id || undefined}
         initialSearch={query || undefined}
       />
-      {products.length !== 0 && <SortSelect />}
-      {!query && <Text>Search for a product</Text>}
-      {query && !products.length && !error && <Text>No results</Text>}
+      {products.length !== 0 && <SortSelect setPage={setPage} />}
+      {!query && (
+        <Flex justifyContent="center" p="4">
+          <Text fontSize="lg">Search for a product</Text>
+        </Flex>
+      )}
+      {query && !products.length && !error && (
+        <Flex justifyContent="center" p="4">
+          <Text fontSize="lg">No results</Text>
+        </Flex>
+      )}
       {query &&
         products.map((product) => {
           return <ProductCard product={product} key={product.product_id} />;

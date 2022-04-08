@@ -5,6 +5,7 @@ import {
   Input,
   Text,
   Textarea,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { ChangeEventHandler } from "react";
 
@@ -33,11 +34,13 @@ const CustomInput = ({
   placeholder,
   hideLabel,
 }: CustomInputProps) => {
+  const borderColor = useColorModeValue("#b0b0b0", "#4a4a4a");
+
   return (
     <Flex direction="column">
       <FormControl isInvalid={error !== ""}>
         {!hideLabel && (
-          <FormLabel htmlFor={id} marginBottom="1">
+          <FormLabel htmlFor={id} marginBottom="1" fontSize="14px">
             {label}{" "}
             {isRequired && (
               <Text as="span" color="red">
@@ -54,6 +57,9 @@ const CustomInput = ({
             resize={"none"}
             placeholder={placeholder}
             aria-label={label}
+            fontSize="14px"
+            borderColor={borderColor}
+            borderRadius="4"
           />
         ) : (
           <Input
@@ -63,6 +69,10 @@ const CustomInput = ({
             type={type}
             placeholder={placeholder}
             aria-label={label}
+            fontSize="14px"
+            borderColor={borderColor}
+            borderRadius="4"
+            step="1"
           />
         )}
         <Text color="red.500" fontSize="14px" h="16px" marginTop="1">

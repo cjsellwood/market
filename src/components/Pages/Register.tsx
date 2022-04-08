@@ -1,4 +1,10 @@
-import { Button, Flex, Heading } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Heading,
+  useColorModeValue,
+  useToast,
+} from "@chakra-ui/react";
 import { FormEvent, useEffect } from "react";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import { registerUser } from "../../store/authSlice";
@@ -49,6 +55,7 @@ const Register = () => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const toast = useToast();
 
   const submitForm = async (e: FormEvent) => {
     e.preventDefault();
@@ -80,6 +87,13 @@ const Register = () => {
 
     if (register.meta.requestStatus === "fulfilled") {
       navigate("/");
+      toast({
+        title: "You are now registered",
+        duration: 5000,
+        position: "top",
+        status: "success",
+        isClosable: true,
+      });
     }
   };
 
@@ -97,15 +111,20 @@ const Register = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
+  const buttonBackgroundColor = useColorModeValue("success", "transparent");
+  const buttonTextColor = useColorModeValue("white", "success");
+
   return (
     <Flex justify="center" align="center" direction="column">
-      <Heading>Register</Heading>
+      <Heading color="secondary" p="4" fontSize="26px" fontWeight="500">
+        REGISTER
+      </Heading>
       <Flex
         as="form"
         gap="3"
         direction="column"
         w="100%"
-        p="4"
+        paddingX="4"
         onSubmit={submitForm}
       >
         <CustomInput
@@ -144,7 +163,13 @@ const Register = () => {
           onChange={confirmPassword.onChange}
         />
         <Flex justify="center">
-          <Button colorScheme="green" type="submit" isLoading={loading}>
+          <Button
+            variant="submit-button"
+            type="submit"
+            isLoading={loading}
+            bg={buttonBackgroundColor}
+            color={buttonTextColor}
+          >
             Submit
           </Button>
         </Flex>

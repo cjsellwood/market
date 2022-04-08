@@ -90,7 +90,8 @@ const PageButtons = ({
             aria-label={`Page ${pageNumber}`}
             key={pageNumber}
             borderBottomWidth="3px"
-            borderColor={page === pageNumber ? "#d70475" : "transparent"}
+            fontWeight="500"
+            borderColor={page === pageNumber ? "#e5067d" : "transparent"}
             borderRadius="0"
             bg="transparent"
             _active={{ bg: "transparent" }}

@@ -75,7 +75,7 @@ const Category = () => {
   return (
     <Grid templateColumns="1fr" pt="2">
       <SearchBox initialCategory={category_id.toString()} />
-      {products.length !== 0 && <SortSelect />}
+      {products.length !== 0 && <SortSelect setPage={setPage} />}
       {products.map((product) => {
         return <ProductCard product={product} key={product.product_id} />;
       })}
