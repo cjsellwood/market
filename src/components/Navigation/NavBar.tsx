@@ -33,7 +33,7 @@ const NavBar = () => {
       height="56px"
     >
       <Button
-        display={{ base: "none", lg: "block" }}
+        display={{ base: "none", lg: "flex" }}
         onClick={() => {
           toggleColorMode();
         }}

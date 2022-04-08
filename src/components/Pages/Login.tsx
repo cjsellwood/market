@@ -92,46 +92,58 @@ const Login = () => {
   const buttonTextColor = useColorModeValue("white", "success");
 
   return (
-    <Flex justify="center" align="center" direction="column">
-      <Heading color="secondary" p="4" fontSize="26px" fontWeight="500">
-        LOGIN
-      </Heading>
+    <Flex
+      justifyContent="center"
+      alignItems="center"
+      paddingTop={{ base: "0", lg: "2" }}
+    >
       <Flex
-        as="form"
-        gap="3"
+        justify="center"
+        align="center"
         direction="column"
-        w="100%"
-        paddingX="4"
-        onSubmit={submitForm}
+        width="100%"
+        maxWidth="600px"
       >
-        <CustomInput
-          value={email.value}
-          id={email.id}
-          label={email.label}
-          error={email.error}
-          isRequired={email.isRequired}
-          type={email.type}
-          onChange={email.onChange}
-        />
-        <CustomInput
-          value={password.value}
-          id={password.id}
-          label={password.label}
-          error={password.error}
-          isRequired={password.isRequired}
-          type={password.type}
-          onChange={password.onChange}
-        />
-        <Flex justify="center">
-          <Button
-            variant="submit-button"
-            type="submit"
-            isLoading={loading}
-            bg={buttonBackgroundColor}
-            color={buttonTextColor}
-          >
-            Submit
-          </Button>
+        <Heading color="secondary" p="4" fontSize="26px" fontWeight="500">
+          LOGIN
+        </Heading>
+        <Flex
+          as="form"
+          gap="3"
+          direction="column"
+          w="100%"
+          paddingX="4"
+          onSubmit={submitForm}
+        >
+          <CustomInput
+            value={email.value}
+            id={email.id}
+            label={email.label}
+            error={email.error}
+            isRequired={email.isRequired}
+            type={email.type}
+            onChange={email.onChange}
+          />
+          <CustomInput
+            value={password.value}
+            id={password.id}
+            label={password.label}
+            error={password.error}
+            isRequired={password.isRequired}
+            type={password.type}
+            onChange={password.onChange}
+          />
+          <Flex justify="center">
+            <Button
+              variant="submit-button"
+              type="submit"
+              isLoading={loading}
+              bg={buttonBackgroundColor}
+              color={buttonTextColor}
+            >
+              Submit
+            </Button>
+          </Flex>
         </Flex>
       </Flex>
     </Flex>

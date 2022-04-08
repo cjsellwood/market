@@ -41,7 +41,11 @@ const App = () => {
       <Navbar />
       <Grid
         paddingTop="56px"
-        gridTemplateColumns={{ base: "1fr", lg: "320px 1fr" }}
+        gridTemplateColumns={{
+          base: "1fr",
+          lg: "320px 1fr",
+          "2xl": "320px 1fr 320px",
+        }}
       >
         <Box display={{ base: "none", lg: "block" }}>
           <NavDesktop />

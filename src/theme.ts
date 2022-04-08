@@ -28,6 +28,13 @@ const theme = extendTheme({
     secondaryText: "#515151",
     secondaryTextDark: "#c7c7c7",
   },
+  breakpoints: {
+    sm: "400px",
+    md: "600px",
+    lg: "800px",
+    xl: "1200px",
+    "2xl": "1500px",
+  },
   components: {
     Link: {
       baseStyle: {
@@ -96,5 +103,7 @@ const theme = extendTheme({
     },
   },
 });
+
+console.log(theme);
 
 export default theme;
