@@ -3,6 +3,8 @@ import {
   category1Products,
   messagedProduct,
   messagedProductAuthor,
+  product23,
+  product29,
   randomProducts,
   searchCategory,
   searchProducts,
@@ -17,9 +19,9 @@ describe("Visit product pages", () => {
     cy.intercept(
       "GET",
       "http://10.0.0.6:5000/products/29",
-      randomProducts[0]
+      product29
     ).as("get29");
-    cy.intercept("http://10.0.0.6:5000/products/23", randomProducts[0]);
+    cy.intercept("http://10.0.0.6:5000/products/23", product23);
     cy.intercept("http://10.0.0.6:5000/products?page=1&sort=no", allProducts);
     cy.intercept("http://10.0.0.6:5000/products?page=2&sort=no&count=50", {
       products: searchCategory.products,
@@ -188,9 +190,9 @@ describe("Visit product pages", () => {
 
   it("Can create a new product", () => {
     cy.intercept("POST", "http://10.0.0.6:5000/products/new", {
-      product_id: 99,
+      product_id: 29,
     });
-    cy.intercept("http://10.0.0.6:5000/products/99", randomProducts[0]);
+    cy.intercept("http://10.0.0.6:5000/products/29", product29);
 
     cy.visit("/#/new");
 
@@ -226,7 +228,7 @@ describe("Visit product pages", () => {
     cy.get("img").should("exist");
 
     cy.contains("Submit").click();
-    cy.url().should("eq", "http://localhost:3000/#/products/99");
+    cy.url().should("eq", "http://localhost:3000/#/products/29");
     cy.contains("Ergonomic Frozen Towels");
   });
 

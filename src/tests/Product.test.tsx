@@ -3,7 +3,7 @@ import {
   messagedProduct,
   messagedProductAuthor,
   messagedProductAuthorNoMessages,
-  randomProducts,
+  product29,
   renderer,
 } from "./helpers";
 import Product from "../components/Pages/Product";
@@ -37,7 +37,7 @@ describe("Product component", () => {
   it("Display a single product", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 200,
-      json: () => Promise.resolve(randomProducts[0]),
+      json: () => Promise.resolve(product29),
     });
 
     renderer(<Product />);
@@ -65,7 +65,7 @@ describe("Product component", () => {
   it("Can change show product images", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 200,
-      json: () => Promise.resolve(randomProducts[0]),
+      json: () => Promise.resolve(product29),
     });
 
     renderer(<Product />);
@@ -103,11 +103,11 @@ describe("Product component", () => {
   it("Can delete the product", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 200,
-      json: () => Promise.resolve(randomProducts[0]),
+      json: () => Promise.resolve(product29),
     });
 
     renderer(<Product />, {
-      auth: { userId: randomProducts[0].user_id, token: "2f4dfd" },
+      auth: { userId: product29.user_id, token: "2f4dfd" },
     });
 
     expect(
@@ -141,10 +141,10 @@ describe("Product component", () => {
   it("Shows error if can't delete", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 200,
-      json: () => Promise.resolve(randomProducts[0]),
+      json: () => Promise.resolve(product29),
     });
 
-    renderer(<Product />, { auth: { userId: randomProducts[0].user_id } });
+    renderer(<Product />, { auth: { userId: product29.user_id } });
 
     expect(
       await screen.findByText("Ergonomic Frozen Towels")

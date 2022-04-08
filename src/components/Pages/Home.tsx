@@ -22,12 +22,7 @@ const Home = () => {
         return <ProductCard product={product} key={product.product_id} />;
       })}
       <Flex justifyContent="center" m="2">
-        <Link
-          to="/products"
-          as={RouterLink}
-          w="50%"
-          variant="link-button"
-        >
+        <Link to="/products" as={RouterLink} w="50%" variant="link-button">
           See more
         </Link>
       </Flex>

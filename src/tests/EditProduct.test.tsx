@@ -1,4 +1,4 @@
-import { randomProducts, renderer } from "./helpers";
+import { product29, renderer } from "./helpers";
 import EditProduct from "../components/Pages/EditProduct";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -23,7 +23,7 @@ describe("Edit Product Component", () => {
   test("Can't access edit page if not author of product", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 200,
-      json: () => Promise.resolve(randomProducts[0]),
+      json: () => Promise.resolve(product29),
     });
 
     renderer(<EditProduct />);
@@ -39,10 +39,10 @@ describe("Edit Product Component", () => {
   test("Initial values for product are filled in", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 200,
-      json: () => Promise.resolve(randomProducts[0]),
+      json: () => Promise.resolve(product29),
     });
 
-    renderer(<EditProduct />, { auth: { userId: randomProducts[0].user_id } });
+    renderer(<EditProduct />, { auth: { userId: product29.user_id } });
 
     expect(mockNavigate).not.toHaveBeenCalled();
 
@@ -67,10 +67,10 @@ describe("Edit Product Component", () => {
   test("Can edit form", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 200,
-      json: () => Promise.resolve(randomProducts[0]),
+      json: () => Promise.resolve(product29),
     });
 
-    renderer(<EditProduct />, { auth: { userId: randomProducts[0].user_id } });
+    renderer(<EditProduct />, { auth: { userId: product29.user_id } });
 
     expect(mockNavigate).not.toHaveBeenCalled();
 
@@ -104,11 +104,11 @@ describe("Edit Product Component", () => {
   test("Can change images", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 200,
-      json: () => Promise.resolve(randomProducts[0]),
+      json: () => Promise.resolve(product29),
     });
     window.URL.createObjectURL = jest.fn().mockReturnValue("blob");
 
-    renderer(<EditProduct />, { auth: { userId: randomProducts[0].user_id } });
+    renderer(<EditProduct />, { auth: { userId: product29.user_id } });
 
     expect(mockNavigate).not.toHaveBeenCalled();
 
@@ -170,7 +170,7 @@ describe("Edit Product Component", () => {
     });
     window.URL.createObjectURL = jest.fn().mockReturnValue("blob");
 
-    renderer(<EditProduct />, { auth: { userId: randomProducts[0].user_id } });
+    renderer(<EditProduct />, { auth: { userId: product29.user_id } });
 
     expect(mockNavigate).not.toHaveBeenCalled();
 
@@ -199,12 +199,12 @@ describe("Edit Product Component", () => {
   test("Can submit form with updated values and images", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 200,
-      json: () => Promise.resolve(randomProducts[0]),
+      json: () => Promise.resolve(product29),
     });
     window.URL.createObjectURL = jest.fn().mockReturnValue("blob");
 
     renderer(<EditProduct />, {
-      auth: { userId: randomProducts[0].user_id, token: "2f4dfd" },
+      auth: { userId: product29.user_id, token: "2f4dfd" },
     });
 
     expect(mockNavigate).not.toHaveBeenCalled();
@@ -289,9 +289,9 @@ describe("Edit Product Component", () => {
   test("Show error if wrong file format uploaded", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 200,
-      json: () => Promise.resolve(randomProducts[0]),
+      json: () => Promise.resolve(product29),
     });
-    renderer(<EditProduct />, { auth: { userId: randomProducts[0].user_id } });
+    renderer(<EditProduct />, { auth: { userId: product29.user_id } });
 
     expect(mockNavigate).not.toHaveBeenCalled();
 
@@ -310,9 +310,9 @@ describe("Edit Product Component", () => {
   test("Show error if no file selected", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 200,
-      json: () => Promise.resolve(randomProducts[0]),
+      json: () => Promise.resolve(product29),
     });
-    renderer(<EditProduct />, { auth: { userId: randomProducts[0].user_id } });
+    renderer(<EditProduct />, { auth: { userId: product29.user_id } });
 
     expect(mockNavigate).not.toHaveBeenCalled();
 
@@ -330,9 +330,9 @@ describe("Edit Product Component", () => {
   test("Can't submit without a title", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 200,
-      json: () => Promise.resolve(randomProducts[0]),
+      json: () => Promise.resolve(product29),
     });
-    renderer(<EditProduct />, { auth: { userId: randomProducts[0].user_id } });
+    renderer(<EditProduct />, { auth: { userId: product29.user_id } });
 
     expect(mockNavigate).not.toHaveBeenCalled();
 
@@ -349,9 +349,9 @@ describe("Edit Product Component", () => {
   test("Can't submit with category of value 0", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 200,
-      json: () => Promise.resolve(randomProducts[0]),
+      json: () => Promise.resolve(product29),
     });
-    renderer(<EditProduct />, { auth: { userId: randomProducts[0].user_id } });
+    renderer(<EditProduct />, { auth: { userId: product29.user_id } });
 
     expect(mockNavigate).not.toHaveBeenCalled();
 
@@ -372,10 +372,10 @@ describe("Edit Product Component", () => {
   test("Show error to user", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 200,
-      json: () => Promise.resolve(randomProducts[0]),
+      json: () => Promise.resolve(product29),
     });
 
-    renderer(<EditProduct />, { auth: { userId: randomProducts[0].user_id } });
+    renderer(<EditProduct />, { auth: { userId: product29.user_id } });
 
     expect(mockNavigate).not.toHaveBeenCalled();
 
