@@ -1,4 +1,4 @@
-import { Grid, Link, Flex } from "@chakra-ui/react";
+import { Link, Flex } from "@chakra-ui/react";
 import { useEffect } from "react";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import useAppSelector from "../../hooks/useAppSelector";
@@ -16,17 +16,25 @@ const Home = () => {
   const { products } = useAppSelector((state) => state.product);
 
   return (
-    <Grid templateColumns="1fr">
-      <SearchBox />
-      {products.map((product) => {
-        return <ProductCard product={product} key={product.product_id} />;
-      })}
-      <Flex justifyContent="center" m="2">
-        <Link to="/products" as={RouterLink} w="50%" variant="link-button">
-          See more
-        </Link>
+    <Flex justifyContent="center">
+      <Flex maxWidth="860px" direction="column" p={{ base: "0.5", lg: "4" }}>
+        <SearchBox />
+        {products.map((product) => {
+          return <ProductCard product={product} key={product.product_id} />;
+        })}
+        <Flex justifyContent="center" m="2">
+          <Link
+            to="/products"
+            as={RouterLink}
+            w="50%"
+            maxWidth="200px"
+            variant="link-button"
+          >
+            See more
+          </Link>
+        </Flex>
       </Flex>
-    </Grid>
+    </Flex>
   );
 };
 
