@@ -59,7 +59,11 @@ const Conversation = ({
       );
     }
 
-    window.scrollTo({ left: 0, top: 100000000000000, behavior: "smooth" });
+    window.scrollTo({
+      left: 0,
+      top: document.body.scrollHeight,
+      behavior: "smooth",
+    });
 
     // If failed to save message reset to before submit
     if (result.meta.requestStatus !== "fulfilled") {
@@ -88,8 +92,7 @@ const Conversation = ({
                 color="white"
                 bg={message.sender === userId ? "secondary" : "primary"}
                 borderRadius="8"
-                p="2"
-                width="fit-content"
+                p="2.5"
               >
                 {message.text}
               </Text>

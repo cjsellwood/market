@@ -174,206 +174,243 @@ const NewProduct = () => {
   const fileButtonTextColor = useColorModeValue("#000", "#fff");
 
   return (
-    <Flex justify="center" align="center" direction="column">
-      <Heading color="secondary" p="4" fontSize="26px" fontWeight="500">
-        NEW PRODUCT
-      </Heading>
-      <Flex direction="column" width="100%">
-        <Flex justifyContent="center" bg="rgb(10, 10, 10)" width="100%">
-          {images.map((image, i) => {
-            if (image !== null) {
+    <Flex justifyContent="center">
+      <Flex
+        maxWidth="860px"
+        direction="column"
+        p={{ base: "0.5", lg: "4" }}
+        width="100%"
+      >
+        <Heading
+          color="secondary"
+          p="4"
+          fontSize="26px"
+          fontWeight="500"
+          textAlign="center"
+        >
+          NEW PRODUCT
+        </Heading>
+        <Flex direction="column" justifyContent="center" marginX="-0.5">
+          <Flex
+            justifyContent="center"
+            bg="rgb(10, 10, 10)"
+            width="100%"
+            height="0"
+            overflow="hidden"
+            paddingTop="100%"
+            position="relative"
+          >
+            {images.map((image, i) => {
+              if (image !== null) {
+                return (
+                  <Image
+                    src={image}
+                    display={imageShown === i ? "block" : "none"}
+                    objectFit="contain"
+                    alt={`Image ${i + 1}`}
+                    key={`Image ${i + 1}`}
+                    position="absolute"
+                    top="0"
+                    left="0"
+                    width="100%"
+                    height="100%"
+                  />
+                );
+              } else {
+                return (
+                  <Flex
+                    justifyContent="center"
+                    alignItems="center"
+                    position="absolute"
+                    top="0"
+                    left="0"
+                    width="100%"
+                    height="100%"
+                    display={imageShown === i ? "flex" : "none"}
+                    key={`Image ${i + 1}`}
+                  >
+                    <Text color="white">No Image</Text>
+                  </Flex>
+                );
+              }
+            })}
+          </Flex>
+          <ButtonGroup justifyContent="center" p="2">
+            {images.map((image, i) => {
               return (
-                <Image
-                  src={image}
-                  display={imageShown === i ? "block" : "none"}
-                  objectFit="contain"
-                  width="100%"
-                  height="100vw"
-                  alt={`Image ${i + 1}`}
+                <Button
+                  onClick={() => setImageShown(i)}
+                  aria-label={`Image ${i + 1}`}
                   key={`Image ${i + 1}`}
-                />
-              );
-            } else {
-              return (
-                <Flex
-                  justifyContent="center"
-                  alignItems="center"
-                  width="100%"
-                  height="100vw"
-                  display={imageShown === i ? "flex" : "none"}
-                  key={`Image ${i + 1}`}
+                  backgroundColor={imageShown === i ? "#e5067d" : "#060698"}
+                  variant="image-button"
+                  className="no-highlight"
                 >
-                  <Text color="white">No Image</Text>
-                </Flex>
+                  {i + 1}
+                </Button>
               );
-            }
-          })}
-        </Flex>
-        <ButtonGroup justifyContent="center" p="2">
+            })}
+          </ButtonGroup>
           {images.map((image, i) => {
             return (
-              <Button
-                onClick={() => setImageShown(i)}
-                aria-label={`Image ${i + 1}`}
-                key={`Image ${i + 1}`}
-                backgroundColor={imageShown === i ? "#e5067d" : "#060698"}
-                variant="image-button"
-                className="no-highlight"
-              >
-                {i + 1}
-              </Button>
+              <Flex justifyContent="center" key={`File ${i + 1}`}>
+                <Flex
+                  display={imageShown === i ? "flex" : "none"}
+                  justifyContent="space-evenly"
+                  p="1"
+                  paddingX="8"
+                  width="100%"
+                  maxWidth="600px"
+                >
+                  <Button
+                    as="label"
+                    htmlFor={`File ${i + 1}`}
+                    variant="neutral-button"
+                    color={fileButtonTextColor}
+                    borderColor={selectBorderColor}
+                    w="50%"
+                    maxWidth="200px"
+                    cursor={"pointer"}
+                    _focus={{ boxShadow: "0 0 0 3px rgba(66, 153, 225, 0.6);" }}
+                  >
+                    {image ? "Change" : "Add"}
+                  </Button>
+                  <Input
+                    type="file"
+                    id={`File ${i + 1}`}
+                    name={`File ${i + 1}`}
+                    aria-label="upload image"
+                    hidden
+                    onChange={setFile}
+                  />
+                  <Button
+                    onClick={() => removeFile(i)}
+                    aria-label="remove image"
+                    variant="neutral-button"
+                    color={fileButtonTextColor}
+                    borderColor={selectBorderColor}
+                    w="50%"
+                    maxWidth="200px"
+                  >
+                    Remove
+                  </Button>
+                </Flex>
+              </Flex>
             );
           })}
-        </ButtonGroup>
-        {images.map((image, i) => {
-          return (
-            <Flex
-              key={`File ${i + 1}`}
-              display={imageShown === i ? "flex" : "none"}
-              justifyContent="space-evenly"
-              p="1"
-              paddingX="8"
-            >
-              <Button
-                as="label"
-                htmlFor={`File ${i + 1}`}
-                variant="neutral-button"
-                color={fileButtonTextColor}
-                borderColor={selectBorderColor}
-                w="50%"
-                cursor={"pointer"}
-                _focus={{ boxShadow: "0 0 0 3px rgba(66, 153, 225, 0.6);" }}
-              >
-                {image ? "Change" : "Add"}
-              </Button>
-              <Input
-                type="file"
-                id={`File ${i + 1}`}
-                name={`File ${i + 1}`}
-                aria-label="upload image"
-                hidden
-                onChange={setFile}
-              />
-              <Button
-                onClick={() => removeFile(i)}
-                aria-label="remove image"
-                variant="neutral-button"
-                color={fileButtonTextColor}
-                borderColor={selectBorderColor}
-                w="50%"
-              >
-                Remove
-              </Button>
-            </Flex>
-          );
-        })}
-      </Flex>
-      <Flex
-        as="form"
-        gap="3"
-        direction="column"
-        w="100%"
-        p="4"
-        onSubmit={submitForm}
-      >
-        <CustomInput
-          value={title.value}
-          id={title.id}
-          label={title.label}
-          error={title.error}
-          isRequired={title.isRequired}
-          type={title.type}
-          onChange={title.onChange}
-        />
-        <Box>
-          <FormLabel htmlFor="category">
-            Category{" "}
-            <Text as="span" color="red">
-              *
-            </Text>
-          </FormLabel>
-          <Select
-            name="category"
-            id="category"
-            aria-label="select category"
-            value={category_id}
-            onChange={(e) => {
-              setCategory_id(e.target.value);
-              setCategoryError("");
-            }}
-            isInvalid={categoryError !== ""}
-            borderColor={selectBorderColor}
-            fontSize="sm"
+        </Flex>
+        <Flex justifyContent="center">
+          <Flex
+            as="form"
+            gap="3"
+            direction="column"
+            w="100%"
+            p="4"
+            onSubmit={submitForm}
+            maxWidth="600px"
           >
-            <option
-              value="0"
-              hidden
-              style={{
-                backgroundColor:
-                  /* istanbul ignore next */
-                  selectBackground === "card" ? "white" : "rgb(22, 27, 34)",
-              }}
-            >
-              Select a category
-            </option>
-            {categories.map((category, i) => {
-              return (
+            <CustomInput
+              value={title.value}
+              id={title.id}
+              label={title.label}
+              error={title.error}
+              isRequired={title.isRequired}
+              type={title.type}
+              onChange={title.onChange}
+            />
+            <Box>
+              <FormLabel htmlFor="category">
+                Category{" "}
+                <Text as="span" color="red">
+                  *
+                </Text>
+              </FormLabel>
+              <Select
+                name="category"
+                id="category"
+                aria-label="select category"
+                value={category_id}
+                onChange={(e) => {
+                  setCategory_id(e.target.value);
+                  setCategoryError("");
+                }}
+                isInvalid={categoryError !== ""}
+                borderColor={selectBorderColor}
+                fontSize="sm"
+              >
                 <option
-                  value={i + 1}
-                  key={category}
+                  value="0"
+                  hidden
                   style={{
                     backgroundColor:
                       /* istanbul ignore next */
                       selectBackground === "card" ? "white" : "rgb(22, 27, 34)",
                   }}
                 >
-                  {category}
+                  Select a category
                 </option>
-              );
-            })}
-          </Select>
-          <Text color="red.500" fontSize="14px" h="16px" marginTop="1">
-            {categoryError}
-          </Text>
-        </Box>
-        <CustomInput
-          value={description.value}
-          id={description.id}
-          label={description.label}
-          error={description.error}
-          isRequired={description.isRequired}
-          type={description.type}
-          onChange={description.onChange}
-          textArea
-        />
-        <CustomInput
-          value={price.value}
-          id={price.id}
-          label={price.label}
-          error={price.error}
-          isRequired={price.isRequired}
-          type={price.type}
-          onChange={price.onChange}
-        />
-        <CustomInput
-          value={location.value}
-          id={location.id}
-          label={location.label}
-          error={location.error}
-          isRequired={location.isRequired}
-          type={location.type}
-          onChange={location.onChange}
-        />
-        <Flex justify="center">
-          <Button
-            variant="submit-button"
-            type="submit"
-            isLoading={loading}
-            bg={buttonBackgroundColor}
-            color={buttonTextColor}
-          >
-            Submit
-          </Button>
+                {categories.map((category, i) => {
+                  return (
+                    <option
+                      value={i + 1}
+                      key={category}
+                      style={{
+                        backgroundColor:
+                          /* istanbul ignore next */
+                          selectBackground === "card"
+                            ? "white"
+                            : "rgb(22, 27, 34)",
+                      }}
+                    >
+                      {category}
+                    </option>
+                  );
+                })}
+              </Select>
+              <Text color="red.500" fontSize="14px" h="16px" marginTop="1">
+                {categoryError}
+              </Text>
+            </Box>
+            <CustomInput
+              value={description.value}
+              id={description.id}
+              label={description.label}
+              error={description.error}
+              isRequired={description.isRequired}
+              type={description.type}
+              onChange={description.onChange}
+              textArea
+            />
+            <CustomInput
+              value={price.value}
+              id={price.id}
+              label={price.label}
+              error={price.error}
+              isRequired={price.isRequired}
+              type={price.type}
+              onChange={price.onChange}
+            />
+            <CustomInput
+              value={location.value}
+              id={location.id}
+              label={location.label}
+              error={location.error}
+              isRequired={location.isRequired}
+              type={location.type}
+              onChange={location.onChange}
+            />
+            <Flex justify="center">
+              <Button
+                variant="submit-button"
+                type="submit"
+                isLoading={loading}
+                bg={buttonBackgroundColor}
+                color={buttonTextColor}
+              >
+                Submit
+              </Button>
+            </Flex>
+          </Flex>
         </Flex>
       </Flex>
     </Flex>
