@@ -1,4 +1,4 @@
-import { Flex, Grid, Spinner, useToast } from "@chakra-ui/react";
+import { Flex, Spinner, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { categories } from "../../categories";
@@ -73,20 +73,22 @@ const Category = () => {
   }
 
   return (
-    <Grid templateColumns="1fr" pt="2">
-      <SearchBox initialCategory={category_id.toString()} />
-      {products.length !== 0 && <SortSelect setPage={setPage} />}
-      {products.map((product) => {
-        return <ProductCard product={product} key={product.product_id} />;
-      })}
-      <Flex justifyContent="center" m="2">
-        <PageButtons
-          page={page}
-          count={count}
-          urlPrefix={`products/category/${category_id}`}
-        />
+    <Flex justifyContent="center">
+      <Flex maxWidth="860px" direction="column" p={{ base: "0.5", lg: "4" }}>
+        <SearchBox initialCategory={category_id.toString()} />
+        {products.length !== 0 && <SortSelect setPage={setPage} />}
+        {products.map((product) => {
+          return <ProductCard product={product} key={product.product_id} />;
+        })}
+        <Flex justifyContent="center" m="2">
+          <PageButtons
+            page={page}
+            count={count}
+            urlPrefix={`products/category/${category_id}`}
+          />
+        </Flex>
       </Flex>
-    </Grid>
+    </Flex>
   );
 };
 

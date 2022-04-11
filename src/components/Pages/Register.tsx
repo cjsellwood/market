@@ -113,65 +113,80 @@ const Register = () => {
 
   const buttonBackgroundColor = useColorModeValue("success", "transparent");
   const buttonTextColor = useColorModeValue("white", "success");
+  const buttonHoverColor = useColorModeValue("#076913", "#8787873b");
+  const buttonHoverBorder = useColorModeValue("#076913", "success");
 
   return (
-    <Flex justify="center" align="center" direction="column">
-      <Heading color="secondary" p="4" fontSize="26px" fontWeight="500">
-        REGISTER
-      </Heading>
+    <Flex
+      justifyContent="center"
+      alignItems="center"
+      paddingTop={{ base: "0", lg: "2" }}
+    >
       <Flex
-        as="form"
-        gap="3"
+        justify="center"
+        align="center"
         direction="column"
-        w="100%"
-        paddingX="4"
-        onSubmit={submitForm}
+        width="100%"
+        maxWidth="600px"
       >
-        <CustomInput
-          value={email.value}
-          id={email.id}
-          label={email.label}
-          error={email.error}
-          isRequired={email.isRequired}
-          type={email.type}
-          onChange={email.onChange}
-        />
-        <CustomInput
-          value={username.value}
-          id={username.id}
-          label={username.label}
-          error={username.error}
-          isRequired={username.isRequired}
-          onChange={username.onChange}
-        />
-        <CustomInput
-          value={password.value}
-          id={password.id}
-          label={password.label}
-          error={password.error}
-          isRequired={password.isRequired}
-          type={password.type}
-          onChange={password.onChange}
-        />
-        <CustomInput
-          value={confirmPassword.value}
-          id={confirmPassword.id}
-          label={confirmPassword.label}
-          error={confirmPassword.error}
-          isRequired={confirmPassword.isRequired}
-          type={confirmPassword.type}
-          onChange={confirmPassword.onChange}
-        />
-        <Flex justify="center">
-          <Button
-            variant="submit-button"
-            type="submit"
-            isLoading={loading}
-            bg={buttonBackgroundColor}
-            color={buttonTextColor}
-          >
-            Submit
-          </Button>
+        <Heading color="secondary" p="4" fontSize="26px" fontWeight="500">
+          REGISTER
+        </Heading>
+        <Flex
+          as="form"
+          gap="3"
+          direction="column"
+          w="100%"
+          paddingX="4"
+          onSubmit={submitForm}
+        >
+          <CustomInput
+            value={email.value}
+            id={email.id}
+            label={email.label}
+            error={email.error}
+            isRequired={email.isRequired}
+            type={email.type}
+            onChange={email.onChange}
+          />
+          <CustomInput
+            value={username.value}
+            id={username.id}
+            label={username.label}
+            error={username.error}
+            isRequired={username.isRequired}
+            onChange={username.onChange}
+          />
+          <CustomInput
+            value={password.value}
+            id={password.id}
+            label={password.label}
+            error={password.error}
+            isRequired={password.isRequired}
+            type={password.type}
+            onChange={password.onChange}
+          />
+          <CustomInput
+            value={confirmPassword.value}
+            id={confirmPassword.id}
+            label={confirmPassword.label}
+            error={confirmPassword.error}
+            isRequired={confirmPassword.isRequired}
+            type={confirmPassword.type}
+            onChange={confirmPassword.onChange}
+          />
+          <Flex justify="center">
+            <Button
+              variant="submit-button"
+              type="submit"
+              isLoading={loading}
+              bg={buttonBackgroundColor}
+              color={buttonTextColor}
+              _hover={{ bg: buttonHoverColor, borderColor: buttonHoverBorder }}
+            >
+              Submit
+            </Button>
+          </Flex>
         </Flex>
       </Flex>
     </Flex>

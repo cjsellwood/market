@@ -62,22 +62,22 @@ describe("Visit product pages", () => {
 
     cy.get("[aria-label='open menu']").click();
 
-    cy.contains("Login");
-    cy.contains("Register");
+    cy.get("[data-testid=drawer]").contains("Login");
+    cy.get("[data-testid=drawer]").contains("Register");
 
-    cy.contains("All Products").click();
+    cy.get("[data-testid=drawer]").contains("All Products").click();
     cy.url().should("include", "products");
-    cy.contains("All Products").should("not.exist");
+    cy.get("[data-testid=drawer]").contains("All Products").should("not.exist");
 
     cy.get("[aria-label='open menu']").click();
-    cy.contains("a", "Sports").click();
+    cy.get("[data-testid=drawer]").contains("a", "Sports").click();
     cy.url().should("include", "sports");
-    cy.contains("a", "All Products").should("not.exist");
+    cy.get("[data-testid=drawer]").contains("a", "All Products").should("not.exist");
 
     cy.get("[aria-label='open menu']").click();
-    cy.contains("Register").click();
+    cy.get("[data-testid=drawer]").contains("Register").click();
     cy.url().should("include", "register");
-    cy.contains("a", "All Products").should("not.exist");
+    cy.get("[data-testid=drawer]").contains("a", "All Products").should("not.exist");
 
     cy.contains("THE NEXUS").click();
     cy.url().should("eq", "http://localhost:3000/#/");
@@ -153,7 +153,7 @@ describe("Visit product pages", () => {
 
     cy.get("[aria-label='open menu']").click();
 
-    cy.contains("a", "Cars and Vehicles").click();
+    cy.get("[data-testid=drawer]").contains("a", "Cars and Vehicles").click();
 
     cy.url().should("eq", "http://localhost:3000/#/carsandvehicles");
 

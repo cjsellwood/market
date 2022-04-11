@@ -1,4 +1,4 @@
-import { Box, useColorModeValue } from "@chakra-ui/react";
+import { Box, Grid, useColorModeValue } from "@chakra-ui/react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./components/Pages/Home";
 import Login from "./components/Pages/Login";
@@ -18,6 +18,7 @@ import RedirectLogin from "./components/Navigation/RedirectLogin";
 import UserProducts from "./components/Pages/UserProducts";
 import useAppSelector from "./hooks/useAppSelector";
 import "./App.css";
+import NavDesktop from "./components/Navigation/NavDesktop";
 
 const App = () => {
   const backgroundColor = useColorModeValue(
@@ -38,41 +39,53 @@ const App = () => {
     <Box minW="100%" minH="100vh" backgroundColor={backgroundColor}>
       <ScrollToTop />
       <Navbar />
-      <Box paddingTop="56px">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/search" element={<Searched />} />
-          <Route
-            path="/new"
-            element={
-              <RedirectLogin>
-                <NewProduct />
-              </RedirectLogin>
-            }
-          />
-          <Route
-            path="/products/yours"
-            element={
-              <RedirectLogin>
-                <UserProducts />
-              </RedirectLogin>
-            }
-          />
-          <Route
-            path="/products/:id/edit"
-            element={
-              <RedirectLogin>
-                <EditProduct />
-              </RedirectLogin>
-            }
-          />
-          <Route path="/products/:id" element={<Product />} />
-          <Route path="/:category" element={<Category />} />
-        </Routes>
-      </Box>
+      <Grid
+        paddingTop="56px"
+        gridTemplateColumns={{
+          base: "1fr",
+          lg: "320px 1fr",
+          "2xl": "320px 1fr 320px",
+        }}
+      >
+        <Box display={{ base: "none", lg: "block" }}>
+          <NavDesktop />
+        </Box>
+        <Box>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/search" element={<Searched />} />
+            <Route
+              path="/new"
+              element={
+                <RedirectLogin>
+                  <NewProduct />
+                </RedirectLogin>
+              }
+            />
+            <Route
+              path="/products/yours"
+              element={
+                <RedirectLogin>
+                  <UserProducts />
+                </RedirectLogin>
+              }
+            />
+            <Route
+              path="/products/:id/edit"
+              element={
+                <RedirectLogin>
+                  <EditProduct />
+                </RedirectLogin>
+              }
+            />
+            <Route path="/products/:id" element={<Product />} />
+            <Route path="/:category" element={<Category />} />
+          </Routes>
+        </Box>
+      </Grid>
     </Box>
   );
 };

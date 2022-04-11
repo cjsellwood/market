@@ -59,7 +59,11 @@ const Conversation = ({
       );
     }
 
-    window.scrollTo({ left: 0, top: 100000000000000, behavior: "smooth" });
+    window.scrollTo({
+      left: 0,
+      top: document.body.scrollHeight,
+      behavior: "smooth",
+    });
 
     // If failed to save message reset to before submit
     if (result.meta.requestStatus !== "fulfilled") {
@@ -69,6 +73,8 @@ const Conversation = ({
 
   const buttonBackgroundColor = useColorModeValue("success", "transparent");
   const buttonTextColor = useColorModeValue("white", "success");
+  const buttonHoverColor = useColorModeValue("#076913", "#8787873b");
+  const buttonHoverBorder = useColorModeValue("#076913", "success");
   const secondaryText = useColorModeValue("secondaryText", "secondaryTextDark");
 
   return (
@@ -88,8 +94,7 @@ const Conversation = ({
                 color="white"
                 bg={message.sender === userId ? "secondary" : "primary"}
                 borderRadius="8"
-                p="2"
-                width="fit-content"
+                p="2.5"
               >
                 {message.text}
               </Text>
@@ -130,6 +135,7 @@ const Conversation = ({
           variant="submit-button"
           bg={buttonBackgroundColor}
           color={buttonTextColor}
+          _hover={{ bg: buttonHoverColor, borderColor: buttonHoverBorder }}
         >
           Send
         </Button>

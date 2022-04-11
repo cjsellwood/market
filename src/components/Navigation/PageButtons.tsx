@@ -59,7 +59,9 @@ const PageButtons = ({
           borderColor="transparent"
           borderRadius="0"
           _active={{ bg: "transparent" }}
-          _hover={{ bg: "transparent" }}
+          _hover={{
+            backgroundColor: "#8787873b",
+          }}
         >
           &lt;
         </Button>
@@ -95,7 +97,9 @@ const PageButtons = ({
             borderRadius="0"
             bg="transparent"
             _active={{ bg: "transparent" }}
-            _hover={{ bg: "transparent" }}
+            _hover={{
+              backgroundColor: "#8787873b",
+            }}
           >
             {pageNumber}
           </Button>
@@ -117,7 +121,9 @@ const PageButtons = ({
           borderColor="transparent"
           borderRadius="0"
           _active={{ bg: "transparent" }}
-          _hover={{ bg: "transparent" }}
+          _hover={{
+            backgroundColor: "#8787873b",
+          }}
         >
           &gt;
         </Button>

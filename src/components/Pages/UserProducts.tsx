@@ -1,4 +1,4 @@
-import { Flex, Grid, Spinner, useToast } from "@chakra-ui/react";
+import { Flex, Spinner, Text, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import useAppDispatch from "../../hooks/useAppDispatch";
@@ -61,15 +61,27 @@ const UserProducts = () => {
   }
 
   return (
-    <Grid templateColumns="1fr" pt="2">
-      <SearchBox />
-      {products.map((product) => {
-        return <ProductCard product={product} key={product.product_id} />;
-      })}
-      <Flex justifyContent="center" m="2">
-        <PageButtons page={page} count={count} urlPrefix={"products"} />
+    <Flex justifyContent="center">
+      <Flex
+        maxWidth="860px"
+        width="100%"
+        direction="column"
+        p={{ base: "0.5", lg: "4" }}
+      >
+        <SearchBox />
+        {!products.length && !error && (
+          <Flex justifyContent="center" p="4">
+            <Text fontSize="lg">No results</Text>
+          </Flex>
+        )}
+        {products.map((product) => {
+          return <ProductCard product={product} key={product.product_id} />;
+        })}
+        <Flex justifyContent="center" m="2">
+          <PageButtons page={page} count={count} urlPrefix={"products"} />
+        </Flex>
       </Flex>
-    </Grid>
+    </Flex>
   );
 };
 

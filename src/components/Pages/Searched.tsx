@@ -1,4 +1,4 @@
-import { Flex, Grid, Spinner, Text, useToast } from "@chakra-ui/react";
+import { Flex, Spinner, Text, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import useAppDispatch from "../../hooks/useAppDispatch";
@@ -70,38 +70,45 @@ const Searched = () => {
   }
 
   return (
-    <Grid templateColumns="1fr" pt="2">
-      <SearchBox
-        initialCategory={category_id || undefined}
-        initialSearch={query || undefined}
-      />
-      {products.length !== 0 && <SortSelect setPage={setPage} />}
-      {!query && (
-        <Flex justifyContent="center" p="4">
-          <Text fontSize="lg">Search for a product</Text>
+    <Flex justifyContent="center">
+      <Flex
+        maxWidth="860px"
+        width="100%"
+        direction="column"
+        p={{ base: "0.5", lg: "4" }}
+      >
+        <SearchBox
+          initialCategory={category_id || undefined}
+          initialSearch={query || undefined}
+        />
+        {products.length !== 0 && <SortSelect setPage={setPage} />}
+        {!query && (
+          <Flex justifyContent="center" p="4">
+            <Text fontSize="lg">Search for a product</Text>
+          </Flex>
+        )}
+        {query && !products.length && !error && (
+          <Flex justifyContent="center" p="4">
+            <Text fontSize="lg">No results</Text>
+          </Flex>
+        )}
+        {query &&
+          products.map((product) => {
+            return <ProductCard product={product} key={product.product_id} />;
+          })}
+        <Flex justifyContent="center" m="2">
+          {query ? (
+            <PageButtons
+              page={page}
+              count={count}
+              urlPrefix={"search"}
+              query={query}
+              category={category_id ? category_id : undefined}
+            />
+          ) : null}
         </Flex>
-      )}
-      {query && !products.length && !error && (
-        <Flex justifyContent="center" p="4">
-          <Text fontSize="lg">No results</Text>
-        </Flex>
-      )}
-      {query &&
-        products.map((product) => {
-          return <ProductCard product={product} key={product.product_id} />;
-        })}
-      <Flex justifyContent="center" m="2">
-        {query ? (
-          <PageButtons
-            page={page}
-            count={count}
-            urlPrefix={"search"}
-            query={query}
-            category={category_id ? category_id : undefined}
-          />
-        ) : null}
       </Flex>
-    </Grid>
+    </Flex>
   );
 };
 

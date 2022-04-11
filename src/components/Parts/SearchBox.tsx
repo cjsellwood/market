@@ -46,78 +46,81 @@ const SearchBox = ({
   const borderColor = useColorModeValue("#dedede", "#4d4d4d");
 
   return (
-    <Flex
-      as="form"
-      onSubmit={submitForm}
-      m="1"
-      borderRadius="4"
-      // borderWidth="1px"
-      borderColor={borderColor}
-      bg={background}
-      // overflow="hidden"
-    >
-      <Box w="100%">
-        <Flex>
-          <Input
-            id="search"
-            type="search"
-            aria-label="search"
-            placeholder="Search"
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            border="none"
+    <Flex justifyContent="center">
+      <Flex
+        as="form"
+        onSubmit={submitForm}
+        m="1"
+        borderRadius="4"
+        borderColor={borderColor}
+        bg={background}
+        width="100%"
+        maxWidth="450px"
+      >
+        <Box w="100%">
+          <Flex>
+            <Input
+              id="search"
+              type="search"
+              aria-label="search"
+              placeholder="Search"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              border="none"
+              borderRadius="2"
+            />
+            <IconButton
+              type="submit"
+              aria-label="submit search"
+              icon={<SearchIcon />}
+              backgroundColor="secondary"
+              color="white"
+              border="none"
+              borderRadius="0 4px 0 0"
+              _active={{ bg: "secondary" }}
+              _hover={{ bg: "#e5067dbd" }}
+            />
+          </Flex>
+          <Select
+            name="category"
+            aria-label="select category"
+            value={category_id}
+            onChange={(e) => setCategory_id(e.target.value)}
+            borderWidth="0"
             borderRadius="2"
-          />
-          <IconButton
-            type="submit"
-            aria-label="submit search"
-            icon={<SearchIcon />}
-            backgroundColor="secondary"
-            color="white"
-            border="none"
-            borderRadius="0 4px 0 0"
-            _active={{ bg: "secondary" }}
-            _hover={{ bg: "secondary" }}
-          />
-        </Flex>
-        <Select
-          name="category"
-          aria-label="select category"
-          value={category_id}
-          onChange={(e) => setCategory_id(e.target.value)}
-          borderWidth="0"
-          borderRadius="2"
-          borderTopWidth="1px"
-          borderTopColor={borderColor}
-          bg={background}
-        >
-          <option
-            value="0"
-            style={{
-              backgroundColor:
-                /* istanbul ignore next */
-                background === "card" ? "white" : "rgb(39, 39, 42)",
-            }}
+            borderTopWidth="1px"
+            borderTopColor={borderColor}
+            bg={background}
+            cursor="pointer"
           >
-            All Categories
-          </option>
-          {categories.map((category, i) => {
-            return (
-              <option
-                value={i + 1}
-                key={category}
-                style={{
-                  backgroundColor:
-                    /* istanbul ignore next */
-                    background === "card" ? "white" : "rgb(39, 39, 42)",
-                }}
-              >
-                {category}
-              </option>
-            );
-          })}
-        </Select>
-      </Box>
+            <option
+              value="0"
+              style={{
+                backgroundColor:
+                  /* istanbul ignore next */
+                  background === "card" ? "white" : "rgb(39, 39, 42)",
+              }}
+            >
+              All Categories
+            </option>
+            {categories.map((category, i) => {
+              return (
+                <option
+                  value={i + 1}
+                  key={category}
+                  style={{
+                    backgroundColor:
+                      /* istanbul ignore next */
+                      background === "card" ? "white" : "rgb(39, 39, 42)",
+                  }}
+                >
+                  {category}
+                </option>
+              );
+            })}
+          </Select>
+        </Box>
+      </Flex>
     </Flex>
   );
 };
