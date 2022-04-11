@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/the_nexus/static/css/main.81f5f231.css",
-    "main.js": "/the_nexus/static/js/main.c037d922.js",
+    "main.css": "/the_nexus/static/css/main.9a7752b8.css",
+    "main.js": "/the_nexus/static/js/main.2729b2b7.js",
     "static/media/rubik-all-500-normal.woff": "/the_nexus/static/media/rubik-all-500-normal.2b0a1c401a264fe1f26c.woff",
     "static/media/rubik-all-700-normal.woff": "/the_nexus/static/media/rubik-all-700-normal.339dd82330658e7d1522.woff",
     "static/media/rubik-all-400-normal.woff": "/the_nexus/static/media/rubik-all-400-normal.84344aed90cae7142af2.woff",
@@ -30,11 +30,11 @@
     "static/media/rubik-hebrew-400-normal.woff2": "/the_nexus/static/media/rubik-hebrew-400-normal.ed87eb2718a159d8d12f.woff2",
     "static/media/rubik-hebrew-300-normal.woff2": "/the_nexus/static/media/rubik-hebrew-300-normal.6529e94d3f83c239998d.woff2",
     "index.html": "/the_nexus/index.html",
-    "main.81f5f231.css.map": "/the_nexus/static/css/main.81f5f231.css.map",
-    "main.c037d922.js.map": "/the_nexus/static/js/main.c037d922.js.map"
+    "main.9a7752b8.css.map": "/the_nexus/static/css/main.9a7752b8.css.map",
+    "main.2729b2b7.js.map": "/the_nexus/static/js/main.2729b2b7.js.map"
   },
   "entrypoints": [
-    "static/css/main.81f5f231.css",
-    "static/js/main.c037d922.js"
+    "static/css/main.9a7752b8.css",
+    "static/js/main.2729b2b7.js"
   ]
 }
