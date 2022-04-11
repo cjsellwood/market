@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/the_nexus/static/css/main.9a7752b8.css",
-    "main.js": "/the_nexus/static/js/main.f7a48dfd.js",
+    "main.js": "/the_nexus/static/js/main.221e4a0a.js",
     "static/media/rubik-all-500-normal.woff": "/the_nexus/static/media/rubik-all-500-normal.2b0a1c401a264fe1f26c.woff",
     "static/media/rubik-all-700-normal.woff": "/the_nexus/static/media/rubik-all-700-normal.339dd82330658e7d1522.woff",
     "static/media/rubik-all-400-normal.woff": "/the_nexus/static/media/rubik-all-400-normal.84344aed90cae7142af2.woff",
@@ -31,10 +31,10 @@
     "static/media/rubik-hebrew-300-normal.woff2": "/the_nexus/static/media/rubik-hebrew-300-normal.6529e94d3f83c239998d.woff2",
     "index.html": "/the_nexus/index.html",
     "main.9a7752b8.css.map": "/the_nexus/static/css/main.9a7752b8.css.map",
-    "main.f7a48dfd.js.map": "/the_nexus/static/js/main.f7a48dfd.js.map"
+    "main.221e4a0a.js.map": "/the_nexus/static/js/main.221e4a0a.js.map"
   },
   "entrypoints": [
     "static/css/main.9a7752b8.css",
-    "static/js/main.f7a48dfd.js"
+    "static/js/main.221e4a0a.js"
   ]
 }
