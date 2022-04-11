@@ -15,12 +15,12 @@ import "cypress-file-upload";
 describe("Visit product pages", () => {
   beforeEach(() => {
     cy.viewport(360, 640);
-    cy.intercept("http://10.0.0.6:5000/products/random", randomProducts);
-    cy.intercept(
-      "GET",
-      "http://10.0.0.6:5000/products/29",
-      product29
-    ).as("get29");
+    cy.intercept("http://10.0.0.6:5000/products/random", randomProducts).as(
+      "random"
+    );
+    cy.intercept("GET", "http://10.0.0.6:5000/products/29", product29).as(
+      "get29"
+    );
     cy.intercept("http://10.0.0.6:5000/products/23", product23);
     cy.intercept("http://10.0.0.6:5000/products?page=1&sort=no", allProducts);
     cy.intercept("http://10.0.0.6:5000/products?page=2&sort=no&count=50", {
@@ -72,12 +72,16 @@ describe("Visit product pages", () => {
     cy.get("[aria-label='open menu']").click();
     cy.get("[data-testid=drawer]").contains("a", "Sports").click();
     cy.url().should("include", "sports");
-    cy.get("[data-testid=drawer]").contains("a", "All Products").should("not.exist");
+    cy.get("[data-testid=drawer]")
+      .contains("a", "All Products")
+      .should("not.exist");
 
     cy.get("[aria-label='open menu']").click();
     cy.get("[data-testid=drawer]").contains("Register").click();
     cy.url().should("include", "register");
-    cy.get("[data-testid=drawer]").contains("a", "All Products").should("not.exist");
+    cy.get("[data-testid=drawer]")
+      .contains("a", "All Products")
+      .should("not.exist");
 
     cy.contains("THE NEXUS").click();
     cy.url().should("eq", "http://localhost:3000/#/");
@@ -163,6 +167,9 @@ describe("Visit product pages", () => {
   it("Navigates to search results and displays them", () => {
     // cy.visit("/#/search?q=the");
     cy.visit("/");
+    cy.wait("@random");
+    cy.contains("Ergonomic Frozen Towels");
+
     cy.get("input").type("the");
     cy.get("[aria-label='submit search']").click();
 

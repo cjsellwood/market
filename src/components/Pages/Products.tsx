@@ -1,4 +1,4 @@
-import { Flex, Grid, Spinner, useToast } from "@chakra-ui/react";
+import { Flex, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import useAppDispatch from "../../hooks/useAppDispatch";
@@ -8,6 +8,7 @@ import ProductCard from "../Parts/ProductCard";
 import PageButtons from "../Navigation/PageButtons";
 import SearchBox from "../Parts/SearchBox";
 import SortSelect from "../Parts/SortSelect";
+import Loading from "../Parts/Loading";
 
 const Products = () => {
   // Get page from url if included
@@ -58,12 +59,8 @@ const Products = () => {
   // Show loading spinner
   if (loading) {
     return (
-      <Grid templateColumns="1fr" pt="2">
-        <SearchBox />
-        <Flex w="100%" h="50vh" justifyContent="center" alignItems="center">
-          <Spinner size="xl" thickness="4px" speed="0.5s" label="loading" />
-        </Flex>
-      </Grid>
+      <Loading/>
+
     );
   }
 

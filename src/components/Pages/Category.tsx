@@ -1,4 +1,4 @@
-import { Flex, Spinner, useToast } from "@chakra-ui/react";
+import { Flex, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { categories } from "../../categories";
@@ -6,6 +6,7 @@ import useAppDispatch from "../../hooks/useAppDispatch";
 import useAppSelector from "../../hooks/useAppSelector";
 import { getCategory } from "../../store/productThunks";
 import PageButtons from "../Navigation/PageButtons";
+import Loading from "../Parts/Loading";
 import ProductCard from "../Parts/ProductCard";
 import SearchBox from "../Parts/SearchBox";
 import SortSelect from "../Parts/SortSelect";
@@ -65,11 +66,7 @@ const Category = () => {
 
   // Show loading spinner
   if (loading) {
-    return (
-      <Flex w="100%" h="50vh" justifyContent="center" alignItems="center">
-        <Spinner size="xl" thickness="4px" speed="0.5s" label="loading" />
-      </Flex>
-    );
+    return <Loading />;
   }
 
   return (
