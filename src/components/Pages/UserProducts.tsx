@@ -1,4 +1,4 @@
-import { Flex, Spinner, Text, useToast } from "@chakra-ui/react";
+import { Flex, Text, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import useAppDispatch from "../../hooks/useAppDispatch";
@@ -7,6 +7,7 @@ import useAppSelector from "../../hooks/useAppSelector";
 import ProductCard from "../Parts/ProductCard";
 import PageButtons from "../Navigation/PageButtons";
 import SearchBox from "../Parts/SearchBox";
+import Loading from "../Parts/Loading";
 
 const UserProducts = () => {
   // Get page from url if included
@@ -53,11 +54,7 @@ const UserProducts = () => {
 
   // Show loading spinner
   if (loading) {
-    return (
-      <Flex w="100%" h="50vh" justifyContent="center" alignItems="center">
-        <Spinner size="xl" thickness="4px" speed="0.5s" label="loading" />
-      </Flex>
-    );
+    return <Loading />;
   }
 
   return (

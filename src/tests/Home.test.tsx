@@ -28,4 +28,14 @@ describe("Home component", () => {
 
     expect(screen.queryByText("Fantastic Frozen Bike")).toBeInTheDocument();
   });
+
+  it("Show error if can't return products", async () => {
+    window.fetch = jest.fn().mockReturnValue({
+      status: 400,
+    });
+
+    renderer(<Home />);
+
+    expect(await screen.findByText("Connection error")).toBeInTheDocument();
+  });
 });
