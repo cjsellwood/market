@@ -12,7 +12,9 @@ import {
   Icon,
   useColorModeValue,
   useToast,
+  Divider,
 } from "@chakra-ui/react";
+import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { categories } from "../../categories";
 import useAppDispatch from "../../hooks/useAppDispatch";
@@ -119,7 +121,7 @@ const NavDrawer = ({
               </Link>
             </ShowToLoggedIn>
           </Flex>
-          <Flex marginTop="4" flexDirection="column" bg="#bdbdbd63">
+          <Flex marginTop="4" flexDirection="column">
             <Link
               to="/products"
               as={RouterLink}
@@ -127,26 +129,27 @@ const NavDrawer = ({
               bg={background}
               fontWeight="500"
               fontSize="1.2rem"
-              marginBottom="1"
               p="2"
             >
               All Products
             </Link>
+            <Divider backgroundColor="#bdbdbd63" height="2px" />
             {categories.map((category) => {
               return (
-                <Link
-                  key={category}
-                  to={`/${category.toLowerCase().split(" ").join("")}`}
-                  as={RouterLink}
-                  onClick={onClose}
-                  bg={background}
-                  fontWeight="500"
-                  fontSize="lg"
-                  marginBottom="1"
-                  p="2"
-                >
-                  {category}
-                </Link>
+                <React.Fragment key={category}>
+                  <Link
+                    to={`/${category.toLowerCase().split(" ").join("")}`}
+                    as={RouterLink}
+                    onClick={onClose}
+                    bg={background}
+                    fontWeight="500"
+                    fontSize="lg"
+                    p="2"
+                  >
+                    {category}
+                  </Link>
+                  <Divider backgroundColor="#bdbdbd63" height="2px" />
+                </React.Fragment>
               );
             })}
           </Flex>

@@ -1,9 +1,11 @@
 import {
+  Divider,
   Flex,
   Link,
   useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
+import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { categories } from "../../categories";
 import useAppDispatch from "../../hooks/useAppDispatch";
@@ -14,15 +16,14 @@ import ShowToUnauthorized from "./ShowToUnauthorized";
 const NavDesktop = () => {
   const dispatch = useAppDispatch();
 
-  const background = useColorModeValue("mainBackground", "mainBackgroundDark");
+  const background = useColorModeValue("#e3e8f2", "#1c2026");
+  const divider = useColorModeValue("#c7c7c7", "#454545");
 
   const toast = useToast();
   return (
     <Flex
       bg={background}
       direction="column"
-      borderRightWidth="1px"
-      borderColor="#4747478f"
       minHeight="100vh"
       marginTop="-56px"
       paddingTop="56px"
@@ -62,32 +63,35 @@ const NavDesktop = () => {
             </Link>
           </ShowToLoggedIn>
         </Flex>
-        <Flex marginTop="4" flexDirection="column" bg="#bdbdbd63">
+        <Flex
+          marginTop="4"
+          flexDirection="column"
+          //  bg="#bdbdbd63"
+        >
           <Link
             to="/products"
             as={RouterLink}
-            bg={background}
             fontWeight="500"
             fontSize="1.2rem"
-            marginBottom="1"
             p="2"
           >
             All Products
           </Link>
+          <Divider backgroundColor={divider} height="2px" />
           {categories.map((category) => {
             return (
-              <Link
-                key={category}
-                to={`/${category.toLowerCase().split(" ").join("")}`}
-                as={RouterLink}
-                bg={background}
-                fontWeight="500"
-                fontSize="lg"
-                marginBottom="1"
-                p="2"
-              >
-                {category}
-              </Link>
+              <React.Fragment key={category}>
+                <Link
+                  to={`/${category.toLowerCase().split(" ").join("")}`}
+                  as={RouterLink}
+                  fontWeight="500"
+                  fontSize="lg"
+                  p="2"
+                >
+                  {category}
+                </Link>
+                <Divider backgroundColor={divider} height="2px" />
+              </React.Fragment>
             );
           })}
         </Flex>

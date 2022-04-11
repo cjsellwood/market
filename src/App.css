@@ -1,3 +1,17 @@
 .no-highlight {
   -webkit-tap-highlight-color: transparent;
 }
+
+body::-webkit-scrollbar {
+  width: 1rem;
+  background-color: rgb(21, 24, 29);
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: rgb(55, 60, 65);
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+}
