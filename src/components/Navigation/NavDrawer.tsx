@@ -133,7 +133,11 @@ const NavDrawer = ({
             >
               All Products
             </Link>
-            <Divider backgroundColor="#bdbdbd63" height="2px" />
+            <Divider
+              borderColor="#bdbdbd63"
+              height="0px"
+              borderBottomWidth="3px"
+            />
             {categories.map((category) => {
               return (
                 <React.Fragment key={category}>
@@ -148,7 +152,11 @@ const NavDrawer = ({
                   >
                     {category}
                   </Link>
-                  <Divider backgroundColor="#bdbdbd63" height="2px" />
+                  <Divider
+                    borderColor="#bdbdbd63"
+                    height="0px"
+                    borderBottomWidth="3px"
+                  />
                 </React.Fragment>
               );
             })}

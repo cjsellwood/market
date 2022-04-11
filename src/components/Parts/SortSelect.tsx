@@ -39,6 +39,7 @@ const SortSelect = ({
         size="sm"
         fontSize="15px"
         w="auto"
+        cursor="pointer"
       >
         <option
           value="no"

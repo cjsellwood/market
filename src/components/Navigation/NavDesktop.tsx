@@ -33,10 +33,22 @@ const NavDesktop = () => {
       <Flex paddingTop="16" direction="column" p="6">
         <Flex justifyContent="space-evenly" marginX="-3">
           <ShowToUnauthorized>
-            <Link to="/login" as={RouterLink} variant="link-button" w="50%">
+            <Link
+              to="/login"
+              as={RouterLink}
+              variant="link-button"
+              w="50%"
+              _hover={{ backgroundColor: "#8787873b" }}
+            >
               Login
             </Link>
-            <Link to="/register" as={RouterLink} variant="link-button" w="50%">
+            <Link
+              to="/register"
+              as={RouterLink}
+              variant="link-button"
+              w="50%"
+              _hover={{ backgroundColor: "#8787873b" }}
+            >
               Register
             </Link>
           </ShowToUnauthorized>
@@ -48,6 +60,7 @@ const NavDesktop = () => {
               paddingX="2"
               marginX="1.5"
               w="50%"
+              _hover={{ backgroundColor: "#8787873b" }}
             >
               New Product
             </Link>
@@ -58,25 +71,30 @@ const NavDesktop = () => {
               marginX="1.5"
               paddingX="2"
               w="50%"
+              _hover={{ backgroundColor: "#8787873b" }}
             >
               My Products
             </Link>
           </ShowToLoggedIn>
         </Flex>
-        <Flex
-          marginTop="4"
-          flexDirection="column"
-        >
+        <Flex marginTop="4" flexDirection="column">
           <Link
             to="/products"
             as={RouterLink}
             fontWeight="500"
             fontSize="1.2rem"
             p="2"
+            _hover={{
+              backgroundColor: "#8787873b",
+            }}
           >
             All Products
           </Link>
-          <Divider backgroundColor={divider} height="2px" />
+          <Divider
+            borderColor={divider}
+            height="0px"
+            borderBottomWidth="3px"
+          />
           {categories.map((category) => {
             return (
               <React.Fragment key={category}>
@@ -86,10 +104,17 @@ const NavDesktop = () => {
                   fontWeight="500"
                   fontSize="lg"
                   p="2"
+                  _hover={{
+                    backgroundColor: "#8787873b",
+                  }}
                 >
                   {category}
                 </Link>
-                <Divider backgroundColor={divider} height="2px" />
+                <Divider
+                  borderColor={divider}
+                  height="0px"
+                  borderBottomWidth="3px"
+                />
               </React.Fragment>
             );
           })}
@@ -109,6 +134,7 @@ const NavDesktop = () => {
               }}
               variant="link-button"
               w="50%"
+              _hover={{ backgroundColor: "#8787873b" }}
             >
               Log Out
             </Link>

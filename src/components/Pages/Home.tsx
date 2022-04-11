@@ -29,6 +29,9 @@ const Home = () => {
             w="50%"
             maxWidth="200px"
             variant="link-button"
+            _hover={{
+              backgroundColor: "#8787873b",
+            }}
           >
             See more
           </Link>

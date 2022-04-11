@@ -90,7 +90,9 @@ const Login = () => {
 
   const buttonBackgroundColor = useColorModeValue("success", "transparent");
   const buttonTextColor = useColorModeValue("white", "success");
-
+  const buttonHoverColor = useColorModeValue("#076913", "#8787873b");
+  const buttonHoverBorder = useColorModeValue("#076913", "success");
+  
   return (
     <Flex
       justifyContent="center"
@@ -140,6 +142,7 @@ const Login = () => {
               isLoading={loading}
               bg={buttonBackgroundColor}
               color={buttonTextColor}
+              _hover={{ bg: buttonHoverColor, borderColor: buttonHoverBorder }}
             >
               Submit
             </Button>

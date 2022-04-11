@@ -42,7 +42,11 @@ const ProductCard = (props: { product: Product }) => {
             </AspectRatio>
           </Flex>
           <Flex direction="column" p={{ base: "1.5", xl: "3" }}>
-            <LinkOverlay to={`/products/${product_id}`} as={RouterLink}>
+            <LinkOverlay
+              to={`/products/${product_id}`}
+              as={RouterLink}
+              _hover={{ textDecoration: "underline" }}
+            >
               <Heading
                 fontSize={{ base: "1rem", xl: "1.25rem" }}
                 fontWeight="500"

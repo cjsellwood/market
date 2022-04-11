@@ -44,7 +44,9 @@ const NavBar = () => {
         top="8px"
         width="40px"
         _active={{ bg: "transparent" }}
-        _hover={{ bg: "transparent" }}
+        _hover={{
+          backgroundColor: "#d6d6d652",
+        }}
       >
         {colorMode === "light" ? (
           <Icon

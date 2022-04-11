@@ -71,7 +71,12 @@ const Searched = () => {
 
   return (
     <Flex justifyContent="center">
-      <Flex maxWidth="860px" direction="column" p={{ base: "0.5", lg: "4" }}>
+      <Flex
+        maxWidth="860px"
+        width="100%"
+        direction="column"
+        p={{ base: "0.5", lg: "4" }}
+      >
         <SearchBox
           initialCategory={category_id || undefined}
           initialSearch={query || undefined}

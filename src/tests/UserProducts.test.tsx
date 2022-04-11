@@ -41,6 +41,17 @@ describe("Products component", () => {
     );
   });
 
+  test("Tells user if no results", async () => {
+    window.fetch = jest.fn().mockReturnValue({
+      status: 200,
+      json: () => Promise.resolve({ products: [], count: "0" }),
+    });
+
+    renderer(<UserProducts />);
+
+    expect(await screen.findByText("No results")).toBeInTheDocument();
+  });
+
   test("Show error if can't return products", async () => {
     window.fetch = jest.fn().mockReturnValue({
       status: 400,

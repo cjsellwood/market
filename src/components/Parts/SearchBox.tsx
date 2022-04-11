@@ -78,7 +78,7 @@ const SearchBox = ({
               border="none"
               borderRadius="0 4px 0 0"
               _active={{ bg: "secondary" }}
-              _hover={{ bg: "secondary" }}
+              _hover={{ bg: "#e5067dbd" }}
             />
           </Flex>
           <Select
@@ -91,6 +91,7 @@ const SearchBox = ({
             borderTopWidth="1px"
             borderTopColor={borderColor}
             bg={background}
+            cursor="pointer"
           >
             <option
               value="0"

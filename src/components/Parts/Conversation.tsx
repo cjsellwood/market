@@ -73,6 +73,8 @@ const Conversation = ({
 
   const buttonBackgroundColor = useColorModeValue("success", "transparent");
   const buttonTextColor = useColorModeValue("white", "success");
+  const buttonHoverColor = useColorModeValue("#076913", "#8787873b");
+  const buttonHoverBorder = useColorModeValue("#076913", "success");
   const secondaryText = useColorModeValue("secondaryText", "secondaryTextDark");
 
   return (
@@ -133,6 +135,7 @@ const Conversation = ({
           variant="submit-button"
           bg={buttonBackgroundColor}
           color={buttonTextColor}
+          _hover={{ bg: buttonHoverColor, borderColor: buttonHoverBorder }}
         >
           Send
         </Button>

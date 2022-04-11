@@ -178,6 +178,7 @@ const Product = () => {
                 backgroundColor={imageShown === i ? "#e5067d" : "#060698"}
                 variant="image-button"
                 className="no-highlight"
+                _hover={{ filter: "brightness(1.5)" }}
               >
                 {i + 1}
               </Button>
@@ -215,6 +216,9 @@ const Product = () => {
               borderColor={selectBorderColor}
               w="50%"
               maxWidth="200px"
+              _hover={{
+                backgroundColor: "#8787873b",
+              }}
             >
               Edit
             </Link>
@@ -227,6 +231,9 @@ const Product = () => {
               borderColor={selectBorderColor}
               w="50%"
               maxWidth="200px"
+              _hover={{
+                backgroundColor: "#8787873b",
+              }}
             >
               Delete
             </Button>
@@ -246,6 +253,10 @@ const Product = () => {
               marginY="1.5"
               w="70%"
               alignSelf="center"
+              maxWidth="300px"
+              _hover={{
+                backgroundColor: "#8787873b",
+              }}
             >
               Login to send a message
             </Button>
@@ -306,7 +317,11 @@ const Product = () => {
                       >
                         <AccordionItem>
                           <h2>
-                            <AccordionButton>
+                            <AccordionButton
+                              _hover={{
+                                backgroundColor: "#8787873b",
+                              }}
+                            >
                               <Box flex="1" textAlign="center" fontSize="lg">
                                 {conversation[0]}
                               </Box>

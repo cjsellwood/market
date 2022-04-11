@@ -169,8 +169,10 @@ const NewProduct = () => {
   const selectBackground = useColorModeValue("card", "cardDark");
   const buttonBackgroundColor = useColorModeValue("success", "transparent");
   const buttonTextColor = useColorModeValue("white", "success");
-  const selectBorderColor = useColorModeValue("#b0b0b0", "#4a4a4a");
+  const buttonHoverColor = useColorModeValue("#076913", "#8787873b");
+  const buttonHoverBorder = useColorModeValue("#076913", "success");
 
+  const selectBorderColor = useColorModeValue("#b0b0b0", "#4a4a4a");
   const fileButtonTextColor = useColorModeValue("#000", "#fff");
 
   return (
@@ -245,6 +247,7 @@ const NewProduct = () => {
                   backgroundColor={imageShown === i ? "#e5067d" : "#060698"}
                   variant="image-button"
                   className="no-highlight"
+                  _hover={{ filter: "brightness(1.5)" }}
                 >
                   {i + 1}
                 </Button>
@@ -270,8 +273,11 @@ const NewProduct = () => {
                     borderColor={selectBorderColor}
                     w="50%"
                     maxWidth="200px"
-                    cursor={"pointer"}
+                    cursor="pointer"
                     _focus={{ boxShadow: "0 0 0 3px rgba(66, 153, 225, 0.6);" }}
+                    _hover={{
+                      backgroundColor: "#8787873b",
+                    }}
                   >
                     {image ? "Change" : "Add"}
                   </Button>
@@ -291,6 +297,9 @@ const NewProduct = () => {
                     borderColor={selectBorderColor}
                     w="50%"
                     maxWidth="200px"
+                    _hover={{
+                      backgroundColor: "#8787873b",
+                    }}
                   >
                     Remove
                   </Button>
@@ -337,6 +346,7 @@ const NewProduct = () => {
                 isInvalid={categoryError !== ""}
                 borderColor={selectBorderColor}
                 fontSize="sm"
+                cursor="pointer"
               >
                 <option
                   value="0"
@@ -406,6 +416,10 @@ const NewProduct = () => {
                 isLoading={loading}
                 bg={buttonBackgroundColor}
                 color={buttonTextColor}
+                _hover={{
+                  bg: buttonHoverColor,
+                  borderColor: buttonHoverBorder,
+                }}
               >
                 Submit
               </Button>
