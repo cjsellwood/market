@@ -38,7 +38,7 @@ const NavDrawer = ({
   return (
     <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
       <DrawerOverlay />
-      <DrawerContent bg={background}>
+      <DrawerContent bg={background} data-testid="drawer">
         <Button
           onClick={() => {
             toggleColorMode();

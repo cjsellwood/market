@@ -1,6 +1,9 @@
+import { randomProducts } from "../../src/tests/helpers";
+
 describe("Testing auth pages", () => {
   beforeEach(() => {
     cy.viewport(360, 640);
+    cy.intercept("http://10.0.0.6:5000/products/random", randomProducts);
     cy.intercept("http://10.0.0.6:5000/auth/register", {
       email: "cypress@email.com",
       username: "cypress",
@@ -20,9 +23,10 @@ describe("Testing auth pages", () => {
 
   it("Can navigate to register and create new user", () => {
     cy.visit("/");
+    cy.contains("Ergonomic Frozen Towels");
     cy.get("[aria-label='open menu']").click();
-    cy.contains("Register").click();
-    cy.contains("Register");
+    cy.get("[data-testid=drawer]").contains("Register").click();
+    cy.contains("REGISTER");
     cy.contains("Email");
 
     cy.get("#email").type("cypress@email.com");
@@ -45,7 +49,7 @@ describe("Testing auth pages", () => {
   it("Can login an existing user", () => {
     cy.visit("/");
     cy.get("[aria-label='open menu']").click();
-    cy.contains("Login").click();
+    cy.get("[data-testid=drawer]").contains("Login").click();
 
     cy.get("#email").type("cypress@email.com");
     cy.get("#email").should("have.value", "cypress@email.com");
