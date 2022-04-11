@@ -66,7 +66,6 @@ const NavDesktop = () => {
         <Flex
           marginTop="4"
           flexDirection="column"
-          //  bg="#bdbdbd63"
         >
           <Link
             to="/products"
